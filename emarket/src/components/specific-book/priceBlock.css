@@ -1,0 +1,128 @@
+.price-block{
+    /* justify-content: start; */
+    /* padding: 5px; */
+    position: relative;
+    border-radius: 5px;
+}
+
+.price-block-row{
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* justify-content: space-between; */
+    /* justify-content: left; */
+    /* width: 100%; */
+    /* margin-bottom: 5px; */
+    align-items: center;
+}
+.price-block-row span, .price-block-row label{
+    font-weight: 600;
+    font-size: 15px;
+}
+.price-block-row input{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid grey;
+    padding-left: 5px;
+    font-size: 18px;
+    border-radius: 5px;
+}
+.price-block-btn{
+    bottom: 5px;
+    right: 5px;
+    margin-top: 5px;
+    height: 50px;
+    width: 100px;
+    font-weight: 600;
+    padding: 10px;
+    border: 1px solid rgb(104, 104, 104);
+    border-radius: 5px;
+    background-color: rgb(241, 241, 241);
+}
+
+.increment, .decrement{
+    height: 40px;
+    /* align-items: center; */
+    padding: 0px 10px;
+    /* font-size: 24px; */
+    margin: 2px 3px 2px 3px;
+    border-radius: 10px;
+    border: 0px;
+    cursor: pointer;
+}
+
+.price-block {
+   display: flex;
+    /* flex-direction: column; */
+    justify-content: left;
+    justify-content: left;
+    /* width: 100%; */
+    /* margin-bottom: 5px; */
+    align-items: center; 
+    margin-top: 12px;
+}
+
+.price-block{
+    /* width: 30%; */
+    display: flex;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    /* flex-basis: 33.33%;  */
+    /* min-width: 275px; 
+    padding: 10px;
+    box-sizing: border-box;  */
+}
+
+.ccart-icon {
+    /* position: absolute; */
+    /* top: 10px; */
+    bottom: 15%;
+    /* right: 10px; */
+    right: 40%;
+    width: 45px;
+    height: 45px;
+    /* border-radius: 50%;
+    background-color: #36f4e4;  */
+    color: #fff; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+  }
+  .contener{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+   
+    /* width: 160px; */
+    margin-bottom: 5px;
+    align-items: center; 
+  }
+  
+  .price-block-row-input{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    /* border: 1px solid rgb(104, 104, 104); */
+    border-radius: 5px;
+    width: 100px;
+    margin-bottom: 5px;
+    align-items: center; 
+  }
+
+  .cart-remove{
+    font-size: 14px;
+    margin: 3px 3px 3px 3px;
+  }
+
+  .Linkcart{
+    position: absolute;
+bottom: 80%;
+right: 45%;
+  }
+  

@@ -1,0 +1,107 @@
+/* Стили для заголовка */
+header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Стили для вступительного абзаца */
+.intro {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Стили для слайдера */
+.slider-section {
+    margin: 20px 0;
+}
+
+/* Стили для описания */
+.description {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Стили для блоков приемуществ */
+.features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
+
+.feature {
+    text-align: center;
+    margin: 0 10px;
+}
+
+.feature img {
+    width: 100px;
+    height: 100px;
+}
+
+/* Медиа запросы для адаптивности */
+@media (max-width: 768px) {
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature {
+        margin: 10px 0;
+    }
+}
+
+
+
+
+.loadPrice{
+    position: fixed;
+    right:  5%;
+    bottom: 70px;
+
+}
+
+.loading{
+    position: fixed;
+    z-index: 999;
+    top: 50%;
+    left: 47%;
+    
+   -webkit-transform: translate(-50
+   %, -50%); /* Для Safari с поддержкой CSS-трансформаций */
+   transform: translate(-50%, -50%);
+
+}
+
+.container-submit{
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    
+}
+
+.loading-submit{
+    font-size: 2em;
+    /* color: #ffa500; */
+    padding: 10px;
+    border: 2px solid ;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.color-transition {
+    
+    color: #f4f3f0; /* Светло-желтый цвет */
+    animation: colorChange 2s infinite alternate; /* Бесконечная анимация */
+}
+
+@keyframes colorChange {
+    0% {
+        color: #140e0f;
+    }
+    100% {
+        color: #025d40; /* Зеленый цвет */
+    }
+}

@@ -1,0 +1,73 @@
+.slider-container {
+    position: relative;
+    /* width: 100%; */
+    max-width: 90vw; /* Примерная ширина слайдера */
+    margin: 0 auto; /* Центрируем слайдер по горизонтали */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; /* Centers items vertically */
+    /* justify-content: space-between;  */
+    cursor: pointer;
+}
+
+.slide {
+    width: 100%;
+    height: auto; /* Адаптивная высота */
+    max-width: 340px;
+    max-height: 340px;
+    display: block;
+    margin: 0 auto; /* Centers the image horizontally */
+}
+
+/* .slide:hover {
+    border: 2px solid rgb(188, 190, 192); 
+    border-radius: 10px;
+} */
+
+
+.active{
+    border: 2px solid black;
+    border-radius: 15px;
+}
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5); /* Прозрачный черный цвет */
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Увеличение прозрачности при наведении */
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+
+.slide-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex-grow: 1;  */
+    /* padding: 5px; */
+    font-weight: bold;
+    font-size: large;
+    padding: 0 5px;
+    max-width: 250px;
+    max-width: 250px;
+    max-height: 250px;
+    min-height: 120px;
+    border: 1px solid;
+}

@@ -1,0 +1,94 @@
+.input-form{
+    display: flex;
+}
+.form-input{
+    /* justify-content: center; */
+    /* font-family: Arial, sans-serif; */
+    font-size: 14px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: black ;
+}
+.form-label{
+    justify-content: center;
+}
+.form-button{
+    border-radius: 10px;
+}
+.form-icon{
+    height: 30px;
+}
+.registration-form {
+    /* width: 300px; */
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    min-width: 410px;
+  }
+
+  .order-tab {
+    border-collapse: collapse; /* Объединение границ ячеек */
+    width: 100%;
+    /* border: 1px solid #000;  */
+}
+
+   td {
+    /* border: 1px solid #000;  */
+    padding: 8px;
+    /* text-align: left; */
+}
+
+th {
+    border: 1px solid #000; /* Граница для ячеек заголовка и данных */
+    padding: 8px;
+    text-align: left;
+}
+
+.order-body{
+    border: 1px solid #000;
+}
+
+tfoot{
+    font-weight: bold;
+    /* text-align: center; */
+}
+
+.section-form{
+    background-color: rgba(202, 198, 191, 0.87);
+    /* opacity: 0.8; */
+    position: fixed;
+    bottom: 70px;
+    /* right: 50px; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-form{
+    min-height: 90vh;
+    padding-bottom: 70px;
+}
+
+.dekrypted-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 80px;
+}
+
+.dekrypted{
+    max-width: 380px;
+    border: 1px solid;
+    border-radius: 10px;
+    margin: 5px;
+}
