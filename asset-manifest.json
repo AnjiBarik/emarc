@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/emarc/static/css/main.52d07c8d.css",
+    "main.js": "/emarc/static/js/main.acb9d62c.js",
+    "static/media/notFound.gif": "/emarc/static/media/notFound.b86bcddc05ce363ed3ed.gif",
+    "static/media/nickname.gif": "/emarc/static/media/nickname.dc389121c31d9f64b922.gif",
+    "static/media/password.gif": "/emarc/static/media/password.ea1ec22c01b6fb8096d4.gif",
+    "static/media/cart.svg": "/emarc/static/media/cart.5a1c3c755c07e59db7d65be6bc8d8bfb.svg",
+    "index.html": "/emarc/index.html",
+    "main.52d07c8d.css.map": "/emarc/static/css/main.52d07c8d.css.map",
+    "main.acb9d62c.js.map": "/emarc/static/js/main.acb9d62c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.52d07c8d.css",
+    "static/js/main.acb9d62c.js"
+  ]
+}
