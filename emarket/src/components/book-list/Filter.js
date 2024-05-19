@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
 import cancel from '../cart/img/cancel.png';
@@ -44,6 +45,7 @@ export default function Filter() {
   const [uniqueAuthors, setUniqueAuthors] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [showSections, setShowSections] = useState(false);
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (books.length === 0) {
@@ -165,10 +167,20 @@ export default function Filter() {
     findUniqueValues();
   }, [findBook, findUniqueValues]);
 
+  useEffect(() => {
+    if (books.length === 0) {
+      navigate('/');
+    }
+  }, [books, navigate]);
+
   if (books.length === 0) {
-    window.location.href = '/';
     return null;
   }
+
+  // if (books.length === 0) {
+  //   window.location.href = '/';
+  //   return null;
+  // }
 
   return (
     <>

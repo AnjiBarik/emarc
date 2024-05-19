@@ -68,7 +68,7 @@ body {
 
 .filters{
     flex-wrap: wrap;
-    width: 97%;
+    /* width: 97%; */
     /* margin: 30px 10px 10px 0px; */
     display: flex;
     padding: 20px 10px 10px 10px;

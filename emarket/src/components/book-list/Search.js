@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import cancel from '../cart/img/cancel.png';
 import search from '../cart/img/search.png';
 import upmenu from '../cart/img/upmenu.png';
@@ -22,6 +23,7 @@ export default function Search() {
 
   const [sortBook, setSortBook] = useState([]);
   const [showSections, setShowSections] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSections = () => {
     setShowSections((prevState) => !prevState);
@@ -53,10 +55,21 @@ export default function Search() {
 
   useEffect(() => {
     if (books.length === 0) {
-      window.location.href = '/';
+      navigate('/');
     }
     findBook();
-  }, [findBook, books.length]);
+  }, [books, findBook, navigate]);
+
+  if (books.length === 0) {
+    return null;
+  }
+
+  // useEffect(() => {
+  //   if (books.length === 0) {
+  //     window.location.href = '/';
+  //   }
+  //   findBook();
+  // }, [findBook, books.length]);
 
   const resetSearch = () => {
     setSearch("");
