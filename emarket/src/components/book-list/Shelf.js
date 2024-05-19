@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import notFound from './img/imageNotFound.png';
+//import notFound from './img/imageNotFound.png';
+import LazyImage from './LazyImage';
 import PriceBlock from '../specific-book/PriceBlock';
 import { BooksContext } from '../../BooksContext';
 import { useContext } from 'react';
@@ -11,37 +12,39 @@ import popular from '../cart/img/popular.png';
 export default function Shelf(props) {
   const { setSpecificBook, fieldState } = useContext(BooksContext);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [supportsIntersectionObserver, setSupportsIntersectionObserver] = useState(false);
+//  const [supportsIntersectionObserver, setSupportsIntersectionObserver] = useState(false);
 
-  useEffect(() => {
-    if ('IntersectionObserver' in window) {
-      setSupportsIntersectionObserver(true);
-    }
-  }, []);
 
-  const lastBookRef = useCallback((node) => {
-    if (!node || !supportsIntersectionObserver) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        loadImages();
-        observer.unobserve(node);
-      }
-    });
+  // useEffect(() => {
+  //   if ('IntersectionObserver' in window) {
+  //     setSupportsIntersectionObserver(true);
+  //   }
+  // }, []);
 
-    observer.observe(node);
-  }, [supportsIntersectionObserver]);
+  // const lastBookRef = useCallback((node) => {
+  //   if (!node || !supportsIntersectionObserver) return;
 
-  const loadImages = () => {
-    const images = document.querySelectorAll('.lazy-img');
-    images.forEach((img) => {
-      const src = img.getAttribute('data-src');
-      if (src) {
-        img.src = src;
-        img.removeAttribute('data-src');
-      }
-    });
-  };
+  //   const observer = new IntersectionObserver((entries) => {
+  //     if (entries[0].isIntersecting) {
+  //       loadImages();
+  //       observer.unobserve(node);
+  //     }
+  //   });
+
+  //   observer.observe(node);
+  // }, [supportsIntersectionObserver]);
+
+  // const loadImages = () => {
+  //   const images = document.querySelectorAll('.lazy-img');
+  //   images.forEach((img) => {
+  //     const src = img.getAttribute('data-src');
+  //     if (src) {
+  //       img.src = src;
+  //       img.removeAttribute('data-src');
+  //     }
+  //   });
+  // };
 
   const shelf = props.book.map((el, index) => {
     const images = el.imageblock.split(',');
@@ -60,7 +63,7 @@ export default function Shelf(props) {
     return (
       <section key={el.id} className='shelf-element'>
         <div
-          ref={index === props.book.length - 1 ? lastBookRef : null}
+          // ref={index === props.book.length - 1 ? lastBookRef : null}
           id={el.id}
           className={`book custom-element ${props.widhtblock === 1 ? 'widhtblock' : 'widhtblock1'}`}
         >
@@ -114,14 +117,21 @@ export default function Shelf(props) {
               </Link>
             )}
             <Link className='book-img' to='/specificbook' onClick={(e) => bookInfo(e)}>
-              <img
+            <LazyImage
+                  src={imageSource}
+                  alt={el.title}
+                  className={el.art === 'width' ? 'artwidth lazy-img' : 'art lazy-img'}
+                />
+              
+              
+              {/* <img
                 data-src={imageSource}
                 alt={el.title}
                 className={el.art === 'width' ? 'artwidth lazy-img' : 'art lazy-img'}
                 onError={(e) => {
                   e.target.src = notFound;
                 }}
-              />
+              /> */}
             </Link>
           </div>
           <div className={el.art === 'width' ? 'name-block-width' : 'name-block'}>

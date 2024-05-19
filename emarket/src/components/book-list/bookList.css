@@ -273,7 +273,7 @@ body {
     height: 50px;
   }
   .widhtblock{
-    width: 610px;
+    width: 370px;
     display: flex;
     flex-wrap: wrap;
   }
@@ -377,7 +377,7 @@ body {
     flex-direction: column;
     min-width: 275px; */
     /* flex-basis: 45%; */
-   width: 340px;
+   width: 100px;
   }
 
   .book-conteiner-width{

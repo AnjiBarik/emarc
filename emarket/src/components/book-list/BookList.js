@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
 
@@ -26,6 +27,7 @@ export default function BookList() {
   const [sections, setSections] = useState([]);
   const [subsections, setSubsections] = useState({});
   const [showSections, setShowSections] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (books.length > 0 && !selectedSection) {
@@ -68,10 +70,22 @@ export default function BookList() {
 
   const toggleSections = () => setShowSections(prevState => !prevState);
 
+ 
+
+  useEffect(() => {
+    if (books.length === 0) {
+      navigate('/');
+    }
+  }, [books, navigate]);
+
   if (books.length === 0) {
-    window.location.href = '/';
     return null;
   }
+
+  // if (books.length === 0) {
+  //   window.location.href = '/';
+  //   return null;
+  // }
 
   return (
     <section className={theme}>
