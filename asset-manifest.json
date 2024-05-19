@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/emarc/static/css/main.8d7763f3.css",
-    "main.js": "/emarc/static/js/main.cb5bbe2e.js",
+    "main.css": "/emarc/static/css/main.c90aba89.css",
+    "main.js": "/emarc/static/js/main.c1413204.js",
     "static/media/notFound.gif": "/emarc/static/media/notFound.b86bcddc05ce363ed3ed.gif",
     "static/media/nickname.gif": "/emarc/static/media/nickname.dc389121c31d9f64b922.gif",
     "static/media/password.gif": "/emarc/static/media/password.ea1ec22c01b6fb8096d4.gif",
     "static/media/cart.svg": "/emarc/static/media/cart.5a1c3c755c07e59db7d65be6bc8d8bfb.svg",
     "index.html": "/emarc/index.html",
-    "main.8d7763f3.css.map": "/emarc/static/css/main.8d7763f3.css.map",
-    "main.cb5bbe2e.js.map": "/emarc/static/js/main.cb5bbe2e.js.map"
+    "main.c90aba89.css.map": "/emarc/static/css/main.c90aba89.css.map",
+    "main.c1413204.js.map": "/emarc/static/js/main.c1413204.js.map"
   },
   "entrypoints": [
-    "static/css/main.8d7763f3.css",
-    "static/js/main.cb5bbe2e.js"
+    "static/css/main.c90aba89.css",
+    "static/js/main.c1413204.js"
   ]
 }
