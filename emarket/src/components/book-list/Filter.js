@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-//import { Link } from "react-router-dom";
 import { useNavigate, Link } from 'react-router-dom';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
@@ -10,6 +9,52 @@ import upmenu from '../cart/img/upmenu.png';
 import burger from '../cart/img/burger.png';
 import search from '../cart/img/search.png';
 import SortCart from './SortCart';
+
+// Utility function to apply filters
+const applyFilters = (books, filters) => {
+  let filteredBooks = books.filter((book) => book.Visibility !== '0');
+
+  if (filters.select === 'section' && filters.selectedSection && filters.selectedSection !== 'Show all') {
+    filteredBooks = filteredBooks.filter((book) => book.section === filters.selectedSection);
+    if (filters.selectedSubsection) {
+      filteredBooks = filteredBooks.filter((book) => book.partition === filters.selectedSubsection);
+    }
+  }
+
+  if (filters.input) {
+    filteredBooks = filteredBooks.filter(
+      (book) =>
+        book.title.toLowerCase().includes(filters.input.toLowerCase()) ||
+        book.id.toString().toLowerCase().includes(filters.input.toLowerCase()) ||
+        book.author.toString().toLowerCase().includes(filters.input.toLowerCase())
+    );
+  }
+
+  if (filters.selectedTags1.length > 0) {
+    filteredBooks = filteredBooks.filter((book) => filters.selectedTags1.includes(book.tags1));
+  }
+
+  if (filters.selectedTags2.length > 0) {
+    filteredBooks = filteredBooks.filter((book) => filters.selectedTags2.includes(book.tags2));
+  }
+
+  if (filters.selectedTags3.length > 0) {
+    filteredBooks = filteredBooks.filter((book) => filters.selectedTags3.includes(book.tags3));
+  }
+
+  if (filters.selectedTags4.length > 0) {
+    filteredBooks = filteredBooks.filter((book) => filters.selectedTags4.includes(book.tags4));
+  }
+
+  if (filters.selectedSizes.length >0) {
+    filteredBooks = filteredBooks.filter((book) => filters.selectedSizes.includes(book.size));
+  }
+
+  if (filters.selectedColor.length >0) {
+    filteredBooks = filteredBooks.filter((book) => filters.selectedColor.includes(book.color));
+  }
+  return filteredBooks;
+};
 
 export default function Filter() {
   const {
@@ -47,14 +92,7 @@ export default function Filter() {
   const [showSections, setShowSections] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (books.length === 0) {
-  //     window.location.href = '/';
-      
-  //   }
-  // }, [books]);
-
-
+ 
   const toggleSections = () => {
     setShowSections((prevState) => !prevState);
   };
@@ -70,88 +108,177 @@ export default function Filter() {
     []
   );
 
-  const filterBooks = useCallback(
-    (books, key, values) => {
-      return values.length > 0 ? books.filter((book) => values.includes(book[key])) : books;
-    },
-    []
-  );
+  // !
+  // const filterBooks = useCallback(
+  //   (books, key, values) => {
+  //     return values.length > 0 ? books.filter((book) => values.includes(book[key])) : books;
+  //   },
+  //   []
+  // );
 
   const findBook = useCallback(() => {
-    let filteredBooks = books.filter(
-      (book) =>
-        book.title.toLowerCase().includes(input.toLowerCase()) ||
-        book.id.toString().toLowerCase().includes(input.toLowerCase()) ||
-        book.author.toString().toLowerCase().includes(input.toLowerCase())
-    );
+    // let filteredBooks = books.filter(
+    //   (book) =>
+    //     book.title.toLowerCase().includes(input.toLowerCase()) ||
+    //     book.id.toString().toLowerCase().includes(input.toLowerCase()) ||
+    //     book.author.toString().toLowerCase().includes(input.toLowerCase())
+    // );
 
-    if (select === 'section' && selectedSection && selectedSection !== 'Show all') {
-      filteredBooks = filteredBooks.filter((book) => book.section === selectedSection);
-      if (selectedSubsection) {
-        filteredBooks = filteredBooks.filter((book) => book.partition === selectedSubsection);
-      }
-    }
+    const filters = {
+      selectedSection,
+      selectedSubsection,
+      selectedTags1,
+      selectedTags2,
+      selectedTags3,
+      selectedTags4,
+      selectedSizes,
+      selectedColor,
+      select,
+      input,
+    };
 
-    if (selectedTags1.length > 0) {
-      filteredBooks = filteredBooks.filter((book) => selectedTags1.includes(book.tags1));
-    }
+    let filteredBooks = applyFilters(books, filters);
 
-    if (selectedTags2.length > 0) {
-      filteredBooks = filteredBooks.filter((book) => selectedTags2.includes(book.tags2));
-    }
-
-    if (selectedTags3.length > 0) { // Добавляем фильтрацию для tags3
-      filteredBooks = filteredBooks.filter((book) => selectedTags3.includes(book.tags3));
-    }
-
-    if (selectedTags4.length > 0) { // Добавляем фильтрацию для tags4
-      filteredBooks = filteredBooks.filter((book) => selectedTags4.includes(book.tags4));
-    }
-
-    filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
-    filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
-    filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
+    // filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
+    // filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
+    // filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
     setSortedBooks(filteredBooks);
-  }, [books, input, select, selectedSizes, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedColor, selectedSection, selectedSubsection, filterBooks]);
+  }, [select, books, input, selectedSizes, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedColor, selectedSection, selectedSubsection]);
 
   const findUniqueValues = useCallback(() => {
     const uniqueTags1Set = new Set();
     const uniqueTags2Set = new Set();
-    const uniqueTags3Set = new Set(); 
-    const uniqueTags4Set = new Set(); 
+    const uniqueTags3Set = new Set();
+    const uniqueTags4Set = new Set();
     const uniqueSizesSet = new Set();
     const uniqueColorSet = new Set();
     const uniqueAuthorsSet = new Set();
 
-    const filteredBooks = select === 'section' && selectedSection && selectedSection !== 'Show all'
-      ? books.filter(book => book.section === selectedSection && (!selectedSubsection || book.partition === selectedSubsection))
-      : books;
+    const filters = {
+      selectedSection,
+      selectedSubsection,
+      selectedTags1,
+      selectedTags2,
+      selectedTags3,
+      selectedTags4,
+      selectedSizes,
+      selectedColor,
+      select,
+      input,
+    };
+
+    let filteredBooks = applyFilters(books, filters);
+//=-
+  //  filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
+   // filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
+   // filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
+    //  filteredBooks = select === 'section' && selectedSection && selectedSection !== 'Show all'
+    // ? books.filter(book => book.section === selectedSection && (!selectedSubsection || book.partition === selectedSubsection))
+    //    : books;
+//
 
     filteredBooks.forEach(book => {
-      if (book.Visibility !== '0') {
-        uniqueTags1Set.add(book.tags1);
-        uniqueTags2Set.add(book.tags2);
-        uniqueTags3Set.add(book.tags3); 
-        uniqueTags4Set.add(book.tags4); 
-        uniqueSizesSet.add(book.size);
-        uniqueColorSet.add(book.color);
-        uniqueAuthorsSet.add(book.author);
-      }
+      uniqueTags1Set.add(book.tags1);
+      uniqueTags2Set.add(book.tags2);
+      uniqueTags3Set.add(book.tags3);
+      uniqueTags4Set.add(book.tags4);
+      uniqueSizesSet.add(book.size);
+      uniqueColorSet.add(book.color);
+      uniqueAuthorsSet.add(book.author);
     });
 
     setUniqueTags1(Array.from(uniqueTags1Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
     setUniqueTags2(Array.from(uniqueTags2Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
-    setUniqueTags3(Array.from(uniqueTags3Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== '')); // Устанавливаем уникальные значения tags3
-    setUniqueTags4(Array.from(uniqueTags4Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== '')); // Устанавливаем уникальные значения tags4
+    setUniqueTags3(Array.from(uniqueTags3Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
+    setUniqueTags4(Array.from(uniqueTags4Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
     setUniqueSizes(Array.from(uniqueSizesSet).filter(size => (typeof size === 'string' || typeof size === 'number') && size.toString().trim() !== ''));
     setUniqueColor(Array.from(uniqueColorSet).filter(color => (typeof color === 'string' || typeof color === 'number') && color.toString().trim() !== ''));
     setUniqueAuthors(Array.from(uniqueAuthorsSet).filter(author => (typeof author === 'string' || typeof author === 'number') && author.toString().trim() !== ''));
+  }, [select, input, books, selectedSection, selectedSubsection, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedSizes, selectedColor]);
 
-  }, [books, select, selectedSection, selectedSubsection]);
+  // const filterBooks = useCallback(
+  //   (books, key, values) => {
+  //     return values.length > 0 ? books.filter((book) => values.includes(book[key])) : books;
+  //   },
+  //   []
+  // );
+
+  // const findBook = useCallback(() => {
+  //   let filteredBooks = books.filter(
+  //     (book) =>
+  //       book.title.toLowerCase().includes(input.toLowerCase()) ||
+  //       book.id.toString().toLowerCase().includes(input.toLowerCase()) ||
+  //       book.author.toString().toLowerCase().includes(input.toLowerCase())
+  //   );
+
+  //   if (select === 'section' && selectedSection && selectedSection !== 'Show all') {
+  //     filteredBooks = filteredBooks.filter((book) => book.section === selectedSection);
+  //     if (selectedSubsection) {
+  //       filteredBooks = filteredBooks.filter((book) => book.partition === selectedSubsection);
+  //     }
+  //   }
+
+  //   if (selectedTags1.length > 0) {
+  //     filteredBooks = filteredBooks.filter((book) => selectedTags1.includes(book.tags1));
+  //   }
+
+  //   if (selectedTags2.length > 0) {
+  //     filteredBooks = filteredBooks.filter((book) => selectedTags2.includes(book.tags2));
+  //   }
+
+  //   if (selectedTags3.length > 0) { // Добавляем фильтрацию для tags3
+  //     filteredBooks = filteredBooks.filter((book) => selectedTags3.includes(book.tags3));
+  //   }
+
+  //   if (selectedTags4.length > 0) { // Добавляем фильтрацию для tags4
+  //     filteredBooks = filteredBooks.filter((book) => selectedTags4.includes(book.tags4));
+  //   }
+
+  //   filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
+  //   filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
+  //   filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
+  //   setSortedBooks(filteredBooks);
+  // }, [books, input, select, selectedSizes, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedColor, selectedSection, selectedSubsection, filterBooks]);
+
+  // const findUniqueValues = useCallback(() => {
+  //   const uniqueTags1Set = new Set();
+  //   const uniqueTags2Set = new Set();
+  //   const uniqueTags3Set = new Set(); 
+  //   const uniqueTags4Set = new Set(); 
+  //   const uniqueSizesSet = new Set();
+  //   const uniqueColorSet = new Set();
+  //   const uniqueAuthorsSet = new Set();
+
+  //   const filteredBooks = select === 'section' && selectedSection && selectedSection !== 'Show all'
+  //     ? books.filter(book => book.section === selectedSection && (!selectedSubsection || book.partition === selectedSubsection))
+  //     : books;
+
+  //   filteredBooks.forEach(book => {
+  //     if (book.Visibility !== '0') {
+  //       uniqueTags1Set.add(book.tags1);
+  //       uniqueTags2Set.add(book.tags2);
+  //       uniqueTags3Set.add(book.tags3); 
+  //       uniqueTags4Set.add(book.tags4); 
+  //       uniqueSizesSet.add(book.size);
+  //       uniqueColorSet.add(book.color);
+  //       uniqueAuthorsSet.add(book.author);
+  //     }
+  //   });
+
+  //   setUniqueTags1(Array.from(uniqueTags1Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
+  //   setUniqueTags2(Array.from(uniqueTags2Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
+  //   setUniqueTags3(Array.from(uniqueTags3Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== '')); // Устанавливаем уникальные значения tags3
+  //   setUniqueTags4(Array.from(uniqueTags4Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== '')); // Устанавливаем уникальные значения tags4
+  //   setUniqueSizes(Array.from(uniqueSizesSet).filter(size => (typeof size === 'string' || typeof size === 'number') && size.toString().trim() !== ''));
+  //   setUniqueColor(Array.from(uniqueColorSet).filter(color => (typeof color === 'string' || typeof color === 'number') && color.toString().trim() !== ''));
+  //   setUniqueAuthors(Array.from(uniqueAuthorsSet).filter(author => (typeof author === 'string' || typeof author === 'number') && author.toString().trim() !== ''));
+
+  // }, [books, select, selectedSection, selectedSubsection]);
 
   const resetFilters = () => {
     setInput('');
-    setSelect('section');
+    // setSelect('section');
+    setSelect('allSections');
     setSelectedTags1([]);
     setSelectedTags2([]);
     setSelectedTags3([]); 
@@ -165,7 +292,7 @@ export default function Filter() {
   useEffect(() => {
     findBook();
     findUniqueValues();
-  }, [findBook, findUniqueValues]);
+  }, [findBook, findUniqueValues, select]);
 
   useEffect(() => {
     if (books.length === 0) {
@@ -177,10 +304,13 @@ export default function Filter() {
     return null;
   }
 
-  // if (books.length === 0) {
-  //   window.location.href = '/';
-  //   return null;
-  // }
+  const handleStateChange = (key, value) => {
+    if (key === 'select') {
+      setSelect(value);
+    } else if (key === 'input') {
+      setInput(value);
+    }
+  };
 
   return (
     <>
@@ -211,20 +341,23 @@ export default function Filter() {
             Found: {sortedBooks.length}
 
             {select === 'section' && selectedSection && selectedSection !== 'Show all' ? (
-              <button className="selected-button" onClick={() => setSelect('allSections')}>
+              // {/*<button className="selected-button" onClick={() => setSelect('allSections')}>*/}
+              <button className="selected-button" onClick={() => handleStateChange('select', 'allSections')}> 
                 {selectedSection}
                 {selectedSubsection && `> ${selectedSubsection}`}
                 <span>❌</span>
               </button>
             ) : (
-              <button className="selected-button" onClick={() => setSelect('allSections')}>
+              // <button className="selected-button" onClick={() => setSelect('allSections')}>
+              <button className="selected-button" onClick={() => handleStateChange('select', 'allSections')}>
                 All Sections
                 <span>❌</span>
               </button>
             )}
 
             {input && (
-              <button className="selected-button" onClick={() => setInput('')}>
+              // <button className="selected-button" onClick={() => setInput('')}>
+              <button className="selected-button" onClick={() => handleStateChange('input', '')}>
                 Filter by: {input}
                 <span>❌</span>
               </button>
@@ -274,7 +407,8 @@ export default function Filter() {
           </div>
         </section>
         {showSections && (
-          <section className="filters">
+         <>
+         {/*  <section className="filters"> */}
             <section className="filters">
               <button className='selected-button' onClick={resetFilters}>
                 <img className='back-button' src={filterremove} alt='filterremote' />
@@ -284,7 +418,8 @@ export default function Filter() {
             <section className="filters">
               {selectedSection && selectedSection !== 'Show all' && (
                 <label>
-                  <input type="radio" value="section" checked={select === 'section'} onChange={() => setSelect('section')} />
+                  {/* <input type="radio" value="section" checked={select === 'section'} onChange={() => setSelect('section')} /> */}
+                  <input type="radio" value="section" checked={select === 'section'} onChange={() => handleStateChange('select', 'section')} />
                   {selectedSubsection ? selectedSection + '>' + selectedSubsection : selectedSection}
                 </label>
               )}
@@ -297,23 +432,15 @@ export default function Filter() {
                 />
                 All Sections
               </label>
-
-            </section>
-
-            <section className="filters">
-              <input onChange={(e) => setInput(e.target.value)} type="search" id="searchName" title="Filter by id name author" placeholder="Filter by ..." value={input} />
-              {input && (
-                <button className='selected-button'>
-                  <img className="back-button" src={cancel} onClick={() => setInput('')} alt="Cancel" />
-                </button>
-              )}
-
+              {/* <input onChange={(e) => setInput(e.target.value)} type="search" id="searchName" title="Filter by id name author" placeholder="Filter by ..." value={input} /> */}
+              <input onChange={(e) => handleStateChange('input', e.target.value)} type="search" id="searchName" title="Filter by id name author" placeholder="Filter by ..." value={input} />
             </section>
             <section className="filters">
-              <div>
-                <h3>Filter by #Tags</h3>
+              {/* <div> */}
+                {/* <h3>Filter by #Tags</h3> */}
 
                 <div className="section-list">
+                <h3>Filter by #Tags</h3>
                   <div className="section-list">
                     <h3>{fieldState.size && fieldState.size !== "" ? fieldState.size : "Size:"}</h3>
                     <ul className="no-markers filters">
@@ -412,9 +539,10 @@ export default function Filter() {
                     </ul>
                   </div>
                 </div>
-              </div>
+              {/* </div> */}
             </section>
-          </section>
+          {/* </section> */}
+          </>
         )}
 
         {showSections && (
