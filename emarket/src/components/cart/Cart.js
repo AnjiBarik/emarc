@@ -7,9 +7,9 @@ import Shelf from '../book-list/Shelf';
 import { Link } from 'react-router-dom';
 import back from '../cart/img/back.png';
 import upload from '../cart/img/orderfailure.png';
-import enter from '../cart/img/enter.png';
+//import enter from '../cart/img/enter.png';
 import check from '../cart/img/check.png';
-import RegistrationForm from '../cart/RegistrationForm';
+//import RegistrationForm from '../cart/RegistrationForm';
 import CartMemo from "./CartMemo";
 import MyForm from "./MyForm";
 

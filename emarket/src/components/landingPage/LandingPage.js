@@ -5,7 +5,7 @@ import Submit from './Form';
 import { BooksContext } from '../../BooksContext';
 import LangComponent from  './LangComponent';
 import RSAGenerator from '../rsacomponent/RSAGenerator';
-import ExampleApp from '../rsacomponent/ExampleApp';
+//import ExampleApp from '../rsacomponent/ExampleApp';
 
 function LandingPage() {
     const { theme,  uiMain } = React.useContext(BooksContext);
@@ -53,7 +53,7 @@ function LandingPage() {
 
               <div >
               {/* Your RSA components */}
-              {visibilityKeyGen &&  <div><RSAGenerator/> <ExampleApp/></div>}
+              {visibilityKeyGen &&  <div><RSAGenerator/></div>}
               </div>
 
             </section>
