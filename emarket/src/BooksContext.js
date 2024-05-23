@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import tuning from '../src/components/book-list/tuning.json';
+// import tuning from '../src/components/book-list/tuning.json';
+//import tuning from './data/tuning.json';
 
 const BooksContext = createContext();
 
@@ -41,10 +42,16 @@ const BooksProvider = ({ children }) => {
     byDescription: false
   });
 
+  const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
+console.log(tuningUrl)
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch data
+        //const response = await fetch('/emarc/data/tuning.json');
+        const response = await fetch(tuningUrl);
+        const tuning = await response.json();
+console.log(tuning)
         setUiState(tuning.tuning);
 
         if (uiMain.length < 1) {
