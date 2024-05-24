@@ -1,11 +1,14 @@
 import React, { useState, useContext, useEffect  } from 'react';
 import { BooksContext } from '../../BooksContext';
-import lang from '../cart/img/lang.png';
+//import lang from '../cart/img/lang.png';
+
 
 const LangComponent = () => {
   const { uiState, uiMain, setUiMain } = useContext(BooksContext);
   const { logo, title, author} = uiMain;
   const [activeLangId, setActiveLangId] = useState(null);
+
+  const lang = `${process.env.PUBLIC_URL}/img/lang.png`
 
   // Функция для отображения кнопок с языками
   const renderLangButtons = () => {
@@ -51,6 +54,7 @@ const LangComponent = () => {
   return (
     <div className='filters'>
       <img className="back-button selected" src={lang} alt='Language Selection'/>
+      {/* <img className="back-button selected" src={`${process.env.PUBLIC_URL}/img/lang.png`} alt='Language Selection'/> */}
       {/* Отображаем кнопки с языками */}
       {renderLangButtons()}
     </div>
