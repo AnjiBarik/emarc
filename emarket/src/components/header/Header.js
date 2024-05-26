@@ -21,18 +21,19 @@ export default function Header() {
   const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain } = React.useContext(BooksContext);
   const { logo, title } = uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0];
 //  const { logo, title } = uiState[idLoudPrice - 1] || (uiState.length > 0 && uiState.find(item => item.type === "start")) || {};
- dark = IconPath('dark.png') || dark;  
- light = IconPath('light.png') || light; 
- inst = IconPath('inst.png') || inst;
- face = IconPath('face.png') || face;
- telegram = IconPath('telegram.png') || telegram;
- fone = IconPath('fone.png') || fone;
- email = IconPath('email.png') || email;
- tik = IconPath('tik.png') || tik;
- you = IconPath('you.png') || you;
- card = IconPath('card.png') || card;
- location = IconPath('location.png') || location;
- about = IconPath('about.png') || about;
+
+//  dark = IconPath('dark.png') || dark;  
+//  light = IconPath('light.png') || light; 
+//  inst = IconPath('inst.png') || inst;
+//  face = IconPath('face.png') || face;
+//  telegram = IconPath('telegram.png') || telegram;
+//  fone = IconPath('fone.png') || fone;
+//  email = IconPath('email.png') || email;
+//  tik = IconPath('tik.png') || tik;
+//  you = IconPath('you.png') || you;
+//  card = IconPath('card.png') || card;
+//  location = IconPath('location.png') || location;
+//  about = IconPath('about.png') || about;
 
 
   const toggleTheme = () => {
