@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-// import tuning from '../src/components/book-list/tuning.json';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
+import tuning from '../src/components/book-list/tuning.json';
 //import tuning from './data/tuning.json';
 
 const BooksContext = createContext();
@@ -44,48 +44,143 @@ const BooksProvider = ({ children }) => {
 
   const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
 console.log(tuningUrl)
+
+   
+  const initializeState = useCallback((data) => {
+    setUiState(data.tuning);
+
+    if (uiMain.length < 1) {
+      const startItem = data.tuning.find(item => item.type === "start");
+      setUiMain(startItem);
+    }
+
+    if (uiMain.loadprice === "true" && fieldState.Urprice && Object.keys(fieldState.Urprice).length !== 0) {
+      setUiState(prevState => {
+        const maxId = prevState.reduce((max, item) => (item.id > max ? item.id : max), 0);
+        const updatedUiMain = { ...uiMain };
+
+        if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
+        if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
+        if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
+        updatedUiMain.Urprice = fieldState.Urprice;
+        updatedUiMain.logo = fieldState.logo;
+        updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+        updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
+        updatedUiMain.id = maxId + 1;
+
+        return [...prevState, updatedUiMain];
+      });
+    }
+
+    setLoading(false);
+  }, [fieldState, uiMain]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data
-        //const response = await fetch('/emarc/data/tuning.json');
         const response = await fetch(tuningUrl);
-        const tuning = await response.json();
-console.log(tuning)
-        setUiState(tuning.tuning);
-
-        if (uiMain.length < 1) {
-          const startItem = tuning.tuning.find(item => item.type === "start");
-          setUiMain(startItem);
-        }
-
-        // Update UI state
-        if (uiMain.loadprice === "true" && fieldState.Urprice && Object.keys(fieldState.Urprice).length !== 0) {
-          setUiState(prevState => {
-            const maxId = prevState.reduce((max, item) => (item.id > max ? item.id : max), 0);
-            const updatedUiMain = { ...uiMain };
-
-            if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
-            if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
-            if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
-            updatedUiMain.Urprice = fieldState.Urprice;
-            updatedUiMain.logo = fieldState.logo;
-            updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
-            updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
-            updatedUiMain.id = maxId + 1;
-
-            return [...prevState, updatedUiMain];
-          });
-        }
-
-        setLoading(false);
-      } catch (err) {
-        console.log(err.message);
+        const tuningData = await response.json();
+        console.log(tuningData)
+        initializeState(tuningData);
+      } catch  {
+      // } catch (err) {
+        //console.log(err.message);
+        console.log(tuning)
+        initializeState(tuning);
       }
     };
 
     fetchData();
-  }, [fieldState, uiMain]);
+  }, [fieldState, uiMain, initializeState, tuningUrl]);  
+
+
+// const initializeState = (data) => {
+//   setUiState(data.tuning);
+
+//   if (uiMain.length < 1) {
+//     const startItem = data.tuning.find(item => item.type === "start");
+//     setUiMain(startItem);
+//   }
+
+//   if (uiMain.loadprice === "true" && fieldState.Urprice && Object.keys(fieldState.Urprice).length !== 0) {
+//     setUiState(prevState => {
+//       const maxId = prevState.reduce((max, item) => (item.id > max ? item.id : max), 0);
+//       const updatedUiMain = { ...uiMain };
+
+//       if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
+//       if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
+//       if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
+//       updatedUiMain.Urprice = fieldState.Urprice;
+//       updatedUiMain.logo = fieldState.logo;
+//       updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+//       updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
+//       updatedUiMain.id = maxId + 1;
+
+//       return [...prevState, updatedUiMain];
+//     });
+//   }
+
+//   setLoading(false);
+// };
+
+// useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const response = await fetch(tuningUrl);
+//       const tuningData = await response.json();
+//       initializeState(tuningData);
+//     } catch (err) {
+//       console.log(err.message);
+//       initializeState(tuning);
+//     }
+//   };
+
+//   fetchData();
+// }, [fieldState, uiMain]);
+
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         // Fetch data
+//         //const response = await fetch('/emarc/data/tuning.json');
+//         const response = await fetch(tuningUrl);
+//         const tuning = await response.json();
+// console.log(tuning)
+//         setUiState(tuning.tuning);
+
+//         if (uiMain.length < 1) {
+//           const startItem = tuning.tuning.find(item => item.type === "start");
+//           setUiMain(startItem);
+//         }
+
+//         // Update UI state
+//         if (uiMain.loadprice === "true" && fieldState.Urprice && Object.keys(fieldState.Urprice).length !== 0) {
+//           setUiState(prevState => {
+//             const maxId = prevState.reduce((max, item) => (item.id > max ? item.id : max), 0);
+//             const updatedUiMain = { ...uiMain };
+
+//             if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
+//             if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
+//             if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
+//             updatedUiMain.Urprice = fieldState.Urprice;
+//             updatedUiMain.logo = fieldState.logo;
+//             updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+//             updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
+//             updatedUiMain.id = maxId + 1;
+
+//             return [...prevState, updatedUiMain];
+//           });
+//         }
+
+//         setLoading(false);
+//       } catch (err) {
+//         console.log(err.message);
+//       }
+//     };
+
+//     fetchData();
+//   }, [fieldState, uiMain]);
 
   const contextValue = {
     message, setMessage, promo, setPromo, order, setOrder, loggedIn, setLoggedIn, savedLogin, setSavedLogin, savedPassword, setSavedPassword,

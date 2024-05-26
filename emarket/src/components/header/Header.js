@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+import { BooksContext } from '../../BooksContext';
+import IconPath from '../book-list/IconPath'; 
 import './header.css';
 import dark from '../cart/img/dark.png';
 import light from '../cart/img/light.png';
-import { Link } from "react-router-dom";
-import { BooksContext } from '../../BooksContext';
 import inst from '../cart/img/inst.png';
 import face from '../cart/img/face.png';
 import telegram from '../cart/img/telegram.png';
@@ -15,10 +16,24 @@ import card from '../cart/img/card.png';
 import location from '../cart/img/location.png';
 import about from '../cart/img/about.png';
 
+
 export default function Header() {
   const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain } = React.useContext(BooksContext);
   const { logo, title } = uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0];
 //  const { logo, title } = uiState[idLoudPrice - 1] || (uiState.length > 0 && uiState.find(item => item.type === "start")) || {};
+ dark = IconPath('dark.png') || dark;  
+ light = IconPath('light.png') || light; 
+ inst = IconPath('inst.png') || inst;
+ face = IconPath('face.png') || face;
+ telegram = IconPath('telegram.png') || telegram;
+ fone = IconPath('fone.png') || fone;
+ email = IconPath('email.png') || email;
+ tik = IconPath('tik.png') || tik;
+ you = IconPath('you.png') || you;
+ card = IconPath('card.png') || card;
+ location = IconPath('location.png') || location;
+ about = IconPath('about.png') || about;
+
 
   const toggleTheme = () => {
     setTheme((theme) => (theme === 'light' ? 'dark' : 'light'));
