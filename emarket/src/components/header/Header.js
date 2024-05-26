@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { BooksContext } from '../../BooksContext';
 import IconPath from '../book-list/IconPath'; 
@@ -19,8 +19,22 @@ import about from '../cart/img/about.png';
 
 export default function Header() {
   const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain } = React.useContext(BooksContext);
-  const { logo, title } = uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0];
-//  const { logo, title } = uiState[idLoudPrice - 1] || (uiState.length > 0 && uiState.find(item => item.type === "start")) || {};
+  //const { logo, title } = uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0];
+
+  const [logo, setLogo] = useState('');
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    const selectedUiState = uiState[idLoudPrice - 1] || uiState.find(item => item.type === "start");
+    if (selectedUiState) {
+      setLogo(selectedUiState.logo);
+      setTitle(selectedUiState.title);
+    }
+  }, [idLoudPrice, uiState]);
+
+
+
+  //  const { logo, title } = uiState[idLoudPrice - 1] || (uiState.length > 0 && uiState.find(item => item.type === "start")) || {};
 
 //  dark = IconPath('dark.png') || dark;  
 //  light = IconPath('light.png') || light; 

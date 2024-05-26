@@ -1,11 +1,11 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import tuning from '../src/components/book-list/tuning.json';
-//import tuning from './data/tuning.json';
+//import tuning from '../src/components/book-list/tuning.json';
+
 
 const BooksContext = createContext();
 
 const BooksProvider = ({ children }) => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [books, setBooks] = useState([]);
   const [specificBook, setSpecificBook] = useState([]);
   const [fieldState, setFieldState] = useState({});
@@ -45,53 +45,53 @@ const BooksProvider = ({ children }) => {
   const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
 console.log(tuningUrl)
 
-   
-  const initializeState = useCallback((data) => {
-    setUiState(data.tuning);
+//!   
+  // const initializeState = useCallback((data) => {
+  //   setUiState(data.tuning);
 
-    if (uiMain.length < 1) {
-      const startItem = data.tuning.find(item => item.type === "start");
-      setUiMain(startItem);
-    }
+  //   if (uiMain.length < 1) {
+  //     const startItem = data.tuning.find(item => item.type === "start");
+  //     setUiMain(startItem);
+  //   }
 
-    if (uiMain.loadprice === "true" && fieldState.Urprice && Object.keys(fieldState.Urprice).length !== 0) {
-      setUiState(prevState => {
-        const maxId = prevState.reduce((max, item) => (item.id > max ? item.id : max), 0);
-        const updatedUiMain = { ...uiMain };
+  //   if (uiMain.loadprice === "true" && fieldState.Urprice && Object.keys(fieldState.Urprice).length !== 0) {
+  //     setUiState(prevState => {
+  //       const maxId = prevState.reduce((max, item) => (item.id > max ? item.id : max), 0);
+  //       const updatedUiMain = { ...uiMain };
 
-        if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
-        if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
-        if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
-        updatedUiMain.Urprice = fieldState.Urprice;
-        updatedUiMain.logo = fieldState.logo;
-        updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
-        updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
-        updatedUiMain.id = maxId + 1;
+  //       if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
+  //       if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
+  //       if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
+  //       updatedUiMain.Urprice = fieldState.Urprice;
+  //       updatedUiMain.logo = fieldState.logo;
+  //       updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+  //       updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
+  //       updatedUiMain.id = maxId + 1;
 
-        return [...prevState, updatedUiMain];
-      });
-    }
+  //       return [...prevState, updatedUiMain];
+  //     });
+  //   }
 
-    setLoading(false);
-  }, [fieldState, uiMain]);
+  //   setLoading(false);
+  // }, [fieldState, uiMain]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(tuningUrl);
-        const tuningData = await response.json();
-        console.log(tuningData)
-        initializeState(tuningData);
-      } catch  {
-      // } catch (err) {
-        //console.log(err.message);
-        console.log(tuning)
-        initializeState(tuning);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(tuningUrl);
+  //       const tuningData = await response.json();
+  //       console.log(tuningData)
+  //       initializeState(tuningData);
+  //     } catch  {
+  //     // } catch (err) {
+  //       //console.log(err.message);
+  //       console.log(tuning)
+  //       initializeState(tuning);
+  //     }
+  //   };
 
-    fetchData();
-  }, [fieldState, uiMain, initializeState, tuningUrl]);  
+  //   fetchData();
+  // }, [fieldState, uiMain, initializeState, tuningUrl]);  
 
 
 // const initializeState = (data) => {
@@ -192,9 +192,9 @@ console.log(tuningUrl)
     selectedTags4, setSelectedTags4
   };
 
-  if (loading) {
-    return <div>...Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>...Loading...</div>;
+  // }
 
   return (
     <BooksContext.Provider value={contextValue}>

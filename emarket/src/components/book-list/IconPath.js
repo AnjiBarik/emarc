@@ -1,57 +1,90 @@
-import { useEffect, useState, useContext } from 'react';
-import { BooksContext } from '../../BooksContext';
+import { useEffect, useState } from 'react';
 
 const IconPath = (iconName) => {
-  const { theme } = useContext(BooksContext);
   const [iconPath, setIconPath] = useState('');
 
-  const loadIcon = (src) => {
-    return new Promise((resolve, reject) => {
+  const loadIcon = async (src) => {
+    try {
       const img = new Image();
       img.src = src;
-      img.onload = () => resolve(src);
-      img.onerror = () => reject();
-    });
+      await new Promise((resolve) => { img.onload = resolve; });
+      return src;
+    } catch {
+      return false;
+    }
   };
 
-  
-
   useEffect(() => {
-    const darkIconPath = `${process.env.PUBLIC_URL}/iconimg/dark/${iconName}`;
-    const liteIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
-   
-
-    const checkIconPath = async () => {
-      if (theme === 'dark') {
-        try {
-          const validPath = await loadIcon(darkIconPath);
-          setIconPath(validPath);
-        } catch {
-          try {
-            const validPath = await loadIcon(liteIconPath);
-            setIconPath(validPath);
-          } catch {
-            setIconPath(false)
-          }
-        }
-      } else {
-        try {
-          const validPath = await loadIcon(liteIconPath);
-          setIconPath(validPath);
-        } catch {
-          
-          setIconPath(false)
-        }
-      }
+    const getIconPath = async () => {
+      const PablikIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
+      const validPath = await loadIcon(PablikIconPath);
+      console.log(validPath)
+      setIconPath(validPath);
     };
 
-    checkIconPath();
-  }, [theme, iconName]);
+    getIconPath();
+  }, [iconName]);
 
   return iconPath;
 };
 
 export default IconPath;
+
+// Pablik IconPath for theme
+// import { useEffect, useState, useContext } from 'react';
+// import { BooksContext } from '../../BooksContext';
+
+// const IconPath = (iconName) => {
+//   const { theme } = useContext(BooksContext);
+//   const [iconPath, setIconPath] = useState('');
+
+//   const loadIcon = (src) => {
+//     return new Promise((resolve, reject) => {
+//       const img = new Image();
+//       img.src = src;
+//       img.onload = () => resolve(src);
+//       img.onerror = () => reject();
+//     });
+//   };
+
+  
+
+//   useEffect(() => {
+//     const darkIconPath = `${process.env.PUBLIC_URL}/iconimg/dark/${iconName}`;
+//     const liteIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
+   
+
+//     const checkIconPath = async () => {
+//       if (theme === 'dark') {
+//         try {
+//           const validPath = await loadIcon(darkIconPath);
+//           setIconPath(validPath);
+//         } catch {
+//           try {
+//             const validPath = await loadIcon(liteIconPath);
+//             setIconPath(validPath);
+//           } catch {
+//             setIconPath(false)
+//           }
+//         }
+//       } else {
+//         try {
+//           const validPath = await loadIcon(liteIconPath);
+//           setIconPath(validPath);
+//         } catch {
+          
+//           setIconPath(false)
+//         }
+//       }
+//     };
+
+//     checkIconPath();
+//   }, [theme, iconName]);
+
+//   return iconPath;
+// };
+
+// export default IconPath;
 
 
 // import { useEffect, useState, useContext } from 'react';
