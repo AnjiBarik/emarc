@@ -219,12 +219,12 @@ position: relative;
   
   .art {
     width: 240px;
-   height: 320px;
+    height: 320px;
     object-fit: contain;
   }
   
   .artwidth {
-   width: 320px;
+    width: 320px;
     height: 320px;
     object-fit: fill;
   }

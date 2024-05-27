@@ -47,8 +47,8 @@ function LandingPage() {
     };
 
 
-    const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
-    console.log(tuningUrl)
+    // const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
+    // console.log(tuningUrl)
     
        
       const initializeState = useCallback((data) => {
@@ -83,6 +83,7 @@ function LandingPage() {
       useEffect(() => {
         const fetchData = async () => {
           try {
+            const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
             const response = await fetch(tuningUrl);
             const tuningData = await response.json();
             console.log(tuningData)
@@ -96,7 +97,7 @@ function LandingPage() {
         };
     
         fetchData();
-      }, [fieldState, uiMain, initializeState, tuningUrl]);  
+      }, [fieldState, uiMain, initializeState]);  
 
 
     if (load) {

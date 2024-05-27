@@ -22,7 +22,7 @@ export default function Footer() {
     '/BookList': 'category',
     '/cart': 'cart',
     '/Filter': 'filter',
-    '/Search': 'search'
+    '/Search': 'search'    
   });
 
   useEffect(() => {

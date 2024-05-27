@@ -47,8 +47,14 @@ export default function Shelf(props) {
   // };
 
   const shelf = props.book.map((el, index) => {
-    const images = el.imageblock.split(',');
-    const imageSource = el.image && el.image !== '' ? el.image : images[currentImageIndex];
+  //  const images = el.imageblock.split(',');
+  //  const imageSource = el.image && el.image !== '' ? el.image : images[currentImageIndex];
+
+const imagespublic = el.imageblockpublic && el.imageblockpublic!=="" ? el.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`):el.imageblock.split(',');
+const imageSource = el.imagepublic && el.imagepublic!=="" ?`${process.env.PUBLIC_URL}/img/${el.imagepublic}`:el.image && el.image !== '' ? el.image : imagespublic[currentImageIndex] ;
+console.log(imagespublic)
+//console.log(imageSourcepublic)
+console.log(imageSource)
 
     const colorRGB = fieldState.colorblock
       ? fieldState.colorblock
@@ -120,7 +126,16 @@ export default function Shelf(props) {
             <LazyImage
                   src={imageSource}
                   alt={el.title}
-                  className={el.art === 'width' ? 'artwidth lazy-img' : 'art lazy-img'}
+                  // className={el.art === 'width' ? 'artwidth lazy-img' : 'art lazy-img'}
+                  className={
+                    props.widhtblock === 1
+                      ? el.art === 'width'
+                        ? 'widthartwidth lazy-img'
+                        : 'widthart lazy-img'
+                      : el.art === 'width'
+                        ? 'artwidth lazy-img'
+                        : 'art lazy-img'
+                  }
                 />
               
               
@@ -134,7 +149,16 @@ export default function Shelf(props) {
               /> */}
             </Link>
           </div>
-          <div className={el.art === 'width' ? 'name-block-width' : 'name-block'}>
+          {/* <div className={el.art === 'width' ? 'name-block-width' : 'name-block'}> */}
+          <div className={
+    props.widhtblock === 1
+    ? el.art === 'width'
+      ? 'widthname-block-width'
+      : 'widthname-block'
+    : el.art === 'width'
+      ? 'name-block-width'
+      : 'name-block'
+    }>
             <p className='book-name'>
               <b>{fieldState.title && fieldState.title !== '' ? fieldState.title : 'Product Name:'}</b>
               {el.title.length >= 24 ? el.title.slice(0, 46) + '...' : el.title}

@@ -51,7 +51,7 @@ body {
     height: 35px;
     /* min-width:  12vw; */
     /* min-width: 90px; */
-    min-width: 130px;
+    min-width: 100px;
     font-weight: 600;
     font-size: 13px;
     border: 1px solid rgb(119, 118, 118);
@@ -377,17 +377,18 @@ body {
     flex-direction: column;
     min-width: 275px; */
     /* flex-basis: 45%; */
-   width: 100px;
+   width: 160px;
   }
 
   .book-conteiner-width{
-    width: 260px;
+    width: 140px;
   }
 
   .view-price{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .name-block{
@@ -406,4 +407,25 @@ body {
     border: 1px solid black;
     margin-left: 5px;
   }
+
+  .widthart {
+    width: 180px;
+    height: 240px;
+    object-fit: contain;
+  }
+
+  .widthartwidth {
+    width: 200px;
+    height: 200px;
+    object-fit: fill;
+  }
+
+  .widthname-block {
+    width: 200px;
+  }
+
+  .widthname-block-width {
+    width: 220px;
+  }
+  
   

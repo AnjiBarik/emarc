@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './specificBook.css';
 import PriceBlock from './PriceBlock';
 import ScrollToTopButton from '../book-list/ScrollToTopButton';
@@ -26,20 +26,58 @@ export default function SpecificBook() {
     colorblock
   } = specificBook;
 
-  const [selectedSize, setSelectedSize] = useState(size);
-  const [selectedBook, setSelectedBook] = useState(books.find(book => book.id === id));
-  const [selectedColor, setSelectedColor] = useState(color);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   if (books.length === 0 || specificBook.length === 0) {
     window.location.href = '/';
   }
 
-  let images = [];
-  if (selectedBook && selectedBook.imageblock) {
-    images = selectedBook.imageblock.split(',');
-  }
+  const [selectedSize, setSelectedSize] = useState(size);
+  //const [selectedBook, setSelectedBook] = useState(books.find(book => book.id === id));
+  const [selectedColor, setSelectedColor] = useState(color);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const [selectedBook, setSelectedBook] = useState(() => books.find(book => book.id === id));
+
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const processImages = () => {
+      if (selectedBook) {
+        if (selectedBook.imageblockpublic && selectedBook.imageblockpublic !== '') {
+          setImages(
+            selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`)
+          );
+        } else if (selectedBook.imageblock && selectedBook.imageblock !== '') {
+          setImages(selectedBook.imageblock.split(','));
+        } else {
+          setImages([]); // Handle the case where there are no image sources
+        }
+      }
+    };
+
+    processImages();
+  }, [selectedBook]);
+  
+  // if (books.length === 0 || specificBook.length === 0) {
+  //   window.location.href = '/';
+  // }
+
+  // let images = [];
+
+  // if (selectedBook) {
+  //   if (selectedBook.imageblockpublic && selectedBook.imageblockpublic !== '') {
+  //     images = selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`);
+  //   } else if (selectedBook.imageblock && selectedBook.imageblock !=="") {
+  //     images = selectedBook.imageblock.split(',');
+  //   }
+  // }
+  
+
+  // let images = [];
+  // if (selectedBook && selectedBook.imageblock) {
+  //   images = selectedBook.imageblock.split(',');
+
+  // }
+console.log(images)
   const parseSizeBlock = (sizeBlock) => {
     const sizes = {};
     if (sizeBlock) {
