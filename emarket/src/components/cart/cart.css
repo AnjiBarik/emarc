@@ -97,7 +97,7 @@ body {
   .back-button{
     height: 50px;
     margin: 5px;
-    
+    cursor: pointer;    
   }
   
   .rotate {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BooksContext } from '../../BooksContext';
 import { Link } from 'react-router-dom';
 import './form.css';
+import { hashPasswordAndUsername } from './HashUtils';
 import enter from '../cart/img/enter.png';
 import useradd from '../cart/img/useradd.png';
 import logout from '../cart/img/logout.png';
@@ -9,7 +10,7 @@ import cancel from '../cart/img/cancel.png';
 import userok from '../cart/img/userok.png';
 import nickname from '../cart/img/nickname.gif';
 import password from '../cart/img/password.gif';
-import { hashPasswordAndUsername } from './HashUtils';
+
 
 export default function RegistrationForm({ isVerification: propIsVerification }) {
   const { message, setMessage, promo, setPromo, setOrder, order, loggedIn, setLoggedIn, savedLogin, setSavedLogin, setSavedPassword, uiMain } = React.useContext(BooksContext);
@@ -164,6 +165,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
             ) : (
               <>
                 <h2>{showRegistrationForm ? 'Create Account' : 'Log In'}</h2>
+                
                 <form onSubmit={handleSubmit}>
                   <table>
                     <tbody>
@@ -203,19 +205,24 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                   </table>
                   {invalidInput && <p className="error-message">Please fill out all fields and avoid using invalid characters.📝</p>}
                   {invalidChars && <p className="error-message">Invalid characters 🚫 (=, +, ", ').</p>}
-                  {(!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="error-message">Name must contain at least one Latin letter and🚫 (= + " ')</p>}
+                  {(!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="filter">Name must contain at least one Latin letter and🚫 (= + " ')</p>}
                   <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting}>
                     {showRegistrationForm ?  <img className="back-button" src={useradd} alt="useradd" />  :  <img className="back-button" src={enter} alt="enter" />}
                   </button>
                 </form>
                 <hr />
+                <div className='filter'>
                 <button className='form-button' onClick={handleToggleForm}>
                   {showRegistrationForm ?  (
-                    <><img className="back-button" src={enter} alt="enter" /> Log In </>
+                    <><img className="back-button" src={enter} alt="enter" /> <b> Log In </b>
+                   
+                    </>
                   ) : (
                     <><img className="back-button" src={useradd} alt="useradd" /> Create Account </>
                   )}
                 </button>
+                <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/>
+                </div>
               </>
             )}
           </div>

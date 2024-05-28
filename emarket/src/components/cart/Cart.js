@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./cart.css";
-import cart from './img/cart.svg';
 import { BooksContext } from '../../BooksContext';
 import ScrollToTopButton from '../book-list/ScrollToTopButton';
 import Shelf from '../book-list/Shelf';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import cart from './img/cart.svg';
 import back from '../cart/img/back.png';
 import upload from '../cart/img/orderfailure.png';
-//import enter from '../cart/img/enter.png';
 import check from '../cart/img/check.png';
-//import RegistrationForm from '../cart/RegistrationForm';
 import CartMemo from "./CartMemo";
 import MyForm from "./MyForm";
 
 export default function Cart() {
   const { setCartItems, cartItems, theme, setTotalPrice, totalPrice, setTotalCount, loggedIn, promo, books, fieldState } = React.useContext(BooksContext);
   const [cartContent, setCartContent] = useState(null);
+  const navigate = useNavigate();
 
   const clearCart = () => {
     setCartItems([]);
@@ -23,9 +22,9 @@ export default function Cart() {
     setTotalCount(0);   
   };
 
-  if (books.length === 0) {
-    window.location.href = '/';
-  }
+  // if (books.length === 0) {
+  //   window.location.href = '/';
+  // }
 
   useEffect(() => {
     if (!cartItems || cartItems.length === 0) {
@@ -47,6 +46,16 @@ export default function Cart() {
       setTotalPrice(newTotal.toFixed(2));
     } 
   }, [cartItems, setTotalPrice]);
+
+  useEffect(() => {
+    if (books.length === 0) {
+      navigate('/');
+    }
+  }, [books, navigate]);
+
+  if (books.length === 0) {
+    return null;
+  }
 
   return (
     <section className={theme}>

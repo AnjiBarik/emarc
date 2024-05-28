@@ -93,3 +93,10 @@ tfoot{
     border-radius: 10px;
     margin: 5px;
 }
+
+.filter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}

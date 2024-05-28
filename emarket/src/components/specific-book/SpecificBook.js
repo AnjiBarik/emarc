@@ -17,6 +17,8 @@ import InfoModal from './InfoModal';
 
 export default function SpecificBook() {
   const { books, specificBook, theme, fieldState } = useContext(BooksContext);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const navigate = useNavigate();
 
   const {
     id,
@@ -26,18 +28,23 @@ export default function SpecificBook() {
     colorblock
   } = specificBook;
 
-  if (books.length === 0 || specificBook.length === 0) {
-    window.location.href = '/';
-  }
+  
+  
+  
+  
+  // if (books.length === 0 || specificBook.length === 0) {
+  //   window.location.href = '/';
+  // }
 
-  const [selectedSize, setSelectedSize] = useState(size);
+  //const [selectedSize, setSelectedSize] = useState(size);
   //const [selectedBook, setSelectedBook] = useState(books.find(book => book.id === id));
-  const [selectedColor, setSelectedColor] = useState(color);
+  //const [selectedColor, setSelectedColor] = useState(color);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const [selectedBook, setSelectedBook] = useState(() => books.find(book => book.id === id));
-
   const [images, setImages] = useState([]);
+  const [sizes, setSizes] = useState({});
+  const [colors, setColors] = useState({});
+  const [colorRGB, setColorRGB] = useState({});
 
   useEffect(() => {
     const processImages = () => {
@@ -78,55 +85,112 @@ export default function SpecificBook() {
 
   // }
 console.log(images)
-  const parseSizeBlock = (sizeBlock) => {
-    const sizes = {};
-    if (sizeBlock) {
-      const sizePairs = sizeBlock.split(',');
-      sizePairs.forEach(pair => {
-        const [itemId, sizeValue] = pair.split(':');
-        if (itemId && sizeValue) {
-          sizes[itemId.trim()] = sizeValue.trim();
-        }
-      });
+
+useEffect(() => {
+  const parseBlock = (block) => {
+    if (!block || block === "") {
+      return {};
     }
-    return sizes;
+
+    return block.split(',').reduce((acc, pair) => {
+      const [itemId, value] = pair.trim().split(':');
+      if (itemId && value) {
+        acc[itemId] = value;
+      }
+      return acc;
+    }, {});
   };
 
-  const sizes = parseSizeBlock(sizeblock);
+  setSizes(parseBlock(sizeblock));
+  setColors(parseBlock(colorblock));
+}, [sizeblock, colorblock]);
+
+
+
+
+// const sizes = sizeblock && sizeblock!==""
+// ? sizeblock.split(',').reduce((acc, pair) => {
+//     const [itemId, sizeValue] = pair.trim().split(':');
+//     if (itemId && sizeValue) {
+//       acc[itemId] = sizeValue;
+//     }
+//     return acc;
+//   }, {})
+// : {};
+
+  // const sizes = {};
+
+  // if (sizeblock) {
+  //   for (const pair of sizeblock.split(',')) {
+  //     const [itemId, sizeValue] = pair.trim().split(':');
+  //     if (itemId && sizeValue) {
+  //       sizes[itemId] = sizeValue;
+  //     }
+  //   }
+  // }
+
+console.log(sizes)
+
+  // const parseSizeBlock = (sizeBlock) => {
+  //   const sizes = {};
+  //   if (sizeBlock) {
+  //     const sizePairs = sizeBlock.split(',');
+  //     sizePairs.forEach(pair => {
+  //       const [itemId, sizeValue] = pair.split(':');
+  //       if (itemId && sizeValue) {
+  //         sizes[itemId.trim()] = sizeValue.trim();
+  //       }
+  //     });
+  //   }
+  //   return sizes;
+  // };
+
+  // const sizes = parseSizeBlock(sizeblock);
 
   const handleSizeClick = (itemId) => {
-    setSelectedSize(itemId);
+    //setSelectedSize(itemId);
     setCurrentImageIndex(0);
 
     const newSelectedBook = books.find(book => book.id === itemId);
     setSelectedBook(newSelectedBook);
   };
 
-  const parseColorBlock = (colorBlock) => {
-    const colors = {};
-    if (colorBlock) {
-      const colorPairs = colorBlock.split(',');
-      colorPairs.forEach(pair => {
-        const [itemId, colorValue] = pair.split(':');
-        if (itemId && colorValue) {
-          colors[itemId.trim()] = colorValue.trim();
-        }
-      });
-    }
-    return colors;
-  };
+  // const colors = colorblock && colorblock!==""
+  //     ? colorblock.split(',').reduce((acc, pair) => {
+  //       const [itemId, colorValue] = pair.trim().split(':');
+  //       if (itemId && colorValue) {
+  //         acc[itemId] = colorValue;
+  //       }
+  //       return acc;
+  //     }, {})
+  //   : {};
 
-  const colors = parseColorBlock(colorblock);
+console.log(colors)
+  // const parseColorBlock = (colorBlock) => {
+  //   const colors = {};
+  //   if (colorBlock) {
+  //     const colorPairs = colorBlock.split(',');
+  //     colorPairs.forEach(pair => {
+  //       const [itemId, colorValue] = pair.split(':');
+  //       if (itemId && colorValue) {
+  //         colors[itemId.trim()] = colorValue.trim();
+  //       }
+  //     });
+  //   }
+  //   return colors;
+  // };
+
+  // const colors = parseColorBlock(colorblock);
 
   const handleColorClick = (itemId) => {
-    setSelectedColor(itemId);
+    //setSelectedColor(itemId);
     setCurrentImageIndex(0);
 
     const newSelectedBook = books.find(book => book.id === itemId);
     setSelectedBook(newSelectedBook);
   };
 
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  // const [isFullscreen, setIsFullscreen] = useState(false);
 
   const openFullscreen = () => {
     setIsFullscreen(true);
@@ -136,16 +200,45 @@ console.log(images)
     setIsFullscreen(false);
   };
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
+ 
 
-  const colorRGB = fieldState.colorblock
-  ? fieldState.colorblock
-      .split(';')
-      .map(colorItem => colorItem.split(':'))
-      .reduce((acc, [colorName, rgb]) => ({ ...acc, [colorName.trim()]: rgb.trim().slice(1, -1) }), {})
-  : {};
+  useEffect(() => {
+    const parseColorBlock = (colorblock) => {
+      if (!colorblock) {
+        return {};
+      }
 
+      return colorblock.split(';')
+        .map(colorItem => colorItem.split(':'))
+        .reduce((acc, [colorName, rgb]) => ({
+          ...acc,
+          [colorName.trim()]: rgb.trim().slice(1, -1),
+        }), {});
+    };
+
+    setColorRGB(parseColorBlock(fieldState.colorblock));
+  }, [fieldState.colorblock]);
+
+  
+  console.log(colorRGB)
+  // const colorRGB = fieldState.colorblock
+  // ? fieldState.colorblock
+  //     .split(';')
+  //     .map(colorItem => colorItem.split(':'))
+  //     .reduce((acc, [colorName, rgb]) => ({ ...acc, [colorName.trim()]: rgb.trim().slice(1, -1) }), {})
+  // : {};
+
+  useEffect(() => {
+    if (books.length === 0) {
+      navigate('/');
+    }
+  }, [books, navigate]);
+
+  if (books.length === 0) {
+    return null;
+  }
 
   return (
     <section className={theme}>

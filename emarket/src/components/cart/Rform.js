@@ -1,6 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
+import './form.css';
+import RegistrationForm from './RegistrationForm';
+import InfoModal from '../specific-book/InfoModal';
+import RSAEncryption from '../rsacomponent/RSAEncryption';
 import call from '../cart/img/call.png';
 import email from '../cart/img/email.png';
 import user from '../cart/img/user.png';
@@ -8,10 +12,7 @@ import chat from '../cart/img/chat.png';
 import back from '../cart/img/back.png';
 import addressIcon from '../cart/img/location.png';
 //import { SHA256 } from 'crypto-js';
-import './form.css';
-import RegistrationForm from './RegistrationForm';
-import InfoModal from '../specific-book/InfoModal';
-import RSAEncryption from '../rsacomponent/RSAEncryption';
+
 
 export default function Form() {
   const { theme, loggedIn, savedLogin, setCartItems, setTotalPrice, totalPrice, setTotalCount, cartItems, uiMain, fieldState } = useContext(BooksContext);
