@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
 import './form.css';
 import RegistrationForm from './RegistrationForm';
@@ -15,13 +15,14 @@ import addressIcon from '../cart/img/location.png';
 
 
 export default function Form() {
-  const { theme, loggedIn, savedLogin, setCartItems, setTotalPrice, totalPrice, setTotalCount, cartItems, uiMain, fieldState } = useContext(BooksContext);
+  const { showRegistrationForm, setShowRegistrationForm, theme, loggedIn, savedLogin, setCartItems, setTotalPrice, totalPrice, setTotalCount, cartItems, uiMain, fieldState } = useContext(BooksContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const { encryptRSA } = RSAEncryption();
+  const navigate = useNavigate();
   console.log(uiMain.Urorder)
  // const hashedPassword = SHA256(savedLogin + savedPassword).toString();
-
+console.log(showRegistrationForm)
   const [formData, setFormData] = useState({
     Name: savedLogin,
     FirstName: '',
@@ -333,14 +334,42 @@ export default function Form() {
       return `${item.id} - ${item.title} - ${item.count} шт. по ${item.price} $ каждая`;
     }).join('; ');
   }
+
+  useEffect(() => {
+    if (!loggedIn) {
+      setShowRegistrationForm(true)
+    }
+  }, [loggedIn, setShowRegistrationForm]);  
+
+  useEffect(() => {
+    if (uiMain.length === 0) {
+      setShowRegistrationForm(false);
+      navigate('/');
+    }
+  }, [uiMain, navigate, setShowRegistrationForm]);
+
+  if (uiMain.length === 0) {
+    return null;
+  }
+
+  const handleRegistrationButtonClick = () => {
+    setShowRegistrationForm(true);
+  };
+
   return (
     <div className={`main-form ${theme}`}>
       <Link to="/cart" className="back-button">
         <img src={back} className="back-button selected" alt='back' />
       </Link>
       <h1 className="filters">ORDER FORM</h1>
+      {!loggedIn && (
+        <button className="filters selected" onClick={handleRegistrationButtonClick}>
+          <img src={user} className="back-button selected" alt='Registration' />
+          Please Log In  
+        </button>
+      )}
       <div>
-        {!loggedIn && <RegistrationForm />}
+        {!loggedIn && showRegistrationForm && <RegistrationForm />}
         {loggedIn && !orderSubmitted && (
           <>
             {fieldState.orderinfo && fieldState.orderinfo !== "" && (<InfoModal text={fieldState.orderinfo} />)}

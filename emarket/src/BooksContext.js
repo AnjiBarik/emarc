@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState } from 'react';
 //import tuning from '../src/components/book-list/tuning.json';
 
 
@@ -42,8 +42,8 @@ const BooksProvider = ({ children }) => {
     byDescription: false
   });
 
-  const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
-console.log(tuningUrl)
+  // const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
+  // console.log(tuningUrl)
 
 //!   
   // const initializeState = useCallback((data) => {
@@ -182,6 +182,8 @@ console.log(tuningUrl)
 //     fetchData();
 //   }, [fieldState, uiMain]);
 
+const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+
   const contextValue = {
     message, setMessage, promo, setPromo, order, setOrder, loggedIn, setLoggedIn, savedLogin, setSavedLogin, savedPassword, setSavedPassword,
     totalPrice, setTotalPrice, cartItems, setCartItems, theme, setTheme, totalCount, setTotalCount, books, setBooks,
@@ -189,7 +191,7 @@ console.log(tuningUrl)
     selectedSubsection, setSelectedSubsection, input, setInput, selectedTags1, setSelectedTags1, selectedTags2, setSelectedTags2,
     selectedSizes, setSelectedSizes, selectedColor, setSelectedColor, glsearch, setSearch, searchOptions, setSearchOptions,
     uiState, setUiState, uiMain, setUiMain, fieldState, setFieldState, idLoudPrice, setIdLoudPrice, selectedTags3, setSelectedTags3,
-    selectedTags4, setSelectedTags4
+    selectedTags4, setSelectedTags4, showRegistrationForm, setShowRegistrationForm
   };
 
   // if (loading) {

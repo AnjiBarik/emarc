@@ -11,9 +11,9 @@ import { BooksContext } from '../../BooksContext';
 import RegistrationForm from '../cart/RegistrationForm';
 
 export default function Footer() {
-  const { theme, cartItems, totalCount, setTotalCount, savedLogin, uiMain, idLoudPrice } = React.useContext(BooksContext);
+  const { theme, cartItems, totalCount, setTotalCount, savedLogin, uiMain, idLoudPrice, showRegistrationForm, setShowRegistrationForm } = React.useContext(BooksContext);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  //const [showRegistrationForm, setShowRegistrationForm] = useState(false);
 
   const location = useLocation();
 
@@ -22,7 +22,8 @@ export default function Footer() {
     '/BookList': 'category',
     '/cart': 'cart',
     '/Filter': 'filter',
-    '/Search': 'search'    
+    '/Search': 'search',
+    '/Form' : 'lol'   
   });
 
   useEffect(() => {
@@ -41,15 +42,28 @@ export default function Footer() {
     console.log('Current location:', location.pathname);
   }, [location]);
 
+  // const handleImageClick = (imageName) => {
+  //   if (imageName === 'avatar') {
+  //     setShowRegistrationForm(prevState => !prevState); 
+  //     console.log(showRegistrationForm)
+  //   } else {
+  //     setShowRegistrationForm(false);
+  //   }
+  //   setSelectedImage(imageName);
+  // };
+
   const handleImageClick = (imageName) => {
     if (imageName === 'avatar') {
-      setShowRegistrationForm(prevState => !prevState);
+        setShowRegistrationForm(prevState => !prevState);
+        console.log(showRegistrationForm);
     } else {
-      setShowRegistrationForm(false);
+        setShowRegistrationForm(false);
+        setSelectedImage(imageName);
     }
-    setSelectedImage(imageName);
-  };
+};
 
+
+  console.log(showRegistrationForm)
   return (
     <>
       {idLoudPrice === uiMain.id && (
@@ -90,7 +104,8 @@ export default function Footer() {
               </section>
 
               <section className="cart">
-                <img className={`back-button ${selectedImage === 'avatar' ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} />
+                {/* <img className={`back-button ${selectedImage === 'avatar' ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} /> */}
+                <img className={`back-button ${showRegistrationForm ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} />
                 {savedLogin && (
                   <span className="cartcount">{savedLogin.slice(0, 2) + '...'}</span>
                 )}
