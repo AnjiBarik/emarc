@@ -27,7 +27,8 @@ export default function Header() {
   useEffect(() => {
     const selectedUiState = uiState[idLoudPrice - 1] || uiState.find(item => item.type === "start");
     if (selectedUiState) {
-      setLogo(selectedUiState.logo);
+      //setLogo(selectedUiState.logo);
+      setLogo((selectedUiState.logopablic ? `${process.env.PUBLIC_URL}/logoimg/${selectedUiState.logopablic}` : selectedUiState.logo))
       setTitle(selectedUiState.title);
     }
   }, [idLoudPrice, uiState]);

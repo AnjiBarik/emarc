@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BooksContext } from '../../BooksContext';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import './form.css';
 import { hashPasswordAndUsername } from './HashUtils';
 import enter from '../cart/img/enter.png';
@@ -210,7 +210,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                   </table>
                   {invalidInput && <p className="error-message">Please fill out all fields and avoid using invalid characters.📝</p>}
                   {invalidChars && <p className="error-message">Invalid characters 🚫 (=, +, ", ').</p>}
-                  {(!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="filter">Name must contain at least one Latin letter</p>}
+                  {showRegistrationFormLokal && (!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="filter">Name must contain at least one Latin letter</p>}
                   <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting}>
                     {showRegistrationFormLokal ?  <img className="back-button" src={useradd} alt="useradd" />  :  <img className="back-button" src={enter} alt="enter" />}
                   </button>
