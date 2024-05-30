@@ -366,7 +366,7 @@ console.log(showRegistrationForm)
                     </td>
                   </tr>
                   )}
-                  {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
+                  {/* {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
                   <tr>
                     <td><img src={chat} className="form-icon selected" alt='Message' /></td>
                     <td>
@@ -381,7 +381,7 @@ console.log(showRegistrationForm)
                       />
                     </td>
                   </tr>
-                  )}
+                  )} */}
                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
                   <tr>
                     <td><img src={addressIcon} className="form-icon selected" alt='Address' /></td>
@@ -394,6 +394,22 @@ console.log(showRegistrationForm)
                         value={formData.Address}
                         onChange={handleInputChange}
                         required
+                      />
+                    </td>
+                  </tr>
+                  )}
+                  {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
+                  <tr>
+                    <td><img src={chat} className="form-icon selected" alt='Message' /></td>
+                    <td>
+                      <input className='form-input'
+                        placeholder="Your Message"
+                        name="Message"
+                        type="text"
+                        maxLength={100}
+                        value={formData.Message}
+                        onChange={handleInputChange}
+                        // required
                       />
                     </td>
                   </tr>

@@ -338,8 +338,10 @@ export default function Filter() {
         </section>
         <section className="filters">
           <div className="selected-tags">
-            Found: {sortedBooks.length}
-
+            {/* Found: {sortedBooks.length} */}
+            <span>
+            Found: <strong>{sortedBooks.length}</strong>
+            </span>
             {select === 'section' && selectedSection && selectedSection !== 'Show all' ? (
               // {/*<button className="selected-button" onClick={() => setSelect('allSections')}>*/}
               <button className="selected-button" onClick={() => handleStateChange('select', 'allSections')}> 

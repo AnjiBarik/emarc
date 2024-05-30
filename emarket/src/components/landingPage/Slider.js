@@ -37,11 +37,12 @@ function Slider() {
         if (slide.logopablic) {
             return `${process.env.PUBLIC_URL}/logoimg/${slide.logopablic}`;
         }
-        return slide.logo || '';
+        // return slide.logo || '';
+        return slide.logo ;
     };
 
     const getSlideClasses = (index) => {
-        return `slide ${currentSlide === index ? 'active' : ''} ${selectedLogoIndex === index ? 'selected' : ''}`;
+        return ` ${currentSlide === index ? 'active' : ''} ${selectedLogoIndex === index ? 'selected' : ''}`;
     };
 
     const getSlideForAuthor = (author) => {
@@ -64,14 +65,14 @@ function Slider() {
                     <div key={author} className="slide-container" onClick={() => handleSlideClick(slideIndex)}>
                         {slide.logo || slide.logopablic ? (
                             <img
-                                className={getSlideClasses(slideIndex)}
+                                className={`slide ${getSlideClasses(slideIndex)}`}
                                 src={getImageSrc(slide)}
                                 alt={slide.title || `Slide ${slideIndex + 1}`}
                                 onError={handleImageError}
                             />
                         ) : (
                             <div className="slide">
-                                <span className={getSlideClasses(slideIndex)}>{slide.title}</span>
+                                <span className={`slide-text ${getSlideClasses(slideIndex)}`}>{slide.title}</span>
                             </div>
                         )}
                     </div>

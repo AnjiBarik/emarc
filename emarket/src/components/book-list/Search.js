@@ -64,13 +64,7 @@ export default function Search() {
     return null;
   }
 
-  // useEffect(() => {
-  //   if (books.length === 0) {
-  //     window.location.href = '/';
-  //   }
-  //   findBook();
-  // }, [findBook, books.length]);
-
+ 
   const resetSearch = () => {
     setSearch("");
   };
@@ -107,7 +101,10 @@ export default function Search() {
 
       <section className="filters">
         <div className="selected-tags">
-          Found: {sortBook.length}
+          {/* Found: {sortBook.length} */}
+          <span>
+            Found: <strong>{sortBook.length}</strong>
+          </span>
           {glsearch && (
             <button className="selected-button" onClick={resetSearch}>
               Search by: {glsearch} <span>❌</span>
