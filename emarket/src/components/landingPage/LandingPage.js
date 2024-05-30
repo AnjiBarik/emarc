@@ -12,7 +12,7 @@ function LandingPage() {
     const { theme,  uiMain, fieldState, setUiState, setUiMain} = React.useContext(BooksContext);
 
     const [loading, setLoading] = useState(true);
-    const [load, setLoad] = useState(true);
+   // const [load, setLoad] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -77,7 +77,7 @@ function LandingPage() {
           });
         }
     
-       setLoad(false);
+      // setLoad(false);
       }, [fieldState, uiMain, setUiMain, setUiState]);
     
       useEffect(() => {
@@ -99,10 +99,11 @@ function LandingPage() {
         fetchData();
       }, [fieldState, uiMain, initializeState]);  
 
+    //  console.log(load)
 
-    if (load) {
-    return <div>...Loading...</div>;
-    }
+    // if (load) {
+    // return <div>...Loading...</div>;
+    // }
 
 
     return (
