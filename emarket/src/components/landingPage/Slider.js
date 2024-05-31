@@ -1,44 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import './Slider.css'; 
 import { BooksContext } from '../../BooksContext';
 
 function Slider() {
-    const { uiState, setUiMain, uiMain } = React.useContext(BooksContext);
-    const [currentSlide, setCurrentSlide] = useState(getInitialSlideIndex());
-    const [selectedLogoIndex, setSelectedLogoIndex] = useState(currentSlide);
+    const { uiState, setUiMain, uiMain, idLoudPrice } = useContext(BooksContext);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [selectedLogoIndex, setSelectedLogoIndex] = useState(0);
+    const [imageError, setImageError] = useState(false);
+    const [idLoudPriceLang, setIdLoudPriceLang] = useState(null);
 
     useEffect(() => {
-        const newSlideIndex = uiState.findIndex(slide => slide.author === uiMain.author && slide.lang === uiMain.lang);
-        setCurrentSlide(newSlideIndex);
-        setSelectedLogoIndex(newSlideIndex);
-    }, [uiMain, uiState]);
+        if (idLoudPrice && idLoudPrice !== 0) {
+            const loudPriceSlide = uiState.find(slide => slide.id === idLoudPrice);
+            if (loudPriceSlide) {
+                setIdLoudPriceLang(loudPriceSlide.lang);
+            }
+        }
+    }, [idLoudPrice, uiState]);
 
-    function getInitialSlideIndex() {
+    const setInitialSlideIndex = useCallback(() => {
         if (uiMain && uiMain.lang) {
             const index = uiState.findIndex(slide => slide.lang === uiMain.lang);
             if (index !== -1) {
-                return index;
+                setCurrentSlide(index);
+                setSelectedLogoIndex(index);
+                return;
             }
         }
-        return uiState.findIndex(slide => slide.author === uiState[0].author);
-    }
+        if (idLoudPriceLang) {
+            const index = uiState.findIndex(slide => slide.lang === idLoudPriceLang);
+            if (index !== -1) {
+                setCurrentSlide(index);
+                setSelectedLogoIndex(index);
+                return;
+            }
+        }
+        setCurrentSlide(0);
+        setSelectedLogoIndex(0);
+    }, [uiMain, uiState, idLoudPriceLang]);
+
+    useEffect(() => {
+        setInitialSlideIndex();
+    }, [uiMain, uiState, idLoudPriceLang, setInitialSlideIndex]);
 
     const handleImageError = () => {
-        // Handle image loading errors here
         console.log('Image failed to load');
+        setImageError(true);
     };
 
     const handleSlideClick = (slideIndex) => {
         setCurrentSlide(slideIndex);
         setUiMain(uiState[slideIndex]);
+        setImageError(false);
     };
 
     const getImageSrc = (slide) => {
         if (slide.logopablic) {
             return `${process.env.PUBLIC_URL}/logoimg/${slide.logopablic}`;
         }
-        // return slide.logo || '';
-        return slide.logo ;
+        return slide.logo;
     };
 
     const getSlideClasses = (index) => {
@@ -50,7 +70,7 @@ function Slider() {
         if (uiMain && uiMain.lang && slidesByAuthor.some(slide => slide.lang === uiMain.lang)) {
             return slidesByAuthor.find(slide => slide.lang === uiMain.lang);
         }
-        return slidesByAuthor[0];
+        return slidesByAuthor.find(slide => slide.lang === idLoudPriceLang) || slidesByAuthor[0];
     };
 
     const uniqueAuthors = [...new Set(uiState.map(slide => slide.author))];
@@ -63,7 +83,7 @@ function Slider() {
 
                 return (
                     <div key={author} className="slide-container" onClick={() => handleSlideClick(slideIndex)}>
-                        {slide.logo || slide.logopablic ? (
+                        {!imageError && (slide.logo || slide.logopablic) ? (
                             <img
                                 className={`slide ${getSlideClasses(slideIndex)}`}
                                 src={getImageSrc(slide)}
@@ -83,6 +103,100 @@ function Slider() {
 }
 
 export default Slider;
+
+
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import './Slider.css'; 
+// import { BooksContext } from '../../BooksContext';
+
+// function Slider() {
+//     const { uiState, setUiMain, uiMain, idLoudPrice } = React.useContext(BooksContext);
+//     const [currentSlide, setCurrentSlide] = useState(getInitialSlideIndex());
+//     const [selectedLogoIndex, setSelectedLogoIndex] = useState(currentSlide);
+// console.log(idLoudPrice)
+// idLoudPrice && idLoudPrice!==0 && console.log(uiState.find(slide => slide.id ===idLoudPrice))
+//   //  console.log((uiState.find(slide => slide.id ===idLoudPrice)).lang)
+//     useEffect(() => {
+//         const newSlideIndex = uiState.findIndex(slide => slide.author === uiMain.author && slide.lang === uiMain.lang);
+//         setCurrentSlide(newSlideIndex);
+//         setSelectedLogoIndex(newSlideIndex);
+//     }, [uiMain, uiState]);
+
+//     function getInitialSlideIndex() {
+//         if (uiMain && uiMain.lang) {
+//             const index = uiState.findIndex(slide => slide.lang === uiMain.lang);
+//             if (index !== -1) {
+//                 console.log(index)
+//                 return index;               
+//             }
+//         }
+//         return uiState.findIndex(slide => slide.author === uiState[0].author);
+//     }
+
+//     const handleImageError = () => {
+//         // Handle image loading errors here
+//         console.log('Image failed to load');
+//     };
+
+//     const handleSlideClick = (slideIndex) => {
+//         setCurrentSlide(slideIndex);
+//         setUiMain(uiState[slideIndex]);
+//     };
+
+//     const getImageSrc = (slide) => {
+//         if (slide.logopablic) {
+//             return `${process.env.PUBLIC_URL}/logoimg/${slide.logopablic}`;
+//         }
+//         // return slide.logo || '';
+//         return slide.logo ;
+//     };
+
+//     const getSlideClasses = (index) => {
+//         return ` ${currentSlide === index ? 'active' : ''} ${selectedLogoIndex === index ? 'selected' : ''}`;
+//     };
+
+//     const getSlideForAuthor = (author) => {
+//         const slidesByAuthor = uiState.filter(slide => slide.author === author);
+//         if (uiMain && uiMain.lang && slidesByAuthor.some(slide => slide.lang === uiMain.lang)) {
+//             return slidesByAuthor.find(slide => slide.lang === uiMain.lang);
+//         }
+//         return slidesByAuthor[0];
+//     };
+
+//     const uniqueAuthors = [...new Set(uiState.map(slide => slide.author))];
+
+//     return (
+//         <div className="slider-container">
+//             {uniqueAuthors.map(author => {
+//                 const slide = getSlideForAuthor(author);
+//                 const slideIndex = uiState.indexOf(slide);
+
+//                 return (
+//                     <div key={author} className="slide-container" onClick={() => handleSlideClick(slideIndex)}>
+//                         {slide.logo || slide.logopablic ? (
+//                             <img
+//                                 className={`slide ${getSlideClasses(slideIndex)}`}
+//                                 src={getImageSrc(slide)}
+//                                 alt={slide.title || `Slide ${slideIndex + 1}`}
+//                                 onError={handleImageError}
+//                             />
+//                         ) : (
+//                             <div className="slide">
+//                                 <span className={`slide-text ${getSlideClasses(slideIndex)}`}>{slide.title}</span>
+//                             </div>
+//                         )}
+//                     </div>
+//                 );
+//             })}
+//         </div>
+//     );
+// }
+
+// export default Slider;
 
 
 // import React, { useState, useEffect } from 'react';

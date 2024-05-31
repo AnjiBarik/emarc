@@ -59,7 +59,7 @@ export default function Form() {
       return () => clearInterval(interval);
     }
   }, [loading]);
-
+//console.log(idLoudPrice)
   return (
     <>
       {idLoudPrice !== uiMain.id && (
