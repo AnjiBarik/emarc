@@ -19,16 +19,16 @@ function Slider() {
     }, [idLoudPrice, uiState]);
 
     const setInitialSlideIndex = useCallback(() => {
-        if (uiMain && uiMain.lang) {
-            const index = uiState.findIndex(slide => slide.lang === uiMain.lang);
+        if (idLoudPriceLang) {
+            const index = uiState.findIndex(slide => slide.lang === idLoudPriceLang);
             if (index !== -1) {
                 setCurrentSlide(index);
                 setSelectedLogoIndex(index);
                 return;
             }
         }
-        if (idLoudPriceLang) {
-            const index = uiState.findIndex(slide => slide.lang === idLoudPriceLang);
+        if (uiMain && uiMain.lang) {
+            const index = uiState.findIndex(slide => slide.lang === uiMain.lang);
             if (index !== -1) {
                 setCurrentSlide(index);
                 setSelectedLogoIndex(index);

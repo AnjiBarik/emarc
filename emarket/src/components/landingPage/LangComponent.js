@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect  } from 'react';
 import { BooksContext } from '../../BooksContext';
+import IconPath from '../utils/IconPath'; 
 import langicon from '../cart/img/lang.png';
-import IconPath from '../book-list/IconPath'; 
+
 
 const LangComponent = () => {
   const { uiState, uiMain, setUiMain } = useContext(BooksContext);

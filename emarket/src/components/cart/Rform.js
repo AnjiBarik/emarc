@@ -5,6 +5,7 @@ import './form.css';
 import RegistrationForm from './RegistrationForm';
 import InfoModal from '../specific-book/InfoModal';
 import RSAEncryption from '../rsacomponent/RSAEncryption';
+import LoadingAnimation from '../utils/LoadingAnimation'; 
 import call from '../cart/img/call.png';
 import email from '../cart/img/email.png';
 import user from '../cart/img/user.png';
@@ -55,6 +56,7 @@ console.log(showRegistrationForm)
   const [encrypting, setEncrypting] = useState(false);
   const [encryptionCompleted, setEncryptionCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
   let id, title, count, price;
 
   if (queryParams.has('id')) {
@@ -93,7 +95,7 @@ console.log(showRegistrationForm)
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-
+    setLoading(true);
     if (!isSubmitDisabled() && encryptionCompleted && uiMain.order === 'rsa' && fieldState.publicKey1 && fieldState.publicKey2 && fieldState.publicKey1 !== "" && fieldState.publicKey2 !== "" && !encrypting) {
       setEncrypting(true);
       setSubmitting(true); // Блокируем кнопку сабмита
@@ -150,6 +152,7 @@ console.log(showRegistrationForm)
         console.error('Ошибка при шифровании:', error);
       } finally {
         setEncrypting(false);
+        setLoading(false); 
       //  setSubmitting(false); // Разблокируем кнопку сабмита
       }
     } else {
@@ -181,6 +184,7 @@ console.log(showRegistrationForm)
         .finally(() => {
           setEncrypting(false);
           setEncryptionCompleted(true);
+          setLoading(false); 
          // setSubmitting(false); // Разблокируем кнопку сабмита после отправки без шифрования
         });
     }
@@ -264,6 +268,7 @@ console.log(showRegistrationForm)
         {!loggedIn && showRegistrationForm && <RegistrationForm />}
         {loggedIn && !orderSubmitted && (
           <>
+           {loading && <LoadingAnimation />}
             {fieldState.orderinfo && fieldState.orderinfo !== "" && (<InfoModal text={fieldState.orderinfo} />)}
             <form className="form" onSubmit={handleSubmit}>
               <table>

@@ -1,13 +1,10 @@
 import { BooksContext } from '../../BooksContext';
-import React, { useContext, useState, useEffect } from "react";
-import loading3 from '../cart/img/loading3.png';
-import loading2 from '../cart/img/loading2.png';
-import loading1 from '../cart/img/loading1.png';
+import React, { useContext, useState } from "react";
+import LoadingAnimation from '../utils/LoadingAnimation';  
 
 export default function Form() {
   const { setBooks, setFieldState, uiMain, idLoudPrice, setIdLoudPrice, setCartItems, setTotalPrice, setTotalCount } = useContext(BooksContext);
   const [loading, setLoading] = useState(false);
-  const [loadingImage, setLoadingImage] = useState(loading1);
 
   function Submit(e) {
     e.preventDefault();
@@ -43,29 +40,12 @@ export default function Form() {
       });
   }
 
-  useEffect(() => {
-    if (loading) {
-      const interval = setInterval(() => {
-        setLoadingImage((prevImage) => {
-          if (prevImage === loading1) {
-            return loading2;
-          } else if (prevImage === loading2) {
-            return loading3;
-          } else {
-            return loading1;
-          }
-        });
-      }, 200);
-      return () => clearInterval(interval);
-    }
-  }, [loading]);
-//console.log(idLoudPrice)
   return (
     <>
       {idLoudPrice !== uiMain.id && (
         <div className='container-submit'>
           {loading ? (
-            <img src={loadingImage} className='loading' alt="Loading" />
+            <LoadingAnimation />
           ) : (
             <form className="form" onSubmit={Submit}>
               <input
@@ -81,6 +61,92 @@ export default function Form() {
     </>
   );
 }
+
+
+
+// import { BooksContext } from '../../BooksContext';
+// import React, { useContext, useState, useEffect } from "react";
+// import loading3 from '../cart/img/loading3.png';
+// import loading2 from '../cart/img/loading2.png';
+// import loading1 from '../cart/img/loading1.png';
+
+// export default function Form() {
+//   const { setBooks, setFieldState, uiMain, idLoudPrice, setIdLoudPrice, setCartItems, setTotalPrice, setTotalCount } = useContext(BooksContext);
+//   const [loading, setLoading] = useState(false);
+//   const [loadingImage, setLoadingImage] = useState(loading1);
+
+//   function Submit(e) {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     const clearCart = () => {
+//       setCartItems([]);
+//       setTotalPrice(0);
+//       setTotalCount(0);     
+//     };
+
+//     const formEle = document.querySelector("form");
+//     const formDatab = new FormData(formEle);
+//     const apiUrl = uiMain.Urprice;
+
+//     fetch(apiUrl, { method: "POST", body: formDatab })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         const lastIndex = data.length - 1;
+//         const lastItem = data[lastIndex];
+//         const otherItems = data.slice(0, lastIndex);
+
+//         setBooks(otherItems);
+//         setFieldState(lastItem);
+//         setIdLoudPrice(uiMain.id);
+//       })
+//       .catch((error) => {
+//         console.error("Error submitting form:", error);
+//       })
+//       .finally(() => {
+//         setLoading(false);
+//         clearCart();
+//       });
+//   }
+
+//   useEffect(() => {
+//     if (loading) {
+//       const interval = setInterval(() => {
+//         setLoadingImage((prevImage) => {
+//           if (prevImage === loading1) {
+//             return loading2;
+//           } else if (prevImage === loading2) {
+//             return loading3;
+//           } else {
+//             return loading1;
+//           }
+//         });
+//       }, 200);
+//       return () => clearInterval(interval);
+//     }
+//   }, [loading]);
+// //console.log(idLoudPrice)
+//   return (
+//     <>
+//       {idLoudPrice !== uiMain.id && (
+//         <div className='container-submit'>
+//           {loading ? (
+//             <img src={loadingImage} className='loading' alt="Loading" />
+//           ) : (
+//             <form className="form" onSubmit={Submit}>
+//               <input
+//                 name="submit"
+//                 type="submit"
+//                 className='loading-submit color-transition'
+//                 value={uiMain.shopping || "Start shopping"}
+//               />
+//             </form>
+//           )}
+//         </div>
+//       )}
+//     </>
+//   );
+// }
 
 
 

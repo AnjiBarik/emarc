@@ -109,6 +109,7 @@ export default function BookList() {
       {/* Selected tags */}
       <section className="filters">
         <div className="selected-tags">
+          {/* makes it more explicit and reduces the chance of the translation process  */}
           <span>
             Found: <strong>{sortedBooks.length}</strong>
           </span>

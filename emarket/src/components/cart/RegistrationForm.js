@@ -3,6 +3,7 @@ import { BooksContext } from '../../BooksContext';
 //import { Link } from 'react-router-dom';
 import './form.css';
 import { hashPasswordAndUsername } from './HashUtils';
+import LoadingAnimation from '../utils/LoadingAnimation';  
 import enter from '../cart/img/enter.png';
 import useradd from '../cart/img/useradd.png';
 import logout from '../cart/img/logout.png';
@@ -24,6 +25,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
   const [showRegistrationFormLokal, setShowRegistrationFormLokal] = useState(isVerification === 1);
   //const [showSections, setShowSections] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsVerification(propIsVerification || 2);
@@ -51,7 +53,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (!isVerification && isSubmitDisabled()) {
       setInvalidInput(true);
       return;
@@ -127,6 +129,9 @@ export default function RegistrationForm({ isVerification: propIsVerification })
         alert('⚠️Error: ' + error.message);
         setSubmitting(false);
         setShowRegistrationForm(true)
+      })
+      .finally(() => {
+        setLoading(false);       
       });
   };
 
@@ -148,8 +153,11 @@ export default function RegistrationForm({ isVerification: propIsVerification })
 
   return (
     <>
+    
       {showRegistrationForm && (
+       
         <section className='section-form'> 
+         {loading && <LoadingAnimation />}
           <div className="registration-form">
             {/* <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/> */}
             <hr />
