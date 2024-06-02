@@ -73,7 +73,7 @@ export default function Header() {
       setCurrentButtonIndex(index);
     }
   };
-console.log("heder")
+
   return (
     <section className={theme}>
       <section className='header'>
