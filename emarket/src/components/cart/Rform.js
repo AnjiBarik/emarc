@@ -86,9 +86,15 @@ console.log(showRegistrationForm)
   };
 
   const isSubmitDisabled = () => {
+    const excludedFields = ['Message']; // Массив исключений
+console.log((uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()])))
     return (
+      
       invalidChars ||
-      (uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !formData[field.trim()])) //!
+      // (uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !formData[field.trim()])) //!
+      
+(uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()]))
+
     );
   };
 
@@ -251,7 +257,8 @@ console.log(showRegistrationForm)
   const handleRegistrationButtonClick = () => {
     setShowRegistrationForm(true);
   };
-
+console.log(submitting)
+console.log(uiMain.orderform)
   return (
     <div className={`main-form ${theme}`}>
       <Link to="/cart" className="back-button">
@@ -387,7 +394,7 @@ console.log(showRegistrationForm)
                     </td>
                   </tr>
                   )} */}
-                  {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
+                  {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Address'))) && (
                   <tr>
                     <td><img src={addressIcon} className="form-icon selected" alt='Address' /></td>
                     <td>
@@ -414,7 +421,6 @@ console.log(showRegistrationForm)
                         maxLength={100}
                         value={formData.Message}
                         onChange={handleInputChange}
-                        // required
                       />
                     </td>
                   </tr>
@@ -423,6 +429,7 @@ console.log(showRegistrationForm)
               </table>
               {invalidChars && <p className="error-message">🚫Invalid characters (=,  +, ", ') are not allowed.</p>}
               {/* {(uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !formData[field.trim()])) && <p className="error-message">⚠️Please fill in all required fields✳️ and avoid invalid characters.</p>} */}
+              {isSubmitDisabled && <p className="error-message">⚠️Please fill in all required fields✳️ and avoid invalid characters.</p>}
               <input type="hidden" name="Zakaz" value={orderData} />             
               <input type="hidden" name="Idprice" value={fieldState.idprice} />
               <table className='order-tab'>
