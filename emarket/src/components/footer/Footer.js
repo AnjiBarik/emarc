@@ -107,7 +107,7 @@ export default function Footer() {
                 {/* <img className={`back-button ${selectedImage === 'avatar' ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} /> */}
                 <img className={`back-button ${showRegistrationForm ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} />
                 {savedLogin && (
-                  <span className="cartcount">{savedLogin.slice(0, 2) + '...'}</span>
+                  <span className="cartcount" translate="no"><strong>{savedLogin.slice(0, 2) + '...'}</strong></span>
                 )}
               </section>
             </section>

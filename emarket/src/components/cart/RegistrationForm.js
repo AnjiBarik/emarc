@@ -163,7 +163,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
             <hr />
             {loggedIn ? (
               <div>
-                <p><img className="back-button" src={userok} alt="userok" />  {savedLogin}</p>
+                <p><img className="back-button" src={userok} alt="userok" /> Nickname: {savedLogin}</p>
                 <p>{promo !== '#' && promo !== '' && `Your promo code: ${promo}`}</p>
                 <p>{message !== '#' && message !== '' && `Your message: ${message}`}</p>
                 <hr />

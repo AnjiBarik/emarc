@@ -21,7 +21,7 @@ export default function Form() {
   const { encryptRSA } = RSAEncryption();
   const navigate = useNavigate();
   console.log(uiMain.Urorder)
- // const hashedPassword = SHA256(savedLogin + savedPassword).toString();
+ 
 console.log(showRegistrationForm)
   const [formData, setFormData] = useState({
     Name: savedLogin,
@@ -86,14 +86,14 @@ console.log(showRegistrationForm)
   };
 
   const isSubmitDisabled = () => {
-    const excludedFields = ['Message']; // Массив исключений
-console.log((uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()])))
+ //   const excludedFields = ['Message']; // Массив исключений
+//console.log((uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()])))
     return (
-      
-      invalidChars ||
+      invalidChars
+      // invalidChars ||
       // (uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !formData[field.trim()])) //!
       
-(uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()]))
+//(uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()]))
 
     );
   };
@@ -161,10 +161,19 @@ console.log((uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.spl
         setLoading(false); 
       //  setSubmitting(false); // Разблокируем кнопку сабмита
       }
+
     } else {
-      const formEle = document.querySelector("form");
-      const formDatab = new FormData(formEle);
-      setSubmitting(true); // Блокируем кнопку сабмита перед отправкой без шифрования
+      const formDatab = new FormData();
+      for (const [key, value] of Object.entries(formData)) {
+        formDatab.append(key, value);
+      }
+
+      // Adding additional hidden fields
+      formDatab.append("Name", savedLogin);
+      formDatab.append("Zakaz", orderData);     
+      formDatab.append("Idprice", fieldState.idprice);
+
+      setSubmitting(true); // Block submit button before sending without encryption
 
       const apiUrl = uiMain.Urorder;
       fetch(apiUrl, {
@@ -190,10 +199,11 @@ console.log((uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.spl
         .finally(() => {
           setEncrypting(false);
           setEncryptionCompleted(true);
-          setLoading(false); 
-         // setSubmitting(false); // Разблокируем кнопку сабмита после отправки без шифрования
+          setLoading(false);
+          // setSubmitting(false); // Unblock submit button after sending without encryption
         });
     }
+
   };
 
   
@@ -281,15 +291,17 @@ console.log(uiMain.orderform)
               <table>
                 <tbody>
                   <tr>
-                    <td><img src={user} className="form-icon selected" alt='Name' /></td>
+                    <td><img src={user} className="form-icon selected" alt='NickName' /></td>
                     <td>
-                      <input className='form-input'
+                    <label className='form-input'>Nickname:<strong>{formData.Name}</strong></label>
+
+                      {/* <input className='form-input'
                         placeholder={savedLogin}
                         name="Name"
                         type="text"
                         value={formData.Name}
                         readOnly
-                      />
+                      /> */}
                     </td>
                   </tr>
                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('FirstName'))) && (
@@ -378,22 +390,6 @@ console.log(uiMain.orderform)
                     </td>
                   </tr>
                   )}
-                  {/* {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
-                  <tr>
-                    <td><img src={chat} className="form-icon selected" alt='Message' /></td>
-                    <td>
-                      <input className='form-input'
-                        placeholder="Your Message"
-                        name="Message"
-                        type="text"
-                        maxLength={100}
-                        value={formData.Message}
-                        onChange={handleInputChange}
-                        // required
-                      />
-                    </td>
-                  </tr>
-                  )} */}
                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Address'))) && (
                   <tr>
                     <td><img src={addressIcon} className="form-icon selected" alt='Address' /></td>
@@ -483,6 +479,494 @@ console.log(uiMain.orderform)
     </div>
   );
 }
+
+
+
+// import React, { useContext, useState, useEffect } from 'react';
+// import { Link, useLocation, useNavigate } from 'react-router-dom';
+// import { BooksContext } from '../../BooksContext';
+// import './form.css';
+// import RegistrationForm from './RegistrationForm';
+// import InfoModal from '../specific-book/InfoModal';
+// import RSAEncryption from '../rsacomponent/RSAEncryption';
+// import LoadingAnimation from '../utils/LoadingAnimation'; 
+// import call from '../cart/img/call.png';
+// import email from '../cart/img/email.png';
+// import user from '../cart/img/user.png';
+// import chat from '../cart/img/chat.png';
+// import back from '../cart/img/back.png';
+// import addressIcon from '../cart/img/location.png';
+
+
+// export default function Form() {
+//   const { showRegistrationForm, setShowRegistrationForm, theme, loggedIn, savedLogin, setCartItems, setTotalPrice, totalPrice, setTotalCount, cartItems, uiMain, fieldState } = useContext(BooksContext);
+//   const location = useLocation();
+//   const queryParams = new URLSearchParams(location.search);
+//   const { encryptRSA } = RSAEncryption();
+//   const navigate = useNavigate();
+//   console.log(uiMain.Urorder)
+//  // const hashedPassword = SHA256(savedLogin + savedPassword).toString();
+// console.log(showRegistrationForm)
+//   const [formData, setFormData] = useState({
+//     Name: savedLogin,
+//     FirstName: '',
+//     MiddleName: '',
+//     LastName: '',
+//     Email: '',
+//     Phone: '',
+//     Address: '',
+//     Message: '',
+//     FirstName1: '',
+//     MiddleName1: '',
+//     LastName1: '',
+//     Email1: '',
+//     Phone1: '',
+//     Address1: '',
+//     Message1: '',
+//     FirstName2: '',
+//     MiddleName2: '',
+//     LastName2: '',
+//     Email2: '',
+//     Phone2: '',
+//     Address2: '',
+//     Message2: '',
+//     Idprice: fieldState.idprice,
+//   });
+
+//   //const [invalidInput, setInvalidInput] = useState(false);
+//   const [invalidChars, setInvalidChars] = useState(false);
+//   const [orderSubmitted, setOrderSubmitted] = useState(false);
+//   const [orderNumber, setOrderNumber] = useState(null);
+//   const [encrypting, setEncrypting] = useState(false);
+//   const [encryptionCompleted, setEncryptionCompleted] = useState(false);
+//   const [submitting, setSubmitting] = useState(false);
+//   const [loading, setLoading] = useState(false);
+//   let id, title, count, price;
+
+//   if (queryParams.has('id')) {
+//     id = queryParams.get('id');
+//     title = queryParams.get('title');
+//     count = queryParams.get('count');
+//     price = queryParams.get('price');
+//   }
+
+
+//   function clearCart() {
+//     if (!id && !title && !count && !price) {
+//       setCartItems([]);
+//       setTotalPrice(0);
+//       setTotalCount(0);
+//     }
+//   }
+
+//   const handleInputChange = async (e) => {
+//     const { name, value } = e.target;
+//     if (/[=+"']/.test(value)) {
+//       setInvalidChars(true);
+//     } else {
+//       setInvalidChars(false);
+//       setFormData({ ...formData, [name]: value });
+//     }
+//   };
+
+//   const isSubmitDisabled = () => {
+//     const excludedFields = ['Message']; // Массив исключений
+// console.log((uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()])))
+//     return (
+      
+//       invalidChars ||
+//       // (uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !formData[field.trim()])) //!
+      
+// (uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !excludedFields.includes(field.trim()) && !formData[field.trim()]))
+
+//     );
+//   };
+
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault(); 
+//     setLoading(true);
+//     if (!isSubmitDisabled() && encryptionCompleted && uiMain.order === 'rsa' && fieldState.publicKey1 && fieldState.publicKey2 && fieldState.publicKey1 !== "" && fieldState.publicKey2 !== "" && !encrypting) {
+//       setEncrypting(true);
+//       setSubmitting(true); // Блокируем кнопку сабмита
+
+//       try {
+//         const encryptedFieldNames = ["FirstName", "MiddleName", "LastName", "Email", "Phone", "Message", "Address"];
+//         const encryptedFormData = {};
+
+//         for (const fieldName of encryptedFieldNames) {
+//           const fieldValue = formData[fieldName];
+//           let encryptedChunk1, encryptedChunk2;
+//           if (fieldValue !== "") {
+//             [encryptedChunk1, encryptedChunk2] = await handleEncrypt(fieldState.publicKey1, fieldState.publicKey2, fieldValue);
+//           } else {
+//             encryptedChunk1 = "";
+//             encryptedChunk2 = "";
+//           }
+//           encryptedFormData[fieldName + "1"] = encryptedChunk1;
+//           encryptedFormData[fieldName + "2"] = encryptedChunk2;
+//         }
+
+//         const formDatab = new FormData();
+//         for (const [key, value] of Object.entries(encryptedFormData)) {
+//           formDatab.append(key, value);
+//         }
+
+//         // Добавляем дополнительные скрытые поля
+//       formDatab.append("Name", savedLogin);
+//       formDatab.append("Zakaz", orderData);     
+//       formDatab.append("Idprice", fieldState.idprice);
+
+//         const apiUrl = uiMain.Urorder;
+//         fetch(apiUrl, {
+//           method: "POST",
+//           body: formDatab
+//         })
+//           .then(response => response.text())
+//           .then(data => {
+//             const orderNumber = parseInt(data.split(":")[1]);
+
+//             if (!isNaN(orderNumber)) {
+//               setOrderNumber(orderNumber);
+//               setOrderSubmitted(true);
+//               clearCart();
+//             } else {
+//               alert("⚠️Order submission failed. Please try again.");
+//               console.log(data)
+//             }
+//           })
+//           .catch(error => {
+//             alert(error);
+//           });
+//       } catch (error) {
+//         console.error('Ошибка при шифровании:', error);
+//       } finally {
+//         setEncrypting(false);
+//         setLoading(false); 
+//       //  setSubmitting(false); // Разблокируем кнопку сабмита
+//       }
+//     } else {
+//       const formEle = document.querySelector("form");
+//       const formDatab = new FormData(formEle);
+//       setSubmitting(true); // Блокируем кнопку сабмита перед отправкой без шифрования
+
+//       const apiUrl = uiMain.Urorder;
+//       fetch(apiUrl, {
+//         method: "POST",
+//         body: formDatab
+//       })
+//         .then(response => response.text())
+//         .then(data => {
+//           const orderNumber = parseInt(data.split(":")[1]);
+
+//           if (!isNaN(orderNumber)) {
+//             setOrderNumber(orderNumber);
+//             setOrderSubmitted(true);
+//             clearCart();
+//           } else {
+//             alert("⚠️Order submission failed. Please try again.");
+//             console.log(data)
+//           }
+//         })
+//         .catch(error => {
+//           alert(error);
+//         })
+//         .finally(() => {
+//           setEncrypting(false);
+//           setEncryptionCompleted(true);
+//           setLoading(false); 
+//          // setSubmitting(false); // Разблокируем кнопку сабмита после отправки без шифрования
+//         });
+//     }
+//   };
+
+  
+//   const handleEncrypt = async (publicKey1, publicKey2, plaintext) => {
+//     try {
+//       const encryptedMessage = await encryptRSA(publicKey1 + publicKey2, plaintext);
+//       const chunkSize = 256;
+//       const encryptedChunks = [];
+//       for (let i = 0; i < encryptedMessage.length; i += chunkSize) {
+//         const chunk = encryptedMessage.substring(i, i + chunkSize);
+//         encryptedChunks.push(chunk);
+//       }
+//       setEncryptionCompleted(true); // Устанавливаем состояние encryptionCompleted в true после успешного шифрования
+//       return encryptedChunks;
+//     } catch (error) {
+//       console.error('Ошибка при шифровании:', error);
+//       setEncryptionCompleted(false); // Устанавливаем состояние encryptionCompleted в false в случае ошибки
+//       return [];
+//     }
+//   };
+  
+
+//   useEffect(() => {
+//     if (encrypting) {
+//       setEncryptionCompleted(false);
+//     }
+//   }, [encrypting]);
+
+//   useEffect(() => {
+//     if (!encrypting && Object.keys(formData).length > 0) {
+//       setEncryptionCompleted(true);
+//     }
+//   }, [encrypting, formData]);
+
+//   let orderData = '';
+//   if (id && title && count && price) {
+//     orderData = `${id} - ${title} - ${count} шт. по ${price} $ каждая`;
+//   } else {
+//     orderData = cartItems.map((item) => {
+//       return `${item.id} - ${item.title} - ${item.count} шт. по ${item.price} $ каждая`;
+//     }).join('; ');
+//   }
+
+//   useEffect(() => {
+//     if (!loggedIn) {
+//       setShowRegistrationForm(true)
+//     }
+//   }, [loggedIn, setShowRegistrationForm]);  
+
+//   useEffect(() => {
+//     if (uiMain.length === 0) {
+//       setShowRegistrationForm(false);
+//       navigate('/');
+//     }
+//   }, [uiMain, navigate, setShowRegistrationForm]);
+
+//   if (uiMain.length === 0) {
+//     return null;
+//   }
+
+//   const handleRegistrationButtonClick = () => {
+//     setShowRegistrationForm(true);
+//   };
+// console.log(submitting)
+// console.log(uiMain.orderform)
+//   return (
+//     <div className={`main-form ${theme}`}>
+//       <Link to="/cart" className="back-button">
+//         <img src={back} className="back-button selected" alt='back' />
+//       </Link>
+//       <h1 className="filters">ORDER FORM</h1>
+//       {!loggedIn && (
+//         <button className="filters selected" onClick={handleRegistrationButtonClick}>
+//           <img src={user} className="back-button selected" alt='Registration' />
+//           Please Log In  
+//         </button>
+//       )}
+//       <div>
+//         {!loggedIn && showRegistrationForm && <RegistrationForm />}
+//         {loggedIn && !orderSubmitted && (
+//           <>
+//            {loading && <LoadingAnimation />}
+//             {fieldState.orderinfo && fieldState.orderinfo !== "" && (<InfoModal text={fieldState.orderinfo} />)}
+//             <form className="form" onSubmit={handleSubmit}>
+//               <table>
+//                 <tbody>
+//                   <tr>
+//                     <td><img src={user} className="form-icon selected" alt='Name' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder={savedLogin}
+//                         name="Name"
+//                         type="text"
+//                         value={formData.Name}
+//                         readOnly
+//                       />
+//                     </td>
+//                   </tr>
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('FirstName'))) && (
+//                   <tr>
+//                   <td><img src={user} className="form-icon selected" alt='Name' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="First Name"
+//                         name="FirstName"
+//                         type="text"
+//                         maxLength={50}
+//                         value={formData.FirstName}
+//                         onChange={handleInputChange}
+//                         required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('MiddleName'))) && (
+//                   <tr>
+//                     <td><img src={user} className="form-icon selected" alt='Name' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Middle Name"
+//                         name="MiddleName"
+//                         type="text"
+//                         maxLength={50}
+//                         value={formData.MiddleName}
+//                         onChange={handleInputChange}
+//                         required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('LastName'))) && (
+//                   <tr>
+//                     <td><img src={user} className="form-icon selected" alt='Name' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Last Name"
+//                         name="LastName"
+//                         type="text"
+//                         maxLength={50}
+//                         value={formData.LastName}
+//                         onChange={handleInputChange}
+//                         required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Email'))) && (
+//                   <tr>
+//                     <td><img src={email} className="form-icon selected" alt='Email' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Your Email"
+//                         name="Email"
+//                         type="text"
+//                         maxLength={100}
+//                         value={formData.Email}
+//                         onChange={handleInputChange}
+//                         // pattern="/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/"
+//                         // pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+//                         pattern='[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}'                     
+//                         title="Please enter a valid email address"
+//                         required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Phone'))) && (
+//                   <tr>
+//                     <td><img src={call} className="form-icon selected" alt='Phone' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Your Phone"
+//                         name="Phone"
+//                         type="text"
+//                         maxLength={15}
+//                         value={formData.Phone}
+//                         onChange={handleInputChange}
+//                         pattern="[0-9]{6,15}" 
+//                         title="Please enter a valid phone number (6 to 15 digits)"
+//                         required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                   {/* {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
+//                   <tr>
+//                     <td><img src={chat} className="form-icon selected" alt='Message' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Your Message"
+//                         name="Message"
+//                         type="text"
+//                         maxLength={100}
+//                         value={formData.Message}
+//                         onChange={handleInputChange}
+//                         // required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )} */}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Address'))) && (
+//                   <tr>
+//                     <td><img src={addressIcon} className="form-icon selected" alt='Address' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Your Address"
+//                         name="Address"
+//                         type="text"
+//                         maxLength={100}
+//                         value={formData.Address}
+//                         onChange={handleInputChange}
+//                         required
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
+//                   <tr>
+//                     <td><img src={chat} className="form-icon selected" alt='Message' /></td>
+//                     <td>
+//                       <input className='form-input'
+//                         placeholder="Your Message"
+//                         name="Message"
+//                         type="text"
+//                         maxLength={100}
+//                         value={formData.Message}
+//                         onChange={handleInputChange}
+//                       />
+//                     </td>
+//                   </tr>
+//                   )}
+//                 </tbody>
+//               </table>
+//               {invalidChars && <p className="error-message">🚫Invalid characters (=,  +, ", ') are not allowed.</p>}
+//               {/* {(uiMain.orderform && uiMain.orderform !== '' && uiMain.orderform.split(',').some(field => !formData[field.trim()])) && <p className="error-message">⚠️Please fill in all required fields✳️ and avoid invalid characters.</p>} */}
+//               {isSubmitDisabled && <p className="error-message">⚠️Please fill in all required fields✳️ and avoid invalid characters.</p>}
+//               <input type="hidden" name="Zakaz" value={orderData} />             
+//               <input type="hidden" name="Idprice" value={fieldState.idprice} />
+//               <table className='order-tab'>
+//                 <thead>
+//                   <tr>
+//                     <th>{fieldState.id && fieldState.id !== "" ? fieldState.id : "id:"}</th>
+//                     <th>{fieldState.title && fieldState.title !== "" ? fieldState.title : "Description:"}</th>
+//                     <th>Quantity</th>
+//                     <th>{fieldState.price && fieldState.price !== "" ? fieldState.price : "Price, $"}</th>
+//                   </tr>
+//                 </thead>
+//                 <tbody className='order-body'>
+//                   {id && title && count && price && (
+//                     <tr>
+//                       <td>{id}</td>
+//                       <td>{title}</td>
+//                       <td>{count}</td>
+//                       <td>{price}</td>
+//                     </tr>
+//                   )}
+//                   {!id && !title && !count && !price && (
+//                     cartItems.map((item, index) => (
+//                       <tr key={index}>
+//                         <td>{item.id}</td>
+//                         <td>{item.title}</td>
+//                         <td>{item.count}</td>
+//                         <td>{item.price}</td>
+//                       </tr>
+//                     ))
+//                   )}
+//                 </tbody>
+//                 <tfoot>
+//                   <tr>
+//                     <td colSpan="2"></td>
+//                     <td>Total:</td>
+//                     <td>{id ? (count * price).toFixed(2) : totalPrice}</td>
+//                   </tr>
+//                 </tfoot>
+//               </table>
+//               <button className="back-button selected" type="submit" disabled={isSubmitDisabled()|| submitting}>✔️Submit Order</button>
+//             </form>
+//           </>
+//         )}
+//         {orderSubmitted && (
+//           <div className="filters">
+//             <p>🗳Order submitted successfully!</p>
+//             <p>Your order number is:<b> {orderNumber}</b></p>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
 
 
 // import React, { useContext, useState, useEffect } from 'react';
