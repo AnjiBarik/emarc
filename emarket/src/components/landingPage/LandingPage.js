@@ -69,7 +69,8 @@ function LandingPage() {
             if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
             updatedUiMain.Urprice = fieldState.Urprice;
             updatedUiMain.logo = fieldState.logo;
-            updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+            // updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+            updatedUiMain.author = fieldState.authorprice || (uiMain.author + (fieldState.idprice || "LOL"));
             updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
             updatedUiMain.id = maxId + 1;
     
