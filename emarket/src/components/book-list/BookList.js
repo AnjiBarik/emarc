@@ -111,7 +111,7 @@ export default function BookList() {
         <div className="selected-tags">
           {/* makes it more explicit and reduces the chance of the translation process  */}
           <span>
-            Found: <strong>{sortedBooks.length}</strong>
+            Found: {sortedBooks.length}
           </span>
           {selectedSection && (
             <button className="selected-button" onClick={() => handleSectionClick('Show all')}>

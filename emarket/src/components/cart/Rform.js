@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
 import './form.css';
@@ -35,20 +35,18 @@ export default function Form() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    FirstName: '', MiddleName: '', LastName: '', Email: '', Phone: '', Address: '', Message: '',
-    // FirstName: '', MiddleName: '', LastName: '', Email: '', Phone: '', Address: '', Message: '',
-    // FirstName1: '', MiddleName1: '', LastName1: '', Email1: '', Phone1: '', Address1: '', Message1: '',
-    // FirstName2: '', MiddleName2: '', LastName2: '', Email2: '', Phone2: '', Address2: '', Message2: '',   
+    FirstName: '', MiddleName: '', LastName: '', Email: '', Phone: '', Address: '', Message: ''
   });
 
   const [invalidChars, setInvalidChars] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderNumber, setOrderNumber] = useState(null);
   const [encrypting, setEncrypting] = useState(false);
-  const [encryptionCompleted, setEncryptionCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
+  const invalidCharsPattern = useMemo(() => /[=+"']/, []); // Define the invalid characters pattern
+ 
   let id, title, count, price;
 
   if (queryParams.has('id')) {
@@ -66,17 +64,36 @@ export default function Form() {
     }
   }
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (/[=+"']/.test(value)) {
-      setInvalidChars(true);
-    } else {
-      setInvalidChars(false);
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+const isSubmitDisabled  = useCallback(()  => {
+  //const excludedFields = ['Message'];
+  const excludedFields = [''];
+  // Iterate over formData's keys and check for empty values in non-excluded fields
+  
+  return Object.keys(formData).some(field =>
+    !excludedFields.includes(field) && formData[field] === undefined
+  ) ;
+}, [formData]);
 
-  const isSubmitDisabled = () => invalidChars;
+  useEffect(() => {
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      if (invalidCharsPattern.test(value)) { // Use the pattern for validation
+        setInvalidChars(true);
+        setFormData({ ...formData, [name]: undefined });
+      } else {
+        setInvalidChars(false);
+        setFormData({ ...formData, [name]: value });       
+      }
+      isSubmitDisabled()
+    };
+  
+    const inputs = document.querySelectorAll('.form input, .form textarea');
+    inputs.forEach(input => input.addEventListener('change', handleInputChange));
+  
+    return () => {
+      inputs.forEach(input => input.removeEventListener('change', handleInputChange));
+    };
+  }, [formData, invalidCharsPattern, isSubmitDisabled]); 
 
   const handleEncrypt = async (publicKey1, publicKey2, plaintext) => {
     try {
@@ -99,9 +116,6 @@ export default function Form() {
     setSubmitting(true); 
 
     const formDatab = new FormData();
-    // for (const [key, value] of Object.entries(formData)) {
-    //   formDatab.append(key, value);
-    // }
 
     formDatab.append("Name", savedLogin);
     formDatab.append("Zakaz", orderData);     
@@ -119,7 +133,7 @@ export default function Form() {
         for (const fieldName of encryptedFieldNames) {
           const fieldValue = formData[fieldName];
           let encryptedChunk1, encryptedChunk2;
-          if (fieldValue !== "") {
+          if (fieldValue !== "" && fieldValue !== undefined) {
             [encryptedChunk1, encryptedChunk2] = await handleEncrypt(fieldState.publicKey1, fieldState.publicKey2, fieldValue);
           } else {
             encryptedChunk1 = "";
@@ -168,24 +182,16 @@ export default function Form() {
     }
   };
 
-  useEffect(() => {
-    if (encrypting) {
-      setEncryptionCompleted(false);
-    }
-  }, [encrypting]);
-
-  useEffect(() => {
-    if (!encrypting && Object.keys(formData).length > 0) {
-      setEncryptionCompleted(true);
-    }
-  }, [encrypting, formData]);
-
   let orderData = '';
   if (id && title && count && price) {
-    orderData = `${id} - ${title} - ${count} шт. по ${price} $ каждая`;
+    // orderData = `${id} - ${title} - ${count} шт. по ${price} $ каждая`;
+    orderData = `${id} - ${title} - ${count} each at ${price}`;
   } else {
+    // orderData = cartItems.map((item) => {
+    //   return `${item.id} - ${item.title} - ${item.count} шт. по ${item.price} $ каждая`;
+    // }).join('; ');
     orderData = cartItems.map((item) => {
-      return `${item.id} - ${item.title} - ${item.count} шт. по ${item.price} $ каждая`;
+      return `${item.id} - ${item.title} - ${item.count} each at ${item.price}`;
     }).join('; ');
   }
 
@@ -201,6 +207,7 @@ export default function Form() {
       navigate('/');
     }
   }, [uiMain, navigate, setShowRegistrationForm]);
+
 
   if (uiMain.length === 0) {
     return null;
@@ -246,8 +253,7 @@ export default function Form() {
                           name="FirstName"
                           type="text"
                           maxLength={50}
-                          value={formData.FirstName}
-                          onChange={handleInputChange}
+                          defaultValue={formData.FirstName}
                           required
                         />
                       </td>
@@ -262,8 +268,7 @@ export default function Form() {
                           name="MiddleName"
                           type="text"
                           maxLength={50}
-                          value={formData.MiddleName}
-                          onChange={handleInputChange}
+                          defaultValue={formData.MiddleName}
                           required
                         />
                       </td>
@@ -278,8 +283,7 @@ export default function Form() {
                           name="LastName"
                           type="text"
                           maxLength={50}
-                          value={formData.LastName}
-                          onChange={handleInputChange}
+                          defaultValue={formData.LastName}
                           required
                         />
                       </td>
@@ -294,10 +298,7 @@ export default function Form() {
                           name="Email"
                           type="email"
                           maxLength={50}
-                          value={formData.Email}
-                          onChange={handleInputChange}
-                          //pattern='[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}'                     
-                          //title="Please enter a valid email address"
+                          defaultValue={formData.Email}
                           required
                         />
                       </td>
@@ -312,8 +313,7 @@ export default function Form() {
                           name="Phone"
                           type="text"
                           maxLength={15}
-                          value={formData.Phone}
-                          onChange={handleInputChange}
+                          defaultValue={formData.Phone}
                           pattern="[0-9]{6,15}" 
                           title="Please enter a valid phone number (6 to 15 digits)"
                           required
@@ -330,8 +330,7 @@ export default function Form() {
                           name="Address"
                           type="text"
                           maxLength={50}
-                          value={formData.Address}
-                          onChange={handleInputChange}
+                          defaultValue={formData.Address}
                           required
                         />
                       </td>
@@ -345,8 +344,7 @@ export default function Form() {
                           placeholder="Additional message"
                           name="Message"
                           maxLength={100}
-                          value={formData.Message}
-                          onChange={handleInputChange}
+                          defaultValue={formData.Message}
                           rows={3}
                         />
                       </td>
@@ -354,7 +352,7 @@ export default function Form() {
                   )}
                 </tbody>
               </table>
-              {invalidChars && <p className="error-message">🚫Invalid characters (=,  +, ", ') are not allowed.</p>}
+              {invalidChars && invalidCharsPattern && <p className="error-message">🚫Invalid characters {invalidCharsPattern.toString().slice(2, -2)} are not allowed.</p>}
               <table className='order-tab'>
                  <thead>
                    <tr>
@@ -392,7 +390,7 @@ export default function Form() {
                    </tr>
                  </tfoot>
                </table>
-              <button type="submit" className="form-button selected" style={{ cursor: 'pointer' }} disabled={isSubmitDisabled()||submitting}>
+              <button type="submit" className="back-button selected"  disabled={isSubmitDisabled()||submitting} style={{ cursor: isSubmitDisabled()||submitting ? 'not-allowed' : 'pointer' }}>
                 Submit Order
               </button>
             </form>
@@ -402,13 +400,426 @@ export default function Form() {
           <div>
             <h2>Thank you for your order!</h2>
             <p>Your order number is: {orderNumber}</p>
-            <button onClick={() => navigate('/')}>Return to Home</button>
           </div>
         )}
       </div>
     </div>
   );
 }
+
+
+
+// import React, { useContext, useState, useEffect } from 'react';
+// import { Link, useLocation, useNavigate } from 'react-router-dom';
+// import { BooksContext } from '../../BooksContext';
+// import './form.css';
+// import RegistrationForm from './RegistrationForm';
+// import InfoModal from '../specific-book/InfoModal';
+// import RSAEncryption from '../rsacomponent/RSAEncryption';
+// import LoadingAnimation from '../utils/LoadingAnimation'; 
+// import call from '../cart/img/call.png';
+// import email from '../cart/img/email.png';
+// import user from '../cart/img/user.png';
+// import chat from '../cart/img/chat.png';
+// import back from '../cart/img/back.png';
+// import addressIcon from '../cart/img/location.png';
+
+// export default function Form() {
+//   const { 
+//     showRegistrationForm, 
+//     setShowRegistrationForm, 
+//     theme, 
+//     loggedIn, 
+//     savedLogin, 
+//     setCartItems, 
+//     setTotalPrice, 
+//     totalPrice, 
+//     setTotalCount, 
+//     cartItems, 
+//     uiMain, 
+//     fieldState 
+//   } = useContext(BooksContext);
+  
+//   const location = useLocation();
+//   const queryParams = new URLSearchParams(location.search);
+//   const { encryptRSA } = RSAEncryption();
+//   const navigate = useNavigate();
+
+//   const [formData, setFormData] = useState({
+//     FirstName: '', MiddleName: '', LastName: '', Email: '', Phone: '', Address: '', Message: '',
+//     // FirstName: '', MiddleName: '', LastName: '', Email: '', Phone: '', Address: '', Message: '',
+//     // FirstName1: '', MiddleName1: '', LastName1: '', Email1: '', Phone1: '', Address1: '', Message1: '',
+//     // FirstName2: '', MiddleName2: '', LastName2: '', Email2: '', Phone2: '', Address2: '', Message2: '',   
+//   });
+
+//   const [invalidChars, setInvalidChars] = useState(false);
+//   const [orderSubmitted, setOrderSubmitted] = useState(false);
+//   const [orderNumber, setOrderNumber] = useState(null);
+//   const [encrypting, setEncrypting] = useState(false);
+//   //const [encryptionCompleted, setEncryptionCompleted] = useState(false);
+//   const [submitting, setSubmitting] = useState(false);
+//   const [loading, setLoading] = useState(false);
+  
+//   let id, title, count, price;
+
+//   if (queryParams.has('id')) {
+//     id = queryParams.get('id');
+//     title = queryParams.get('title');
+//     count = queryParams.get('count');
+//     price = queryParams.get('price');
+//   }
+
+//   const clearCart = () => {
+//     if (!id && !title && !count && !price) {
+//       setCartItems([]);
+//       setTotalPrice(0);
+//       setTotalCount(0);
+//     }
+//   }
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     if (/[=+"']/.test(value)) {
+//       setInvalidChars(true);
+//     } else {
+//       setInvalidChars(false);
+//       setFormData({ ...formData, [name]: value });
+//     }
+//   };
+
+//   const isSubmitDisabled = () => invalidChars;
+
+//   const handleEncrypt = async (publicKey1, publicKey2, plaintext) => {
+//     try {
+//       const encryptedMessage = await encryptRSA(publicKey1 + publicKey2, plaintext);
+//       const chunkSize = 256;
+//       const encryptedChunks = [];
+//       for (let i = 0; i < encryptedMessage.length; i += chunkSize) {
+//         encryptedChunks.push(encryptedMessage.substring(i, i + chunkSize));
+//       }
+//       return encryptedChunks;
+//     } catch (error) {
+//       console.error('Encryption error:', error);
+//       return [];
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault(); 
+//     setLoading(true);
+//     setSubmitting(true); 
+
+//     const formDatab = new FormData();
+//     // for (const [key, value] of Object.entries(formData)) {
+//     //   formDatab.append(key, value);
+//     // }
+
+//     formDatab.append("Name", savedLogin);
+//     formDatab.append("Zakaz", orderData);     
+//     formDatab.append("Idprice", fieldState.idprice);
+
+//     const apiUrl = uiMain.Urorder;
+
+//     if (!isSubmitDisabled() && uiMain.order === 'rsa' && fieldState.publicKey1 && fieldState.publicKey2 && !encrypting) {
+//       setEncrypting(true);
+
+//       try {
+//         const encryptedFieldNames = ["FirstName", "MiddleName", "LastName", "Email", "Phone", "Message", "Address"];
+//         const encryptedFormData = {};
+
+//         for (const fieldName of encryptedFieldNames) {
+//           const fieldValue = formData[fieldName];
+//           let encryptedChunk1, encryptedChunk2;
+//           if (fieldValue !== "") {
+//             [encryptedChunk1, encryptedChunk2] = await handleEncrypt(fieldState.publicKey1, fieldState.publicKey2, fieldValue);
+//           } else {
+//             encryptedChunk1 = "";
+//             encryptedChunk2 = "";
+//           }
+//           encryptedFormData[fieldName + "1"] = encryptedChunk1;
+//           encryptedFormData[fieldName + "2"] = encryptedChunk2;
+//         }
+
+//         for (const [key, value] of Object.entries(encryptedFormData)) {
+//           formDatab.append(key, value);
+//         }
+
+//       } catch (error) {
+//         console.error('Encryption error:', error);
+//       } finally {
+//         setEncrypting(false);
+//       }
+//     } else {
+//       for (const [key, value] of Object.entries(formData)) {
+//         formDatab.append(key, value);
+//       }
+//     }
+
+//     try {
+//       const response = await fetch(apiUrl, {
+//         method: "POST",
+//         body: formDatab
+//       });
+//       const data = await response.text();
+//       const orderNumber = parseInt(data.split(":")[1]);
+
+//       if (!isNaN(orderNumber)) {
+//         setOrderNumber(orderNumber);
+//         setOrderSubmitted(true);
+//         clearCart();
+//       } else {
+//         alert("⚠️Order submission failed. Please try again.");
+//         console.log(data)
+//       }
+//     } catch (error) {
+//       alert(error);
+//     } finally {
+//       setLoading(false); 
+//       setSubmitting(false); 
+//     }
+//   };
+
+//   // useEffect(() => {
+//   //   if (encrypting) {
+//   //     setEncryptionCompleted(false);
+//   //   }
+//   // }, [encrypting]);
+
+//   // useEffect(() => {
+//   //   if (!encrypting && Object.keys(formData).length > 0) {
+//   //     setEncryptionCompleted(true);
+//   //   }
+//   // }, [encrypting, formData]);
+
+//   let orderData = '';
+//   if (id && title && count && price) {
+//     orderData = `${id} - ${title} - ${count} шт. по ${price} $ каждая`;
+//   } else {
+//     orderData = cartItems.map((item) => {
+//       return `${item.id} - ${item.title} - ${item.count} шт. по ${item.price} $ каждая`;
+//     }).join('; ');
+//   }
+
+//   useEffect(() => {
+//     if (!loggedIn) {
+//       setShowRegistrationForm(true)
+//     }
+//   }, [loggedIn, setShowRegistrationForm]);  
+
+//   useEffect(() => {
+//     if (uiMain.length === 0) {
+//       setShowRegistrationForm(false);
+//       navigate('/');
+//     }
+//   }, [uiMain, navigate, setShowRegistrationForm]);
+
+//   if (uiMain.length === 0) {
+//     return null;
+//   }
+
+//   const handleRegistrationButtonClick = () => {
+//     setShowRegistrationForm(true);
+//   };
+
+//   return (
+//     <div className={`main-form ${theme}`}>
+//       <Link to="/cart" className="back-button">
+//         <img src={back} className="back-button selected" alt='back' />
+//       </Link>
+//       <h1 className="filters">ORDER FORM</h1>
+//       {!loggedIn && (
+//         <button className="filters selected" onClick={handleRegistrationButtonClick}>
+//           <img src={user} className="back-button selected" alt='Registration' />
+//           Please Log In  
+//         </button>
+//       )}
+//       <div>
+//         {!loggedIn && showRegistrationForm && <RegistrationForm />}
+//         {loggedIn && !orderSubmitted && (
+//           <>
+//             {loading && <LoadingAnimation />}
+//             {fieldState.orderinfo && fieldState.orderinfo !== "" && (<InfoModal text={fieldState.orderinfo} />)}
+//             <form className="form" onSubmit={handleSubmit}>
+//               <table>
+//                 <tbody>
+//                   <tr>
+//                     <td><img src={user} className="form-icon selected" alt='NickName' /></td>
+//                     <td>
+//                       <label className='form-input'>Nickname:<strong>{savedLogin}</strong></label>
+//                     </td>
+//                   </tr>
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('FirstName'))) && (
+//                     <tr>
+//                       <td><img src={user} className="form-icon selected" alt='Name' /></td>
+//                       <td>
+//                         <input className='form-input'
+//                           placeholder="First Name"
+//                           name="FirstName"
+//                           type="text"
+//                           maxLength={50}
+//                           value={formData.FirstName}
+//                           onChange={handleInputChange}
+//                           required
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('MiddleName'))) && (
+//                     <tr>
+//                       <td><img src={user} className="form-icon selected" alt='MiddleName' /></td>
+//                       <td>
+//                         <input className='form-input'
+//                           placeholder="Middle Name"
+//                           name="MiddleName"
+//                           type="text"
+//                           maxLength={50}
+//                           value={formData.MiddleName}
+//                           onChange={handleInputChange}
+//                           required
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('LastName'))) && (
+//                     <tr>
+//                       <td><img src={user} className="form-icon selected" alt='LastName' /></td>
+//                       <td>
+//                         <input className='form-input'
+//                           placeholder="Last Name"
+//                           name="LastName"
+//                           type="text"
+//                           maxLength={50}
+//                           value={formData.LastName}
+//                           onChange={handleInputChange}
+//                           required
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Email'))) && (
+//                     <tr>
+//                       <td><img src={email} className="form-icon selected" alt='Email' /></td>
+//                       <td>
+//                         <input className='form-input'
+//                           placeholder="Email"
+//                           name="Email"
+//                           type="email"
+//                           maxLength={50}
+//                           value={formData.Email}
+//                           onChange={handleInputChange}
+//                           //pattern='[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}'                     
+//                           //title="Please enter a valid email address"
+//                           required
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Phone'))) && (
+//                     <tr>
+//                       <td><img src={call} className="form-icon selected" alt='Phone' /></td>
+//                       <td>
+//                         <input className='form-input'
+//                           placeholder="Phone"
+//                           name="Phone"
+//                           type="text"
+//                           maxLength={15}
+//                           value={formData.Phone}
+//                           onChange={handleInputChange}
+//                           pattern="[0-9]{6,15}" 
+//                           title="Please enter a valid phone number (6 to 15 digits)"
+//                           required
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Address'))) && (
+//                     <tr>
+//                       <td><img src={addressIcon} className="form-icon selected" alt='Address' /></td>
+//                       <td>
+//                         <input className='form-input'
+//                           placeholder="Address"
+//                           name="Address"
+//                           type="text"
+//                           maxLength={50}
+//                           value={formData.Address}
+//                           onChange={handleInputChange}
+//                           required
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                   {(!uiMain.orderform || (uiMain.orderform && uiMain.orderform.split(',').includes('Message'))) && (
+//                     <tr>
+//                       <td><img src={chat} className="form-icon selected" alt='Message' /></td>
+//                       <td>
+//                         <textarea className='form-input'
+//                           placeholder="Additional message"
+//                           name="Message"
+//                           maxLength={100}
+//                           value={formData.Message}
+//                           onChange={handleInputChange}
+//                           rows={3}
+//                         />
+//                       </td>
+//                     </tr>
+//                   )}
+//                 </tbody>
+//               </table>
+//               {invalidChars && <p className="error-message">🚫Invalid characters (=,  +, ", ') are not allowed.</p>}
+//               <table className='order-tab'>
+//                  <thead>
+//                    <tr>
+//                      <th>{fieldState.id && fieldState.id !== "" ? fieldState.id : "id:"}</th>
+//                      <th>{fieldState.title && fieldState.title !== "" ? fieldState.title : "Description:"}</th>
+//                      <th>Quantity</th>
+//                      <th>{fieldState.price && fieldState.price !== "" ? fieldState.price : "Price, $"}</th>
+//                    </tr>
+//                  </thead>
+//                  <tbody className='order-body'>
+//                    {id && title && count && price && (
+//                      <tr>
+//                        <td>{id}</td>
+//                        <td>{title}</td>
+//                        <td>{count}</td>
+//                        <td>{price}</td>
+//                      </tr>
+//                    )}
+//                    {!id && !title && !count && !price && (
+//                      cartItems.map((item, index) => (
+//                        <tr key={index}>
+//                          <td>{item.id}</td>
+//                          <td>{item.title}</td>
+//                          <td>{item.count}</td>
+//                          <td>{item.price}</td>
+//                        </tr>
+//                      ))
+//                    )}
+//                  </tbody>
+//                  <tfoot>
+//                    <tr>
+//                      <td colSpan="2"></td>
+//                      <td>Total:</td>
+//                      <td>{id ? (count * price).toFixed(2) : totalPrice}</td>
+//                    </tr>
+//                  </tfoot>
+//                </table>
+//               <button type="submit" className="form-button selected"  disabled={isSubmitDisabled()||submitting} style={{ cursor: isSubmitDisabled()||submitting ? 'not-allowed' : 'pointer' }}>
+//                 Submit Order
+//               </button>
+//             </form>
+//           </>
+//         )}
+//         {orderSubmitted && orderNumber !== null && (
+//           <div>
+//             <h2>Thank you for your order!</h2>
+//             <p>Your order number is: {orderNumber}</p>
+           
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
 
 
 
