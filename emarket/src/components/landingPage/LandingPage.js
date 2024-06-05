@@ -129,7 +129,8 @@ function LandingPage() {
             {uiMain.UrFrame && uiMain.UrFrame!==""&&(
             <section style={{ height: '100vh' }}>
                 <iframe style={{ border: 'none' }}
-                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    // sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    sandbox="allow-scripts allow-popups allow-forms"
                     src={uiMain.UrFrame}
                     title="External Content"
                     width="100%"

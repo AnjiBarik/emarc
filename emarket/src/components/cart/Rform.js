@@ -234,7 +234,7 @@ const isSubmitDisabled  = useCallback(()  => {
         {loggedIn && !orderSubmitted && (
           <>
             {loading && <LoadingAnimation />}
-            {fieldState.orderinfo && fieldState.orderinfo !== "" && (<InfoModal text={fieldState.orderinfo} />)}
+            {fieldState.orderinfo && fieldState.orderinfo !== "" && (<div className='filters'><InfoModal text={fieldState.orderinfo} /></div>)}
             <form className="form" onSubmit={handleSubmit}>
               <table>
                 <tbody>

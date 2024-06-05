@@ -25,7 +25,7 @@ const BooksProvider = ({ children }) => {
   const [filterBooks, setFilterBooks] = useState([]);
   const [selectedSection, setSelectedSection] = useState(null);
   const [selectedSubsection, setSelectedSubsection] = useState(null);
-  const [sortedBooks, setSortedBooks] = useState([]);
+  //const [sortedBooks, setSortedBooks] = useState([]);
   const [input, setInput] = useState('');
   const [selectedTags1, setSelectedTags1] = useState([]);
   const [selectedTags2, setSelectedTags2] = useState([]);
@@ -187,7 +187,7 @@ const [showRegistrationForm, setShowRegistrationForm] = useState(false);
   const contextValue = {
     message, setMessage, promo, setPromo, order, setOrder, loggedIn, setLoggedIn, savedLogin, setSavedLogin, savedPassword, setSavedPassword,
     totalPrice, setTotalPrice, cartItems, setCartItems, theme, setTheme, totalCount, setTotalCount, books, setBooks,
-    specificBook, setSpecificBook, filterBooks, setFilterBooks, sortedBooks, setSortedBooks, selectedSection, setSelectedSection,
+    specificBook, setSpecificBook, filterBooks, setFilterBooks, selectedSection, setSelectedSection,
     selectedSubsection, setSelectedSubsection, input, setInput, selectedTags1, setSelectedTags1, selectedTags2, setSelectedTags2,
     selectedSizes, setSelectedSizes, selectedColor, setSelectedColor, glsearch, setSearch, searchOptions, setSearchOptions,
     uiState, setUiState, uiMain, setUiMain, fieldState, setFieldState, idLoudPrice, setIdLoudPrice, selectedTags3, setSelectedTags3,

@@ -18,22 +18,23 @@ export default function BookList() {
     selectedSection,
     setSelectedSection,
     selectedSubsection,
-    setSelectedSubsection,
-    sortedBooks,
-    setSortedBooks,
+    setSelectedSubsection,   
   } = useContext(BooksContext);
 
   const [sections, setSections] = useState([]);
   const [subsections, setSubsections] = useState({});
   const [showSections, setShowSections] = useState(false);
   const navigate = useNavigate();
-
+  const [sortedBooks, setSortedBooks] = useState([...books.filter((book) => book.Visibility !== '0')]);
+console.log( books)
   // Set initial sortedBooks when books are loaded
-  useEffect(() => {
-    if (books.length > 0 && !selectedSection) {
-      setSortedBooks([...books.filter((book) => book.Visibility !== '0')]);
-    }
-  }, [books, selectedSection, setSortedBooks]);
+  // setSortedBooks([...books.filter((book) => book.Visibility !== '0')])
+  // useEffect(() => {
+  //   if (books.length > 0 && !selectedSection) {
+  //     console.log("1")
+  //     setSortedBooks([...books.filter((book) => book.Visibility !== '0')]);
+  //   }
+  // }, [books, selectedSection, setSortedBooks]);
 
   // Populate sections and subsections from books
   useEffect(() => {
@@ -85,7 +86,8 @@ export default function BookList() {
   if (books.length === 0) {
     return null;
   }
-
+console.log(sortedBooks.length)
+console.log(selectedSection)
   return (
     <section className={theme}>
       {/* Menu buttons */}
@@ -170,6 +172,183 @@ export default function BookList() {
     </section>
   );
 }
+
+
+
+// import React, { useEffect, useState, useContext } from 'react';
+// import { useNavigate, Link } from 'react-router-dom';
+// import './bookList.css';
+// import { BooksContext } from '../../BooksContext';
+
+// import burger from '../cart/img/burger.png';
+// import cancel from '../cart/img/cancel.png';
+// import upmenu from '../cart/img/upmenu.png';
+// import filter from '../cart/img/filter.png';
+// import search from '../cart/img/search.png';
+
+// import SortCart from './SortCart';
+
+// export default function BookList() {
+//   const {
+//     theme,
+//     books,
+//     selectedSection,
+//     setSelectedSection,
+//     selectedSubsection,
+//     setSelectedSubsection,
+//     sortedBooks,
+//     setSortedBooks,
+//   } = useContext(BooksContext);
+
+//   const [sections, setSections] = useState([]);
+//   const [subsections, setSubsections] = useState({});
+//   const [showSections, setShowSections] = useState(false);
+//   const navigate = useNavigate();
+// console.log( books)
+//   // Set initial sortedBooks when books are loaded
+//   useEffect(() => {
+//     if (books.length > 0 && !selectedSection) {
+//       console.log("1")
+//       setSortedBooks([...books.filter((book) => book.Visibility !== '0')]);
+//     }
+//   }, [books, selectedSection, setSortedBooks]);
+
+//   // Populate sections and subsections from books
+//   useEffect(() => {
+//     if (books.length > 0) {
+//       const uniqueSections = ['Show all', ...new Set(books.map(book => book.section))];
+//       setSections(uniqueSections);
+
+//       const subs = {};
+//       books.forEach(book => {
+//         if (!subs[book.section]) subs[book.section] = new Set();
+//         if (book.partition) {
+//           subs[book.section].add(book.partition);
+//         }
+//       });
+//       setSubsections(subs);
+//     }
+//   }, [books]);
+
+//   // Handle section click
+//   const handleSectionClick = (section) => {
+//     setSelectedSection(section);
+//     setSelectedSubsection(null);
+//     if (section === 'Show all') {
+//       setSortedBooks([...books.filter((book) => book.Visibility !== '0')]);
+//     } else {
+//       const filteredBooks = books.filter((book) => book.Visibility !== '0' && book.section === section);
+//       setSortedBooks(filteredBooks);
+//     }
+//   };
+
+//   // Handle subsection click
+//   const handleSubsectionClick = (subsection) => {
+//     setSelectedSubsection(subsection);
+//     const filteredBooks = books.filter((book) => book.Visibility !== '0' && book.section === selectedSection && book.partition === subsection);
+//     setSortedBooks(filteredBooks);
+//   };
+
+//   // Toggle sections menu visibility
+//   const toggleSections = () => setShowSections(prevState => !prevState);
+
+//   // Navigate to home if no books
+//   useEffect(() => {
+//     if (books.length === 0) {
+//       navigate('/');
+//     }
+//   }, [books, navigate]);
+
+//   // Return null if no books
+//   if (books.length === 0) {
+//     return null;
+//   }
+// console.log(sortedBooks.length)
+// console.log(selectedSection)
+//   return (
+//     <section className={theme}>
+//       {/* Menu buttons */}
+//       <section className="filters">
+//         <button className='sort-button selected' onClick={toggleSections}>
+//           {!showSections ? <img className="back-button selected" src={burger} alt='menu'/> : <img className="back-button selected" src={cancel} alt='cancel menu'/>}
+//         </button>
+
+//         <Link to="/Filter">
+//           <button className='sort-button'>
+//             <img className="back-button" src={filter} alt="filter" />
+//           </button>
+//         </Link>
+//         <Link to="/Search">
+//           <button className='sort-button'>
+//             <img className="back-button" src={search} alt="search" />
+//           </button>
+//         </Link>
+//       </section>
+      
+//       {/* Selected tags */}
+//       <section className="filters">
+//         <div className="selected-tags">
+//           {/* makes it more explicit and reduces the chance of the translation process  */}
+//           <span>
+//             Found: <strong>{sortedBooks.length}</strong>
+//           </span>
+//           {selectedSection && (
+//             <button className="selected-button" onClick={() => handleSectionClick('Show all')}>
+//               {selectedSection}<span>❌</span>
+//             </button>
+//           )}
+//           {selectedSubsection && (
+//             <button className="selected-button" onClick={() => handleSectionClick(selectedSection)}>
+//               {selectedSubsection}<span>❌</span>
+//             </button>
+//           )}
+//         </div>
+//       </section>
+
+//       {/* Sections and subsections list */}
+//       <section className="filters">
+//         {showSections && (
+//           <div className="section-list">
+//             <ul className="no-markers">
+//               {sections.map((section, index) => (
+//                 <li key={index} onClick={() => handleSectionClick(section)} className={selectedSection === section ? 'selected' : ''}>
+//                   {section === 'Show all' ? section : (
+//                     <>
+//                       {section} {subsections[section] && subsections[section].size > 0 && <span style={{ marginLeft: '4px' }}>+</span>}
+//                     </>
+//                   )}
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+//         )}
+//         {showSections && selectedSection && selectedSection !== 'Show all' && (
+//           <div className="subsection-list">
+//             <ul className="no-markers">
+//               {Array.from(subsections[selectedSection] || []).map((subsection, index) => (
+//                 <li key={index} onClick={() => handleSubsectionClick(subsection)} className={selectedSubsection === subsection ? 'selected' : ''}>
+//                   {subsection}
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+//         )}
+//       </section>
+      
+//       {/* Toggle sections button */}
+//       {showSections && (
+//         <section className="filters">
+//           <button onClick={toggleSections}>
+//             <img className="back-button" src={upmenu} alt="Cancel" />
+//           </button>
+//         </section>
+//       )}
+      
+//       {/* Sorted books display */}
+//       <SortCart props={sortedBooks}/>
+//     </section>
+//   );
+// }
 
 
 
