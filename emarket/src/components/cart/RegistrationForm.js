@@ -162,16 +162,18 @@ export default function RegistrationForm({ isVerification: propIsVerification })
             {/* <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/> */}
             <hr />
             {loggedIn ? (
-              <div>
+              <div >
                 <p><img className="back-button" src={userok} alt="userok" /> Nickname: {savedLogin}</p>
                 <p>{promo !== '#' && promo !== '' && `Your promo code: ${promo}`}</p>
                 <p>{message !== '#' && message !== '' && `Your message: ${message}`}</p>
                 <hr />
-                <div className='filter'>
-                {/* <Link to="/" > */}
-                  <button  onClick={handleLogout}> <img className="back-button selected" src={logout} alt="logout" /> </button>
-                {/* </Link> */}
-                <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/>
+                <div  className='filter'>               
+                  <button  onClick={handleLogout}  className='form-button' tabIndex={1}>
+                     <img  className="back-button" src={logout} alt="logout" />
+                  </button>                
+                  <button onClick={toggleSections}  className='form-button' tabIndex={0}>
+                      <img tabIndex={-1} src={cancel} alt='cancel'  className="back-button" />
+                  </button>
                 </div>
               </div>
             ) : (
@@ -194,6 +196,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                             placeholder='Nickname'
                             value={formData.Name}
                             onChange={handleInputChange}
+                            autoComplete="username"
                             required
                           />
                         </td>
@@ -208,8 +211,10 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                             type="password"
                             name="Password1"
                             placeholder='Password'
-                            defaultValue={formData.Password1}
+                            // defaultValue={formData.Password1}
+                            value={formData.Password1}
                             onChange={handleInputChange}
+                            autoComplete="current-password"
                             required
                           />
                         </td>
@@ -219,13 +224,13 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                   {invalidInput && <p className="error-message">Please fill out all fields and avoid using invalid characters.📝</p>}
                   {invalidChars && <p className="error-message">Invalid characters 🚫 (=, +, ", ').</p>}
                   {showRegistrationFormLokal && (!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="filter">Name must contain at least one Latin letter</p>}
-                  <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting}>
+                  <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting} style={{ cursor: isSubmitDisabled()||submitting ? 'not-allowed' : 'pointer' }}>
                     {showRegistrationFormLokal ?  <img className="back-button" src={useradd} alt="useradd" />  :  <img className="back-button" src={enter} alt="enter" />}
                   </button>
                 </form>
                 <hr />
                 <div className='filter'>
-                <button className='form-button' onClick={handleToggleForm}>
+                <button  className='form-button' onClick={handleToggleForm}>
                   {showRegistrationFormLokal ?  (
                     <><img className="back-button" src={enter} alt="enter" /> <b> Log In </b>
                    
@@ -234,7 +239,9 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                     <><img className="back-button" src={useradd} alt="useradd" /> Create Account </>
                   )}
                 </button>
-                <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/>
+                <button  className='form-button' onClick={toggleSections}>
+                  <img src={cancel} alt='cancel' className="back-button" />
+                </button>
                 </div>
               </>
             )}

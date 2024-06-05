@@ -38,7 +38,7 @@ export default function Form() {
     FirstName: '', MiddleName: '', LastName: '', Email: '', Phone: '', Address: '', Message: ''
   });
 
-  const [invalidChars, setInvalidChars] = useState(false);
+  //const [invalidChars, setInvalidChars] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderNumber, setOrderNumber] = useState(null);
   const [encrypting, setEncrypting] = useState(false);
@@ -77,11 +77,11 @@ const isSubmitDisabled  = useCallback(()  => {
   useEffect(() => {
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      if (invalidCharsPattern.test(value)) { // Use the pattern for validation
-        setInvalidChars(true);
+      if (invalidCharsPattern && invalidCharsPattern.test(value)) { // Use the pattern for validation
+        //setInvalidChars(true);
         setFormData({ ...formData, [name]: undefined });
       } else {
-        setInvalidChars(false);
+        //setInvalidChars(false);
         setFormData({ ...formData, [name]: value });       
       }
       isSubmitDisabled()
@@ -352,7 +352,7 @@ const isSubmitDisabled  = useCallback(()  => {
                   )}
                 </tbody>
               </table>
-              {invalidChars && invalidCharsPattern && <p className="error-message">🚫Invalid characters {invalidCharsPattern.toString().slice(2, -2)} are not allowed.</p>}
+              {isSubmitDisabled() && invalidCharsPattern && <p className="error-message">🚫Invalid characters {invalidCharsPattern.toString().slice(2, -2)} are not allowed.</p>}
               <table className='order-tab'>
                  <thead>
                    <tr>
@@ -397,9 +397,9 @@ const isSubmitDisabled  = useCallback(()  => {
           </>
         )}
         {orderSubmitted && orderNumber !== null && (
-          <div>
+          <div className="filters">
             <h2>Thank you for your order!</h2>
-            <p>Your order number is: {orderNumber}</p>
+            <p>Your order number is:<b> {orderNumber}</b></p>
           </div>
         )}
       </div>
