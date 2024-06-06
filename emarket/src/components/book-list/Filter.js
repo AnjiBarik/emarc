@@ -311,10 +311,10 @@ export default function Filter() {
       setInput(value);
     }
   };
-
+console.log(selectedSubsection)
   return (
     <>
-      <section className={theme}>
+      <section className={theme} key={`${select}`}> 
         <section className="filters">
 
           <Link to="/BookList">
@@ -430,7 +430,8 @@ export default function Filter() {
                   type="radio"
                   value="allSections"
                   checked={!selectedSection || selectedSection === 'Show all' || select === 'allSections'}
-                  onChange={() => setSelect('allSections')}
+                  // onChange={() => setSelect('allSections')}
+                  onChange={() => handleStateChange('select', 'allSections')}
                 />
                 All Sections
               </label>

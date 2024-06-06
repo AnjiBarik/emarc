@@ -18,24 +18,23 @@ export default function BookList() {
     selectedSection,
     setSelectedSection,
     selectedSubsection,
-    setSelectedSubsection,   
+    setSelectedSubsection,
   } = useContext(BooksContext);
 
   const [sections, setSections] = useState([]);
   const [subsections, setSubsections] = useState({});
   const [showSections, setShowSections] = useState(false);
   const navigate = useNavigate();
-  const [sortedBooks, setSortedBooks] = useState([...books.filter((book) => book.Visibility !== '0')]);
-console.log( books)
-  // Set initial sortedBooks when books are loaded
-  // setSortedBooks([...books.filter((book) => book.Visibility !== '0')])
-  // useEffect(() => {
-  //   if (books.length > 0 && !selectedSection) {
-  //     console.log("1")
-  //     setSortedBooks([...books.filter((book) => book.Visibility !== '0')]);
-  //   }
-  // }, [books, selectedSection, setSortedBooks]);
+  //const [sortedBooks, setSortedBooks] = useState([]);
 
+  // Set initial sortedBooks when books are loaded
+  const sortedBooks = React.useMemo(() => {
+    return books.filter(
+      (book) => book.Visibility !== '0' &&
+        ((!selectedSection || selectedSection === 'Show all') || book.section === selectedSection) &&
+        (!selectedSubsection || book.partition === selectedSubsection)
+    );
+  }, [books, selectedSection, selectedSubsection]);
   // Populate sections and subsections from books
   useEffect(() => {
     if (books.length > 0) {
@@ -57,19 +56,13 @@ console.log( books)
   const handleSectionClick = (section) => {
     setSelectedSection(section);
     setSelectedSubsection(null);
-    if (section === 'Show all') {
-      setSortedBooks([...books.filter((book) => book.Visibility !== '0')]);
-    } else {
-      const filteredBooks = books.filter((book) => book.Visibility !== '0' && book.section === section);
-      setSortedBooks(filteredBooks);
-    }
+   
   };
 
   // Handle subsection click
   const handleSubsectionClick = (subsection) => {
     setSelectedSubsection(subsection);
-    const filteredBooks = books.filter((book) => book.Visibility !== '0' && book.section === selectedSection && book.partition === subsection);
-    setSortedBooks(filteredBooks);
+    
   };
 
   // Toggle sections menu visibility
@@ -86,10 +79,9 @@ console.log( books)
   if (books.length === 0) {
     return null;
   }
-console.log(sortedBooks.length)
-console.log(selectedSection)
+
   return (
-    <section className={theme}>
+    <section className={theme}  key={`${selectedSection}-${selectedSubsection}`}>
       {/* Menu buttons */}
       <section className="filters">
         <button className='sort-button selected' onClick={toggleSections}>
@@ -111,17 +103,17 @@ console.log(selectedSection)
       {/* Selected tags */}
       <section className="filters">
         <div className="selected-tags">
-          {/* makes it more explicit and reduces the chance of the translation process  */}
           <span>
             Found: <strong>{sortedBooks.length}</strong>
           </span>
           {selectedSection && (
             <button className="selected-button" onClick={() => handleSectionClick('Show all')}>
-              {selectedSection}<span>❌</span>
+             {selectedSection}<span>❌</span>
             </button>
           )}
           {selectedSubsection && (
-            <button className="selected-button" onClick={() => handleSectionClick(selectedSection)}>
+            // <button className="selected-button" onClick={() => handleSectionClick(selectedSection)}>
+            <button className="selected-button" onClick={() => handleSubsectionClick(null)}>
               {selectedSubsection}<span>❌</span>
             </button>
           )}
