@@ -168,7 +168,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                 <p>{message !== '#' && message !== '' && `Your message: ${message}`}</p>
                 <hr />
                 <div  className='filter'>               
-                  <button  onClick={handleLogout}  className='form-button' tabIndex={1}>
+                  <button  onClick={handleLogout}  className='form-button' tabIndex={-1}>
                      <img  className="back-button" src={logout} alt="logout" />
                   </button>                
                   <button onClick={toggleSections}  className='form-button' tabIndex={0}>

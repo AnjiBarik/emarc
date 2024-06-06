@@ -25,8 +25,7 @@ export default function BookList() {
   const [subsections, setSubsections] = useState({});
   const [showSections, setShowSections] = useState(false);
   const navigate = useNavigate();
-  //const [sortedBooks, setSortedBooks] = useState([]);
-
+ 
   // Set initial sortedBooks when books are loaded
   const sortedBooks = React.useMemo(() => {
     return books.filter(
@@ -52,36 +51,29 @@ export default function BookList() {
     }
   }, [books]);
 
-  // Handle section click
   const handleSectionClick = (section) => {
     setSelectedSection(section);
-    setSelectedSubsection(null);
-   
+    setSelectedSubsection(null);   
   };
 
-  // Handle subsection click
   const handleSubsectionClick = (subsection) => {
-    setSelectedSubsection(subsection);
-    
+    setSelectedSubsection(subsection);    
   };
 
-  // Toggle sections menu visibility
   const toggleSections = () => setShowSections(prevState => !prevState);
 
-  // Navigate to home if no books
   useEffect(() => {
     if (books.length === 0) {
       navigate('/');
     }
   }, [books, navigate]);
 
-  // Return null if no books
   if (books.length === 0) {
     return null;
   }
 
-  return (
-    <section className={theme}  key={`${selectedSection}-${selectedSubsection}`}>
+  return (   
+    <section className={theme}  >
       {/* Menu buttons */}
       <section className="filters">
         <button className='sort-button selected' onClick={toggleSections}>
@@ -101,7 +93,7 @@ export default function BookList() {
       </section>
       
       {/* Selected tags */}
-      <section className="filters">
+      <section className="filters" key={`${selectedSection}-${selectedSubsection}`}>
         <div className="selected-tags">
           <span>
             Found: <strong>{sortedBooks.length}</strong>
@@ -111,8 +103,7 @@ export default function BookList() {
              {selectedSection}<span>❌</span>
             </button>
           )}
-          {selectedSubsection && (
-            // <button className="selected-button" onClick={() => handleSectionClick(selectedSection)}>
+          {selectedSubsection && (            
             <button className="selected-button" onClick={() => handleSubsectionClick(null)}>
               {selectedSubsection}<span>❌</span>
             </button>

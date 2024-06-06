@@ -108,22 +108,8 @@ export default function Filter() {
     []
   );
 
-  // !
-  // const filterBooks = useCallback(
-  //   (books, key, values) => {
-  //     return values.length > 0 ? books.filter((book) => values.includes(book[key])) : books;
-  //   },
-  //   []
-  // );
-
   const findBook = useCallback(() => {
-    // let filteredBooks = books.filter(
-    //   (book) =>
-    //     book.title.toLowerCase().includes(input.toLowerCase()) ||
-    //     book.id.toString().toLowerCase().includes(input.toLowerCase()) ||
-    //     book.author.toString().toLowerCase().includes(input.toLowerCase())
-    // );
-
+  
     const filters = {
       selectedSection,
       selectedSubsection,
@@ -139,9 +125,6 @@ export default function Filter() {
 
     let filteredBooks = applyFilters(books, filters);
 
-    // filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
-    // filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
-    // filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
     setSortedBooks(filteredBooks);
   }, [select, books, input, selectedSizes, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedColor, selectedSection, selectedSubsection]);
 
@@ -168,14 +151,6 @@ export default function Filter() {
     };
 
     let filteredBooks = applyFilters(books, filters);
-//=-
-  //  filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
-   // filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
-   // filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
-    //  filteredBooks = select === 'section' && selectedSection && selectedSection !== 'Show all'
-    // ? books.filter(book => book.section === selectedSection && (!selectedSubsection || book.partition === selectedSubsection))
-    //    : books;
-//
 
     filteredBooks.forEach(book => {
       uniqueTags1Set.add(book.tags1);
@@ -196,88 +171,8 @@ export default function Filter() {
     setUniqueAuthors(Array.from(uniqueAuthorsSet).filter(author => (typeof author === 'string' || typeof author === 'number') && author.toString().trim() !== ''));
   }, [select, input, books, selectedSection, selectedSubsection, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedSizes, selectedColor]);
 
-  // const filterBooks = useCallback(
-  //   (books, key, values) => {
-  //     return values.length > 0 ? books.filter((book) => values.includes(book[key])) : books;
-  //   },
-  //   []
-  // );
-
-  // const findBook = useCallback(() => {
-  //   let filteredBooks = books.filter(
-  //     (book) =>
-  //       book.title.toLowerCase().includes(input.toLowerCase()) ||
-  //       book.id.toString().toLowerCase().includes(input.toLowerCase()) ||
-  //       book.author.toString().toLowerCase().includes(input.toLowerCase())
-  //   );
-
-  //   if (select === 'section' && selectedSection && selectedSection !== 'Show all') {
-  //     filteredBooks = filteredBooks.filter((book) => book.section === selectedSection);
-  //     if (selectedSubsection) {
-  //       filteredBooks = filteredBooks.filter((book) => book.partition === selectedSubsection);
-  //     }
-  //   }
-
-  //   if (selectedTags1.length > 0) {
-  //     filteredBooks = filteredBooks.filter((book) => selectedTags1.includes(book.tags1));
-  //   }
-
-  //   if (selectedTags2.length > 0) {
-  //     filteredBooks = filteredBooks.filter((book) => selectedTags2.includes(book.tags2));
-  //   }
-
-  //   if (selectedTags3.length > 0) { // Добавляем фильтрацию для tags3
-  //     filteredBooks = filteredBooks.filter((book) => selectedTags3.includes(book.tags3));
-  //   }
-
-  //   if (selectedTags4.length > 0) { // Добавляем фильтрацию для tags4
-  //     filteredBooks = filteredBooks.filter((book) => selectedTags4.includes(book.tags4));
-  //   }
-
-  //   filteredBooks = filterBooks(filteredBooks, 'size', selectedSizes);
-  //   filteredBooks = filterBooks(filteredBooks, 'color', selectedColor);
-  //   filteredBooks = filteredBooks.filter((book) => book.Visibility !== '0');
-  //   setSortedBooks(filteredBooks);
-  // }, [books, input, select, selectedSizes, selectedTags1, selectedTags2, selectedTags3, selectedTags4, selectedColor, selectedSection, selectedSubsection, filterBooks]);
-
-  // const findUniqueValues = useCallback(() => {
-  //   const uniqueTags1Set = new Set();
-  //   const uniqueTags2Set = new Set();
-  //   const uniqueTags3Set = new Set(); 
-  //   const uniqueTags4Set = new Set(); 
-  //   const uniqueSizesSet = new Set();
-  //   const uniqueColorSet = new Set();
-  //   const uniqueAuthorsSet = new Set();
-
-  //   const filteredBooks = select === 'section' && selectedSection && selectedSection !== 'Show all'
-  //     ? books.filter(book => book.section === selectedSection && (!selectedSubsection || book.partition === selectedSubsection))
-  //     : books;
-
-  //   filteredBooks.forEach(book => {
-  //     if (book.Visibility !== '0') {
-  //       uniqueTags1Set.add(book.tags1);
-  //       uniqueTags2Set.add(book.tags2);
-  //       uniqueTags3Set.add(book.tags3); 
-  //       uniqueTags4Set.add(book.tags4); 
-  //       uniqueSizesSet.add(book.size);
-  //       uniqueColorSet.add(book.color);
-  //       uniqueAuthorsSet.add(book.author);
-  //     }
-  //   });
-
-  //   setUniqueTags1(Array.from(uniqueTags1Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
-  //   setUniqueTags2(Array.from(uniqueTags2Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== ''));
-  //   setUniqueTags3(Array.from(uniqueTags3Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== '')); // Устанавливаем уникальные значения tags3
-  //   setUniqueTags4(Array.from(uniqueTags4Set).filter(tag => (typeof tag === 'string' || typeof tag === 'number') && tag.toString().trim() !== '')); // Устанавливаем уникальные значения tags4
-  //   setUniqueSizes(Array.from(uniqueSizesSet).filter(size => (typeof size === 'string' || typeof size === 'number') && size.toString().trim() !== ''));
-  //   setUniqueColor(Array.from(uniqueColorSet).filter(color => (typeof color === 'string' || typeof color === 'number') && color.toString().trim() !== ''));
-  //   setUniqueAuthors(Array.from(uniqueAuthorsSet).filter(author => (typeof author === 'string' || typeof author === 'number') && author.toString().trim() !== ''));
-
-  // }, [books, select, selectedSection, selectedSubsection]);
-
   const resetFilters = () => {
-    setInput('');
-    // setSelect('section');
+    setInput('');   
     setSelect('allSections');
     setSelectedTags1([]);
     setSelectedTags2([]);
@@ -311,10 +206,11 @@ export default function Filter() {
       setInput(value);
     }
   };
-console.log(selectedSubsection)
+
   return (
     <>
-      <section className={theme} key={`${select}`}> 
+      {/* <section className={theme} key={`${select}`}>  */}
+      <section className={theme}>
         <section className="filters">
 
           <Link to="/BookList">
@@ -336,29 +232,26 @@ console.log(selectedSubsection)
             </button>
           </Link>
         </section>
-        <section className="filters">
-          <div className="selected-tags">
-            {/* Found: {sortedBooks.length} */}
+        {/* <section className="filters"> */}
+        <section className="filters" key={`${select}`}>
+          <div className="selected-tags">           
             <span>
             Found: <strong>{sortedBooks.length}</strong>
             </span>
-            {select === 'section' && selectedSection && selectedSection !== 'Show all' ? (
-              // {/*<button className="selected-button" onClick={() => setSelect('allSections')}>*/}
+            {select === 'section' && selectedSection && selectedSection !== 'Show all' ? (              
               <button className="selected-button" onClick={() => handleStateChange('select', 'allSections')}> 
                 {selectedSection}
                 {selectedSubsection && `> ${selectedSubsection}`}
                 <span>❌</span>
               </button>
-            ) : (
-              // <button className="selected-button" onClick={() => setSelect('allSections')}>
+            ) : (             
               <button className="selected-button" onClick={() => handleStateChange('select', 'allSections')}>
                 All Sections
                 <span>❌</span>
               </button>
             )}
 
-            {input && (
-              // <button className="selected-button" onClick={() => setInput('')}>
+            {input && (              
               <button className="selected-button" onClick={() => handleStateChange('input', '')}>
                 Filter by: {input}
                 <span>❌</span>
@@ -394,13 +287,13 @@ console.log(selectedSubsection)
                 <span>❌</span>
               </button>
             ))}
-            {selectedTags3.map((tag) => ( // Отображаем выбранные теги tags3
+            {selectedTags3.map((tag) => ( 
               <button className="selected-button" key={tag} onClick={() => handleSelection(selectedTags3, tag, setSelectedTags3)}>
                 {fieldState.tags3 && fieldState.tags3 !== "" ? fieldState.tags3 : "Tags 3:"} {tag}
                 <span>❌</span>
               </button>
             ))}
-            {selectedTags4.map((tag) => ( // Отображаем выбранные теги tags4
+            {selectedTags4.map((tag) => ( 
               <button className="selected-button" key={tag} onClick={() => handleSelection(selectedTags4, tag, setSelectedTags4)}>
                 {fieldState.tags4 && fieldState.tags4 !== "" ? fieldState.tags4 : "Tags 4:"} {tag}
                 <span>❌</span>
@@ -409,8 +302,7 @@ console.log(selectedSubsection)
           </div>
         </section>
         {showSections && (
-         <>
-         {/*  <section className="filters"> */}
+         <>         
             <section className="filters">
               <button className='selected-button' onClick={resetFilters}>
                 <img className='back-button' src={filterremove} alt='filterremote' />
@@ -419,8 +311,7 @@ console.log(selectedSubsection)
 
             <section className="filters">
               {selectedSection && selectedSection !== 'Show all' && (
-                <label>
-                  {/* <input type="radio" value="section" checked={select === 'section'} onChange={() => setSelect('section')} /> */}
+                <label>                  
                   <input type="radio" value="section" checked={select === 'section'} onChange={() => handleStateChange('select', 'section')} />
                   {selectedSubsection ? selectedSection + '>' + selectedSubsection : selectedSection}
                 </label>
@@ -429,19 +320,14 @@ console.log(selectedSubsection)
                 <input
                   type="radio"
                   value="allSections"
-                  checked={!selectedSection || selectedSection === 'Show all' || select === 'allSections'}
-                  // onChange={() => setSelect('allSections')}
+                  checked={!selectedSection || selectedSection === 'Show all' || select === 'allSections'}                  
                   onChange={() => handleStateChange('select', 'allSections')}
                 />
                 All Sections
-              </label>
-              {/* <input onChange={(e) => setInput(e.target.value)} type="search" id="searchName" title="Filter by id name author" placeholder="Filter by ..." value={input} /> */}
+              </label>              
               <input onChange={(e) => handleStateChange('input', e.target.value)} type="search" id="searchName" title="Filter by id name author" placeholder="Filter by ..." value={input} />
             </section>
             <section className="filters">
-              {/* <div> */}
-                {/* <h3>Filter by #Tags</h3> */}
-
                 <div className="section-list">
                 <h3>Filter by #Tags</h3>
                   <div className="section-list">
@@ -515,7 +401,7 @@ console.log(selectedSubsection)
                   </div>
 
                   <div className="section-list">
-                    <h3>{fieldState.tags3 && fieldState.tags3 !== "" ? fieldState.tags3 : "Tags 3:"}</h3> {/* Отображаем теги tags3 */}
+                    <h3>{fieldState.tags3 && fieldState.tags3 !== "" ? fieldState.tags3 : "Tags 3:"}</h3> 
                     <ul className="no-markers filters">
                       {uniqueTags3.map((tag3) => (
                         <li key={tag3}>
@@ -529,7 +415,7 @@ console.log(selectedSubsection)
                   </div>
 
                   <div className="section-list">
-                    <h3>{fieldState.tags4 && fieldState.tags4 !== "" ? fieldState.tags4 : "Tags 4:"}</h3> {/* Отображаем теги tags4 */}
+                    <h3>{fieldState.tags4 && fieldState.tags4 !== "" ? fieldState.tags4 : "Tags 4:"}</h3> 
                     <ul className="no-markers filters">
                       {uniqueTags4.map((tag4) => (
                         <li key={tag4}>
@@ -541,10 +427,8 @@ console.log(selectedSubsection)
                       ))}
                     </ul>
                   </div>
-                </div>
-              {/* </div> */}
-            </section>
-          {/* </section> */}
+                </div>              
+            </section>          
           </>
         )}
 
