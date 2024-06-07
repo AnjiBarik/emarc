@@ -77,11 +77,10 @@ const isSubmitDisabled  = useCallback(()  => {
   useEffect(() => {
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      if (invalidCharsPattern && invalidCharsPattern.test(value)) { // Use the pattern for validation
-        //setInvalidChars(true);
+      console.log(value)
+      if (invalidCharsPattern && invalidCharsPattern.test(value)) { // Use the pattern for validation        
         setFormData({ ...formData, [name]: undefined });
-      } else {
-        //setInvalidChars(false);
+      } else {        
         setFormData({ ...formData, [name]: value });       
       }
       isSubmitDisabled()
@@ -93,7 +92,7 @@ const isSubmitDisabled  = useCallback(()  => {
     return () => {
       inputs.forEach(input => input.removeEventListener('change', handleInputChange));
     };
-  }, [formData, invalidCharsPattern, isSubmitDisabled]); 
+  }, [formData, invalidCharsPattern, isSubmitDisabled, loggedIn]); 
 
   const handleEncrypt = async (publicKey1, publicKey2, plaintext) => {
     try {
@@ -183,13 +182,9 @@ const isSubmitDisabled  = useCallback(()  => {
   };
 
   let orderData = '';
-  if (id && title && count && price) {
-    // orderData = `${id} - ${title} - ${count} шт. по ${price} $ каждая`;
+  if (id && title && count && price) {   
     orderData = `${id} - ${title} - ${count} each at ${price}`;
-  } else {
-    // orderData = cartItems.map((item) => {
-    //   return `${item.id} - ${item.title} - ${item.count} шт. по ${item.price} $ каждая`;
-    // }).join('; ');
+  } else {    
     orderData = cartItems.map((item) => {
       return `${item.id} - ${item.title} - ${item.count} each at ${item.price}`;
     }).join('; ');
@@ -229,8 +224,8 @@ const isSubmitDisabled  = useCallback(()  => {
           Please Log In  
         </button>
       )}
-      <div>
-        {!loggedIn && showRegistrationForm && <RegistrationForm />}
+      {!loggedIn && showRegistrationForm && <RegistrationForm />}
+      <div>        
         {loggedIn && !orderSubmitted && (
           <>
             {loading && <LoadingAnimation />}

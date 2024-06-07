@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { BooksContext } from '../../BooksContext';
-//import { Link } from 'react-router-dom';
 import './form.css';
 import { hashPasswordAndUsername } from './HashUtils';
 import LoadingAnimation from '../utils/LoadingAnimation';  
@@ -12,18 +11,29 @@ import userok from '../cart/img/userok.png';
 import nickname from '../cart/img/nickname.png';
 import password from '../cart/img/password.png';
 
-
 export default function RegistrationForm({ isVerification: propIsVerification }) {
-  const { showRegistrationForm, setShowRegistrationForm, message, setMessage, promo, setPromo, setOrder, order, loggedIn, setLoggedIn, savedLogin, setSavedLogin, setSavedPassword, uiMain } = React.useContext(BooksContext);
+  const { 
+    showRegistrationForm, 
+    setShowRegistrationForm, 
+    message, 
+    setMessage, 
+    promo, 
+    setPromo, 
+    setOrder,     
+    loggedIn, 
+    setLoggedIn, 
+    savedLogin, 
+    setSavedLogin, 
+    setSavedPassword, 
+    uiMain 
+  } = useContext(BooksContext);
+
   const [formData, setFormData] = useState({
     Name: '',
     Password1: '',
-  });
-  const [invalidInput, setInvalidInput] = useState(false);
-  const [invalidChars, setInvalidChars] = useState(false);
+  }); 
   const [isVerification, setIsVerification] = useState(2);
-  const [showRegistrationFormLokal, setShowRegistrationFormLokal] = useState(isVerification === 1);
-  //const [showSections, setShowSections] = useState(false);
+  const [showRegistrationFormLokal, setShowRegistrationFormLokal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -31,114 +41,96 @@ export default function RegistrationForm({ isVerification: propIsVerification })
     setIsVerification(propIsVerification || 2);
   }, [propIsVerification]);
 
-  const toggleSections = () => setShowRegistrationForm(prevState => !prevState);
+  const validationPatterns = useMemo(() => ({
+    invalidChars: /[=+"']/,    
+    invalidName: (value) => !/[a-zA-Z]{1,}/.test(value),
+    invalidNameMeseg: "Nickname must contain at least one Latin letter"
+  }), []);
 
-  const handleInputChange = (e) => {
+  const isSubmitDisabled = () => {   
+    return  Object.values(formData).some((value) => value === undefined);  
+   };  
+ 
+   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (/[=+"']/.test(value) || value.length > 42 || (name === 'Password1' && /[=+"']/.test(value))) {
-      setInvalidChars(true);
-    } else {
-      setInvalidChars(false);
+    if (validationPatterns.invalidChars.test(value) || 
+    (name === 'Name' &&  validationPatterns.invalidName(value) )) {     
+      setFormData({ ...formData, [name]: undefined });
+    } else {      
       setFormData({ ...formData, [name]: value });
     }
-  };
-
-  const isSubmitDisabled = () => {
-    return (
-      (!isVerification && Object.values(formData).some((value) => value === '')) ||
-      invalidChars
-    );
-  };
+    isSubmitDisabled() 
+   }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true)
     setLoading(true);
-    if (!isVerification && isSubmitDisabled()) {
-      setInvalidInput(true);
-      return;
-    } else {
-      setInvalidInput(false);
+    
+    const formDataToSend = new FormData();
+    formDataToSend.append("isVerification", isVerification);
+    formDataToSend.append('Name', formData.Name);
+    formDataToSend.append("Password", await hashPasswordAndUsername(formData.Name, formData.Password1));
+
+    try {
+      const response = await fetch(uiMain.Urregform, { method: "POST", body: formDataToSend });
+      const data = await response.text();
+
+      if (isVerification === 1) {
+        handleRegistrationResponse(data);
+      } else {
+        handleLoginResponse(data);
+      }
+    } catch (error) {
+      alert('⚠️Error: ' + error.message);
+    } finally {
+      setLoading(false);
+      setSubmitting(false);
     }
+  };
 
-    formData.isVerification = isVerification;
+  const handleRegistrationResponse = (data) => {
+    if (data.includes('Thank you for successful registration!')) {
+      alert('Thank you for successful registration!');
+      resetForm();
+      setLoggedIn(true);
+      saveLoginData();
+    } else if (data.includes('This username already exists. Please choose another one.')) {
+      alert('This username already exists. Please choose another one');
+      resetForm();
+    } else {
+      alert("⚠️Registration failed. Please try again.");
+    }
+  };
 
-    setSubmitting(true);
+  const handleLoginResponse = (data) => {
+    if (data === 'Incorrect username or password.') {
+      alert('⚠️Incorrect username or password.');
+    } else {
+      const [receivedMessage, receivedPromo, receivedOrder] = data.split(', ').map(item => item.split(': ')[1]);
+      setMessage(receivedMessage || "");
+      setPromo(receivedPromo || "");
+      setOrder(receivedOrder || "");
+      setLoggedIn(true);
+      saveLoginData();
+    }
+  };
 
-    const apiUrl = uiMain.Urregform;
+  const resetForm = () => {
+    setFormData({ Name: '', Password1: '' });
+    setSubmitting(false);
+  };
 
-    const formDatab = new FormData();
-    // Добавление имени и хешированного пароля в объект FormData
-    formDatab.append("isVerification", isVerification);
-    formDatab.append('Name', formData.Name);
-    formDatab.append("Password", await hashPasswordAndUsername(formData.Name, formData.Password1));
-
-    fetch(apiUrl, {
-      method: "POST",
-      body: formDatab,
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        // Обработка ответа
-        if (isVerification === 1) {
-          // Обработка ответа для регистрации
-          if (data.includes('Thank you for successful registration!')) {
-            alert('Thank you for successful registration!')
-            setSubmitting(false);
-            setFormData({
-              Name: '',
-              Password1: '',
-            });
-            setLoggedIn(true);
-            setSavedLogin(formData.Name);
-            setSavedPassword(formData.Password1);
-          } else if (data.includes('This username already exists. Please choose another one.')) {
-            alert('This username already exists. Please choose another one');
-            setSubmitting(false);
-            setFormData({
-              ...formData,
-              Name: '',
-              Password1: '',
-            });
-          } else {
-            alert("⚠️Registration failed. Please try again.");
-            setSubmitting(false);
-          }
-        } else if (isVerification === 2) {
-          // Обработка ответа для входа
-          if (data === 'Incorrect username or password.') {
-            alert('⚠️Incorrect username or password.');
-            setSubmitting(false);
-          } else {
-            const dataArray = data.split(', ');
-            const receivedMessage = dataArray[0].split(': ')[1];
-            const receivedPromo = dataArray[1].split(': ')[1];
-            const receivedOrder = dataArray[2].split(': ')[1];
-            
-            setMessage(receivedMessage||"");
-            setPromo(receivedPromo||"");
-            setOrder(receivedOrder||"");
-            setSubmitting(false);
-            setLoggedIn(true);
-            setSavedLogin(formData.Name);
-            setSavedPassword(formData.Password1);
-          }
-        }
-      })
-      .catch((error) => {
-        alert('⚠️Error: ' + error.message);
-        setSubmitting(false);
-        setShowRegistrationForm(true)
-      })
-      .finally(() => {
-        setLoading(false);       
-      });
+  const saveLoginData = () => {
+    setSavedLogin(formData.Name);
+    setSavedPassword(formData.Password1);
   };
 
   const handleToggleForm = () => {
     setIsVerification(isVerification === 1 ? 2 : 1);
     setShowRegistrationFormLokal(!showRegistrationFormLokal);
-    setLoggedIn(false);
+    setLoggedIn(false);    
   };
 
   const handleLogout = () => {
@@ -148,39 +140,36 @@ export default function RegistrationForm({ isVerification: propIsVerification })
     setPromo('');
     setOrder('');
     setMessage('');
-    setShowRegistrationForm(true)
+    setShowRegistrationForm(true);
   };
+
+  const toggleSections = () => setShowRegistrationForm(prevState => !prevState);
 
   return (
     <>
-    
       {showRegistrationForm && (
-       
-        <section className='section-form'> 
-         {loading && <LoadingAnimation />}
+        <section className='section-form'>
+          {loading && <LoadingAnimation />}
           <div className="registration-form">
-            {/* <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/> */}
             <hr />
             {loggedIn ? (
-              <div >
+              <div>
                 <p><img className="back-button" src={userok} alt="userok" /> Nickname: {savedLogin}</p>
                 <p>{promo !== '#' && promo !== '' && `Your promo code: ${promo}`}</p>
                 <p>{message !== '#' && message !== '' && `Your message: ${message}`}</p>
                 <hr />
-                <div  className='filter'>               
-                  <button  onClick={handleLogout}  className='form-button' tabIndex={-1}>
-                     <img  className="back-button" src={logout} alt="logout" />
-                  </button>                
-                  <button onClick={toggleSections}  className='form-button' tabIndex={0}>
-                      <img tabIndex={-1} src={cancel} alt='cancel'  className="back-button" />
+                <div className='filter'>
+                  <button onClick={handleLogout} className='form-button' tabIndex={-1}>
+                    <img className="back-button" src={logout} alt="logout" />
+                  </button>
+                  <button onClick={toggleSections} className='form-button' tabIndex={0}>
+                    <img  src={cancel} alt='cancel' className="back-button" />
                   </button>
                 </div>
               </div>
             ) : (
               <>
-                
                 <h2>{showRegistrationFormLokal ? 'Create Account' : 'Log In'}</h2>
-               
                 <form onSubmit={handleSubmit}>
                   <table>
                     <tbody>
@@ -193,8 +182,10 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                             className='form-input' autoFocus
                             type="text"
                             name="Name"
+                            minLength={4}
+                            maxLength={42}
                             placeholder='Nickname'
-                            value={formData.Name}
+                            defaultValue={formData.Name}
                             onChange={handleInputChange}
                             autoComplete="username"
                             required
@@ -209,10 +200,11 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                           <input
                             className='form-input'
                             type="password"
+                            minLength={3}
+                            maxLength={42}
                             name="Password1"
                             placeholder='Password'
-                            // defaultValue={formData.Password1}
-                            value={formData.Password1}
+                            defaultValue={formData.Password1}
                             onChange={handleInputChange}
                             autoComplete="current-password"
                             required
@@ -220,28 +212,25 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                         </td>
                       </tr>
                     </tbody>
-                  </table>
-                  {invalidInput && <p className="error-message">Please fill out all fields and avoid using invalid characters.📝</p>}
-                  {invalidChars && <p className="error-message">Invalid characters 🚫 (=, +, ", ').</p>}
-                  {showRegistrationFormLokal && (!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="filter">Name must contain at least one Latin letter</p>}
-                  <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting} style={{ cursor: isSubmitDisabled()||submitting ? 'not-allowed' : 'pointer' }}>
-                    {showRegistrationFormLokal ?  <img className="back-button" src={useradd} alt="useradd" />  :  <img className="back-button" src={enter} alt="enter" />}
+                  </table>                 
+                  {isSubmitDisabled() && validationPatterns.invalidChars && <p className="error-message">Invalid characters 🚫 {validationPatterns.invalidChars.toString().slice(2, -2)} </p>}
+                  {(validationPatterns.invalidName(formData.Name) || !formData.Name )&& <p className="error-message">{validationPatterns.invalidNameMeseg}</p>}
+                  <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting} style={{ cursor: isSubmitDisabled() || submitting ? 'not-allowed' : 'pointer' }}>
+                    {showRegistrationFormLokal ? <img className="back-button" src={useradd} alt="useradd" /> : <img className="back-button" src={enter} alt="enter" />}
                   </button>
                 </form>
                 <hr />
                 <div className='filter'>
-                <button  className='form-button' onClick={handleToggleForm}>
-                  {showRegistrationFormLokal ?  (
-                    <><img className="back-button" src={enter} alt="enter" /> <b> Log In </b>
-                   
-                    </>
-                  ) : (
-                    <><img className="back-button" src={useradd} alt="useradd" /> Create Account </>
-                  )}
-                </button>
-                <button  className='form-button' onClick={toggleSections}>
-                  <img src={cancel} alt='cancel' className="back-button" />
-                </button>
+                  <button className='form-button' onClick={handleToggleForm}>
+                    {showRegistrationFormLokal ? (
+                      <><img className="back-button" src={enter} alt="enter" /> <b> Log In </b></>
+                    ) : (
+                      <><img className="back-button" src={useradd} alt="useradd" /> Create Account </>
+                    )}
+                  </button>
+                  <button className='form-button' onClick={toggleSections}>
+                    <img src={cancel} alt='cancel' className="back-button" />
+                  </button>
                 </div>
               </>
             )}
@@ -251,6 +240,264 @@ export default function RegistrationForm({ isVerification: propIsVerification })
     </>
   );
 };
+
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { BooksContext } from '../../BooksContext';
+// //import { Link } from 'react-router-dom';
+// import './form.css';
+// import { hashPasswordAndUsername } from './HashUtils';
+// import LoadingAnimation from '../utils/LoadingAnimation';  
+// import enter from '../cart/img/enter.png';
+// import useradd from '../cart/img/useradd.png';
+// import logout from '../cart/img/logout.png';
+// import cancel from '../cart/img/cancel.png';
+// import userok from '../cart/img/userok.png';
+// import nickname from '../cart/img/nickname.png';
+// import password from '../cart/img/password.png';
+
+
+// export default function RegistrationForm({ isVerification: propIsVerification }) {
+//   const { showRegistrationForm, setShowRegistrationForm, message, setMessage, promo, setPromo, setOrder, order, loggedIn, setLoggedIn, savedLogin, setSavedLogin, setSavedPassword, uiMain } = React.useContext(BooksContext);
+//   const [formData, setFormData] = useState({
+//     Name: '',
+//     Password1: '',
+//   });
+//   const [invalidInput, setInvalidInput] = useState(false);
+//   const [invalidChars, setInvalidChars] = useState(false);
+//   const [isVerification, setIsVerification] = useState(2);
+//   const [showRegistrationFormLokal, setShowRegistrationFormLokal] = useState(isVerification === 1);
+//   //const [showSections, setShowSections] = useState(false);
+//   const [submitting, setSubmitting] = useState(false);
+//   const [loading, setLoading] = useState(false);
+
+//   useEffect(() => {
+//     setIsVerification(propIsVerification || 2);
+//   }, [propIsVerification]);
+
+//   const toggleSections = () => setShowRegistrationForm(prevState => !prevState);
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+
+//     if (/[=+"']/.test(value) || value.length > 42 || (name === 'Password1' && /[=+"']/.test(value))) {
+//       setInvalidChars(true);
+//     } else {
+//       setInvalidChars(false);
+//       setFormData({ ...formData, [name]: value });
+//     }
+//   };
+
+//   const isSubmitDisabled = () => {
+//     return (
+//       (!isVerification && Object.values(formData).some((value) => value === '')) ||
+//       invalidChars
+//     );
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     if (!isVerification && isSubmitDisabled()) {
+//       setInvalidInput(true);
+//       return;
+//     } else {
+//       setInvalidInput(false);
+//     }
+
+//     formData.isVerification = isVerification;
+
+//     setSubmitting(true);
+
+//     const apiUrl = uiMain.Urregform;
+
+//     const formDatab = new FormData();
+//     // Добавление имени и хешированного пароля в объект FormData
+//     formDatab.append("isVerification", isVerification);
+//     formDatab.append('Name', formData.Name);
+//     formDatab.append("Password", await hashPasswordAndUsername(formData.Name, formData.Password1));
+
+//     fetch(apiUrl, {
+//       method: "POST",
+//       body: formDatab,
+//     })
+//       .then((response) => response.text())
+//       .then((data) => {
+//         // Обработка ответа
+//         if (isVerification === 1) {
+//           // Обработка ответа для регистрации
+//           if (data.includes('Thank you for successful registration!')) {
+//             alert('Thank you for successful registration!')
+//             setSubmitting(false);
+//             setFormData({
+//               Name: '',
+//               Password1: '',
+//             });
+//             setLoggedIn(true);
+//             setSavedLogin(formData.Name);
+//             setSavedPassword(formData.Password1);
+//           } else if (data.includes('This username already exists. Please choose another one.')) {
+//             alert('This username already exists. Please choose another one');
+//             setSubmitting(false);
+//             setFormData({
+//               ...formData,
+//               Name: '',
+//               Password1: '',
+//             });
+//           } else {
+//             alert("⚠️Registration failed. Please try again.");
+//             setSubmitting(false);
+//           }
+//         } else if (isVerification === 2) {
+//           // Обработка ответа для входа
+//           if (data === 'Incorrect username or password.') {
+//             alert('⚠️Incorrect username or password.');
+//             setSubmitting(false);
+//           } else {
+//             const dataArray = data.split(', ');
+//             const receivedMessage = dataArray[0].split(': ')[1];
+//             const receivedPromo = dataArray[1].split(': ')[1];
+//             const receivedOrder = dataArray[2].split(': ')[1];
+            
+//             setMessage(receivedMessage||"");
+//             setPromo(receivedPromo||"");
+//             setOrder(receivedOrder||"");
+//             setSubmitting(false);
+//             setLoggedIn(true);
+//             setSavedLogin(formData.Name);
+//             setSavedPassword(formData.Password1);
+//           }
+//         }
+//       })
+//       .catch((error) => {
+//         alert('⚠️Error: ' + error.message);
+//         setSubmitting(false);
+//         setShowRegistrationForm(true)
+//       })
+//       .finally(() => {
+//         setLoading(false);       
+//       });
+//   };
+
+//   const handleToggleForm = () => {
+//     setIsVerification(isVerification === 1 ? 2 : 1);
+//     setShowRegistrationFormLokal(!showRegistrationFormLokal);
+//     setLoggedIn(false);
+//   };
+
+//   const handleLogout = () => {
+//     setLoggedIn(false);
+//     setSavedLogin('');
+//     setSavedPassword('');
+//     setPromo('');
+//     setOrder('');
+//     setMessage('');
+//     setShowRegistrationForm(true)
+//   };
+
+//   return (
+//     <>
+    
+//       {showRegistrationForm && (
+       
+//         <section className='section-form'> 
+//          {loading && <LoadingAnimation />}
+//           <div className="registration-form">
+//             {/* <img src={cancel} alt='cancel' className="back-button selected" onClick={toggleSections}/> */}
+//             <hr />
+//             {loggedIn ? (
+//               <div >
+//                 <p><img className="back-button" src={userok} alt="userok" /> Nickname: {savedLogin}</p>
+//                 <p>{promo !== '#' && promo !== '' && `Your promo code: ${promo}`}</p>
+//                 <p>{message !== '#' && message !== '' && `Your message: ${message}`}</p>
+//                 <hr />
+//                 <div  className='filter'>               
+//                   <button  onClick={handleLogout}  className='form-button' tabIndex={-1}>
+//                      <img  className="back-button" src={logout} alt="logout" />
+//                   </button>                
+//                   <button onClick={toggleSections}  className='form-button' tabIndex={0}>
+//                       <img  src={cancel} alt='cancel'  className="back-button" />
+//                   </button>
+//                 </div>
+//               </div>
+//             ) : (
+//               <>
+                
+//                 <h2>{showRegistrationFormLokal ? 'Create Account' : 'Log In'}</h2>
+               
+//                 <form onSubmit={handleSubmit}>
+//                   <table>
+//                     <tbody>
+//                       <tr>
+//                         <td>
+//                           <img className="back-button" src={nickname} alt="nickname" />
+//                         </td>
+//                         <td>
+//                           <input
+//                             className='form-input' autoFocus
+//                             type="text"
+//                             name="Name"
+//                             placeholder='Nickname'
+//                             value={formData.Name}
+//                             onChange={handleInputChange}
+//                             autoComplete="username"
+//                             required
+//                           />
+//                         </td>
+//                       </tr>
+//                       <tr>
+//                         <td>
+//                           <img className="back-button" src={password} alt="password" />
+//                         </td>
+//                         <td>
+//                           <input
+//                             className='form-input'
+//                             type="password"
+//                             name="Password1"
+//                             placeholder='Password'
+//                             // defaultValue={formData.Password1}
+//                             value={formData.Password1}
+//                             onChange={handleInputChange}
+//                             autoComplete="current-password"
+//                             required
+//                           />
+//                         </td>
+//                       </tr>
+//                     </tbody>
+//                   </table>
+//                   {invalidInput && <p className="error-message">Please fill out all fields and avoid using invalid characters.📝</p>}
+//                   {invalidChars && <p className="error-message">Invalid characters 🚫 (=, +, ", ').</p>}
+//                   {showRegistrationFormLokal && (!/[a-zA-Z]/.test(formData.Name) || /[=+"']/.test(formData.Name)) && <p className="filter">Name must contain at least one Latin letter</p>}
+//                   <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting} style={{ cursor: isSubmitDisabled()||submitting ? 'not-allowed' : 'pointer' }}>
+//                     {showRegistrationFormLokal ?  <img className="back-button" src={useradd} alt="useradd" />  :  <img className="back-button" src={enter} alt="enter" />}
+//                   </button>
+//                 </form>
+//                 <hr />
+//                 <div className='filter'>
+//                 <button  className='form-button' onClick={handleToggleForm}>
+//                   {showRegistrationFormLokal ?  (
+//                     <><img className="back-button" src={enter} alt="enter" /> <b> Log In </b>
+                   
+//                     </>
+//                   ) : (
+//                     <><img className="back-button" src={useradd} alt="useradd" /> Create Account </>
+//                   )}
+//                 </button>
+//                 <button  className='form-button' onClick={toggleSections}>
+//                   <img src={cancel} alt='cancel' className="back-button" />
+//                 </button>
+//                 </div>
+//               </>
+//             )}
+//           </div>
+//         </section>
+//       )}
+//     </>
+//   );
+// };
 
 
 // import React, { useState, useEffect } from 'react';
