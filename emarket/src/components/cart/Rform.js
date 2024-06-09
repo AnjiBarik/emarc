@@ -169,9 +169,14 @@ export default function Form() {
     }
   };
 
-  const errorMessages = Object.keys(formErrors).map((fieldName) => {
-    return formErrors[fieldName] && <p key={fieldName} className="error-message">{formErrors[fieldName]}{fieldName}</p>;
+  const errorMessages = [...new Set(Object.values(formErrors))].map((errorMessage, index) => {
+    return errorMessage && <p key={index} className="error-message">{errorMessage}</p>;
   });
+
+  const renderErrorMessages = (name) => {
+    const errorMessage = formErrors[name];
+    return errorMessage && <p key={name} className="error-message">{errorMessage}</p>;    
+  };
 
   let id, title, count, price;
   if (queryParams.has('id')) {
@@ -267,7 +272,7 @@ export default function Form() {
                           maxLength={50}
                           defaultValue={formData.FirstName}
                           required
-                        />
+                        />{renderErrorMessages("FirstName")}
                       </td>
                     </tr>
                   )}
@@ -281,8 +286,8 @@ export default function Form() {
                           type="text"
                           maxLength={50}
                           defaultValue={formData.MiddleName}
-                          required
-                        />
+                          required                          
+                        />{renderErrorMessages("MiddleName")}
                       </td>
                     </tr>
                   )}
