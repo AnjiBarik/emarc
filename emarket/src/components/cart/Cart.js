@@ -70,7 +70,7 @@ export default function Cart() {
         )}
          {loggedIn&&(<CartMemo/>)}
         {cartItems.length !== 0 && totalPrice !== 0 && (
-          <p id="total" autoFocus><b className="back-button selected">Total Price: ${totalPrice}</b></p>
+          <p id="total"><b className="back-button selected">Total Price: <strong>{totalPrice}</strong></b></p>
         )}
       </section>
       {cartItems.length !== 0 && (
