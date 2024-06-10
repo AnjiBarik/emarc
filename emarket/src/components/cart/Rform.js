@@ -265,7 +265,7 @@ export default function Form() {
                     <tr>
                       <td><img src={user} className="form-icon selected" alt='FirstName' /></td>
                       <td>
-                        <input className='form-input'
+                        <input className='form-input' autoFocus
                           placeholder="First Name"
                           name="FirstName"
                           type="text"
@@ -302,7 +302,7 @@ export default function Form() {
                           maxLength={50}
                           defaultValue={formData.LastName}
                           required
-                        />
+                        />{renderErrorMessages("LastName")}
                       </td>
                     </tr>
                   )}
@@ -319,7 +319,7 @@ export default function Form() {
                           required
                           //pattern='[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}'                     
                          //title="Please enter a valid email address"
-                        />
+                        />{renderErrorMessages("Email")}
                       </td>
                     </tr>
                   )}
@@ -336,7 +336,7 @@ export default function Form() {
                           pattern="[0-9]{6,15}" 
                           title="Please enter a valid phone number (6 to 15 digits)"
                           required
-                        />
+                        />{renderErrorMessages("Phone")}
                       </td>
                     </tr>
                   )}
@@ -351,7 +351,7 @@ export default function Form() {
                           maxLength={50}
                           defaultValue={formData.Address}
                           required
-                        />
+                        />{renderErrorMessages("Address")}
                       </td>
                     </tr>
                   )}
@@ -365,7 +365,7 @@ export default function Form() {
                           maxLength={100}
                           defaultValue={formData.Message}
                           rows={3}
-                        />
+                        />{renderErrorMessages("Message")}
                       </td>
                     </tr>
                   )}

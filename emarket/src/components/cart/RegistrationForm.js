@@ -154,8 +154,12 @@ export default function RegistrationForm({ isVerification: propIsVerification })
   // const toggleSections = () => setShowRegistrationForm(prevState => !prevState);
   const toggleSections = () => setShowRegistrationForm(false);
 
-  const errorMessages = Object.keys(formErrors).map((fieldName) => {
-    return formErrors[fieldName] && <p key={fieldName} className="error-message">{formErrors[fieldName]}</p>;
+  // const errorMessages = Object.keys(formErrors).map((fieldName) => {
+  //   return formErrors[fieldName] && <p key={fieldName} className="error-message">{formErrors[fieldName]}</p>;
+  // });
+
+  const errorMessages = [...new Set(Object.values(formErrors))].map((errorMessage, index) => {
+    return errorMessage && <p key={index} className="error-message">{errorMessage}</p>;
   });
 
   return (
