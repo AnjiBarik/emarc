@@ -151,13 +151,8 @@ export default function RegistrationForm({ isVerification: propIsVerification })
     setShowRegistrationForm(true);
   };
 
-  // const toggleSections = () => setShowRegistrationForm(prevState => !prevState);
   const toggleSections = () => setShowRegistrationForm(false);
-
-  // const errorMessages = Object.keys(formErrors).map((fieldName) => {
-  //   return formErrors[fieldName] && <p key={fieldName} className="error-message">{formErrors[fieldName]}</p>;
-  // });
-
+  
   const errorMessages = [...new Set(Object.values(formErrors))].map((errorMessage, index) => {
     return errorMessage && <p key={index} className="error-message">{errorMessage}</p>;
   });
@@ -232,7 +227,6 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                   </table>                 
                   {errorMessages}
                   <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting} >
-                    {/* {showRegistrationFormLokal ? <img className="back-button" src={useradd} alt="useradd" /> : <img className="back-button" src={enter} alt="enter" />} */}
                     <img className="back-button" style={{ cursor: isSubmitDisabled() || submitting ? 'not-allowed' : 'pointer' }} src={showRegistrationFormLokal ? useradd : enter} alt={showRegistrationFormLokal ? "useradd" : "enter"} />
                   </button>
                 </form>

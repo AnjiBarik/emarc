@@ -16,10 +16,6 @@ export default function PriceBlock({ id, showPrice }) {
   const selectedBook = useMemo(() => books.find((book) => book.id === id), [books, id]);
   const [count, setCount] = useState(specificCount || 1);
 
-  // useEffect(() => {
-  //   setCount(specificCount || 1);
-  // }, [specificCount]);
-
   const createUpdatedBook = useCallback((newCount) => {
     const calculatedPrice = parseFloat(selectedBook.price || 0) * newCount;
     const totalBookPrice = calculatedPrice >= 0 ? calculatedPrice.toFixed(2) : '0.00';
@@ -43,7 +39,7 @@ export default function PriceBlock({ id, showPrice }) {
     setCount((prevCount) => Math.max(1, prevCount - 1));
   };
 
-  const addtoCart = () => {
+  const addToCart = () => {
     if (specificBookIndex === -1) {
       const updatedBook = createUpdatedBook(count);
       const updatedBooksInCart = [...booksInCart, updatedBook];
@@ -63,13 +59,13 @@ export default function PriceBlock({ id, showPrice }) {
         {/* <section key={`${count}`} className="price-block Price"> */}
         <section  className="price-block Price">
           {specificBookIndex !== -1 && (
-            <img src={cartupl} alt='remove from Cart' className="ccart-icon" onClick={() => removeBookFromCart(id)} tabIndex="-1" />
+            <img src={cartupl} alt='remove from Cart' className="ccart-icon" onClick={() => removeBookFromCart(id)} tabIndex={-1} />
           )}
 
           <section className="price-block Price">
             {showPrice && (
               <div className="price-block-row">
-                <span>{fieldState.price && fieldState.price !== "" ? fieldState.price : "Price,$"}  </span>
+                <span>{fieldState.price && fieldState.price !== "" ? fieldState.price : "Price"}  </span>
                 <span id="price">{selectedBook.price || 0}</span>
               </div>
             )}
@@ -99,8 +95,8 @@ export default function PriceBlock({ id, showPrice }) {
             )}
 
             <div className="price-block-row totalPrice">
-              <span>{fieldState.totalPrice && fieldState.totalPrice !== "" ? fieldState.totalPrice : "Total,$"} </span>
-              <span id="totalPrice" data-testid="totalPrice">
+              <span>{fieldState.totalPrice && fieldState.totalPrice !== "" ? fieldState.totalPrice : "Total"}</span>
+              <span id="totalPrice">
                 {(count * (selectedBook.price || 0)).toFixed(2)}
               </span>
             </div>
@@ -119,16 +115,15 @@ export default function PriceBlock({ id, showPrice }) {
               <img
                 className="ccart-icon rotate"
                 src={cartadd}
-                alt='addtocart'
-                onClick={addtoCart}
+                alt='addToCart'
+                onClick={addToCart}
               />
             )}
-
-            <Link to="/cart">
-              {specificBookIndex !== -1 && (
-                <img src={cartIcon} alt="Cart" className="ccart-icon Linkcart rotate" />
-              )}
-            </Link>
+            {specificBookIndex !== -1 && (
+              <Link to="/cart">              
+                <img src={cartIcon} alt="Cart" className="ccart-icon Linkcart rotate" />             
+              </Link>
+            )}
           </section>
         </section>
       </section>

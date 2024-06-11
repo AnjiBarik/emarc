@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useCallback, useMemo } from 're
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
 import './form.css';
-//import RegistrationForm from './RegistrationForm';
 import InfoModal from '../specific-book/InfoModal';
 import RSAEncryption from '../rsacomponent/RSAEncryption';
 import LoadingAnimation from '../utils/LoadingAnimation'; 
@@ -158,8 +157,7 @@ export default function Form() {
         setOrderSubmitted(true);
         clearCart();
       } else {
-        alert("⚠️Order submission failed. Please try again.");
-        //console.log(data);
+        alert("⚠️Order submission failed. Please try again.");        
       }
     } catch (error) {
       alert(error);
@@ -371,8 +369,7 @@ export default function Form() {
                   )}
                 </tbody>
               </table>
-              {errorMessages}
-              {/* {isSubmitDisabled() && invalidCharsPattern && <p className="error-message">🚫Invalid characters {invalidCharsPattern.toString().slice(2, -2)} are not allowed.</p>} */}
+              {errorMessages}             
               <table className='order-tab'>
                 <thead>
                   <tr>
