@@ -328,18 +328,20 @@ body {
     padding: 5px 10px;
     background-color: #f0f0f0;   
     color: black;
-    margin: 0 5px;
+    /* margin: 0 5px; */
      /* /!/ */
     transform: scale(1.03); 
     box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.3); 
-    font-size: 100%;
+    /* font-size: 100%; */
+    font-size: larger;
+    margin: 5px;
   }
   .sort-button{
     border: 0px;
     cursor: pointer;
   }
   .selected-button{
-    font-size: large;
+    /* font-size: large; */
     margin: 2px 5px 2px 5px;
     padding: 2px 5px 2px 5px;
     border-radius: 10px;

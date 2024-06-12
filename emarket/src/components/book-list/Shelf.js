@@ -87,7 +87,7 @@ console.log(imageSource)
                 <p className='book-text'>
                   <b className='book-size'>
                     {fieldState.size && fieldState.size !== '' ? fieldState.size : 'Size:'}
-                    {el.sizeblock && el.sizeblock !== '' ? <b>↔️{el.size}↔️</b> : <b>{el.size}</b>}
+                    {el.sizeblock && el.sizeblock !== '' ? <b>{'<'}{el.size}{'>'}</b> : <b>{el.size}</b>}
                   </b>
                 </p>
               </Link>
@@ -99,7 +99,7 @@ console.log(imageSource)
                     {fieldState.color && fieldState.color !== '' ? fieldState.color : 'Color:'}
                     {el.colorblock && el.colorblock !== '' ? (
                       <>
-                        <b>{'<<'}{el.color}{'>>'}</b>
+                        <b>{'<'}{el.color}{'>'}</b>
                         {colorRGB[el.color.trim()] && (
                            <span
                            className='circle' 
