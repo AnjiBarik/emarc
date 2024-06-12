@@ -7,13 +7,13 @@ const IconPath = (iconName) => {
     try {
       const img = new Image();
       img.src = src;
-      await new Promise((resolve) => { img.onload = resolve; });
-      return src;
+      await new Promise((resolve) => { img.onload = resolve; });     
+      return src;           
     } catch {
       return false;
     }
   };
-
+ 
   useEffect(() => {
     const getIconPath = async () => {
       const PablikIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
@@ -29,6 +29,38 @@ const IconPath = (iconName) => {
 };
 
 export default IconPath;
+
+// import { useEffect, useState } from 'react';
+
+// const IconPath = (iconName) => {
+//   const [iconPath, setIconPath] = useState('');
+
+//   const loadIcon = async (src) => {
+//     try {
+//       const img = new Image();
+//       img.src = src;
+//       await new Promise((resolve) => { img.onload = resolve; });
+//       return src;
+//     } catch {
+//       return false;
+//     }
+//   };
+
+//   useEffect(() => {
+//     const getIconPath = async () => {
+//       const PablikIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
+//       const validPath = await loadIcon(PablikIconPath);
+//       console.log(validPath)
+//       setIconPath(validPath);
+//     };
+
+//     getIconPath();
+//   }, [iconName]);
+
+//   return iconPath;
+// };
+
+// export default IconPath;
 
 // Pablik IconPath for theme
 // import { useEffect, useState, useContext } from 'react';

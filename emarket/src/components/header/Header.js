@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { BooksContext } from '../../BooksContext';
-import IconPath from '../book-list/IconPath'; 
+//import IconPath from '../book-list/IconPath'; 
 import './header.css';
 import dark from '../cart/img/dark.png';
 import light from '../cart/img/light.png';

@@ -1,34 +1,48 @@
-import { useEffect, useState } from 'react';
+// import React from 'react';
 
-const IconPath = (iconName) => {
-  const [iconPath, setIconPath] = useState('');
+// const IconPath = ({ iconName }) => {
+//   const iconUrl = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
 
-  const loadIcon = async (src) => {
-    try {
-      const img = new Image();
-      img.src = src;
-      await new Promise((resolve) => { img.onload = resolve; });
-      return src;
-    } catch {
-      return false;
-    }
-  };
+//   return (
+//     <img src={iconUrl} alt={iconName} />
+//   );
+// };
 
-  useEffect(() => {
-    const getIconPath = async () => {
-      const PablikIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
-      const validPath = await loadIcon(PablikIconPath);
-      console.log(validPath)
-      setIconPath(validPath);
-    };
+// export default IconPath;
 
-    getIconPath();
-  }, [iconName]);
 
-  return iconPath;
-};
 
-export default IconPath;
+// import { useEffect, useState } from 'react';
+
+// const IconPath = (iconName) => {
+//   const [iconPath, setIconPath] = useState('');
+
+//   const loadIcon = async (src) => {
+//     try {
+//       const img = new Image();
+//       img.src = src;
+//       await new Promise((resolve) => { img.onload = resolve; });     
+//       return src;           
+//     } catch {
+//       return false;
+//     }
+//   };
+
+//   useEffect(() => {
+//     const getIconPath = async () => {
+//       const PablikIconPath = `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
+//       const validPath = await loadIcon(PablikIconPath);
+//       console.log(validPath)
+//       setIconPath(validPath);
+//     };
+
+//     getIconPath();
+//   }, [iconName]);
+
+//   return iconPath;
+// };
+
+// export default IconPath;
 
 // Pablik IconPath for theme
 // import { useEffect, useState, useContext } from 'react';

@@ -270,7 +270,7 @@ console.log(colors)
                   src={images[currentImageIndex]}
                   alt={selectedBook.title}
                   onError={(e) => { e.target.src = notFound; }}
-                  onClick={openFullscreen}
+                  onClick={!isFullscreen? openFullscreen:closeFullscreen}
                   className={isFullscreen ? 'fullscreen-image' : (selectedBook.art === "width" ? 'artwidth' : 'art')}
                 />
                 {!isFullscreen && (

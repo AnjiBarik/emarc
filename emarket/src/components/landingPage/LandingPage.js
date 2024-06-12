@@ -6,7 +6,7 @@ import { BooksContext } from '../../BooksContext';
 import LangComponent from  './LangComponent';
 import RSAGenerator from '../rsacomponent/RSAGenerator';
 //import ExampleApp from '../rsacomponent/ExampleApp';
-import tuning from '../book-list/tuning.json';
+import tuning from '../assets/data/tuning.json';
 
 function LandingPage() {
     const { theme,  uiMain, fieldState, setUiState, setUiMain} = React.useContext(BooksContext);
