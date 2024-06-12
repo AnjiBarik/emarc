@@ -22,7 +22,7 @@ const BooksProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [savedLogin, setSavedLogin] = useState('');
   const [savedPassword, setSavedPassword] = useState('');
-  const [filterBooks, setFilterBooks] = useState([]);
+  //const [filterBooks, setFilterBooks] = useState([]);
   const [selectedSection, setSelectedSection] = useState(null);
   const [selectedSubsection, setSelectedSubsection] = useState(null);
   //const [sortedBooks, setSortedBooks] = useState([]);
@@ -31,6 +31,7 @@ const BooksProvider = ({ children }) => {
   const [selectedTags2, setSelectedTags2] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColor, setSelectedColor] = useState([]);
+  const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags3, setSelectedTags3] = useState([]);
   const [selectedTags4, setSelectedTags4] = useState([]);
   const [glsearch, setSearch] = useState("");
@@ -187,9 +188,9 @@ const [showRegistrationForm, setShowRegistrationForm] = useState(false);
   const contextValue = {
     message, setMessage, promo, setPromo, order, setOrder, loggedIn, setLoggedIn, savedLogin, setSavedLogin, savedPassword, setSavedPassword,
     totalPrice, setTotalPrice, cartItems, setCartItems, theme, setTheme, totalCount, setTotalCount, books, setBooks,
-    specificBook, setSpecificBook, filterBooks, setFilterBooks, selectedSection, setSelectedSection,
+    specificBook, setSpecificBook, selectedSection, setSelectedSection,
     selectedSubsection, setSelectedSubsection, input, setInput, selectedTags1, setSelectedTags1, selectedTags2, setSelectedTags2,
-    selectedSizes, setSelectedSizes, selectedColor, setSelectedColor, glsearch, setSearch, searchOptions, setSearchOptions,
+    selectedAuthors, setSelectedAuthors, selectedSizes, setSelectedSizes, selectedColor, setSelectedColor, glsearch, setSearch, searchOptions, setSearchOptions,
     uiState, setUiState, uiMain, setUiMain, fieldState, setFieldState, idLoudPrice, setIdLoudPrice, selectedTags3, setSelectedTags3,
     selectedTags4, setSelectedTags4, showRegistrationForm, setShowRegistrationForm
   };

@@ -107,7 +107,7 @@ export default function Search() {
           </span>
           {glsearch && (
             <button className="selected-button" onClick={resetSearch}>
-              Search by: {glsearch} <span>❌</span>
+              Search by: <strong>{glsearch}</strong> <span>❌</span>
             </button>
           )}
         </div>

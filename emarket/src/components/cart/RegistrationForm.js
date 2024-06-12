@@ -228,6 +228,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                   {errorMessages}
                   <button className='form-button' type="submit" disabled={isSubmitDisabled() || submitting} >
                     <img className="back-button" style={{ cursor: isSubmitDisabled() || submitting ? 'not-allowed' : 'pointer' }} src={showRegistrationFormLokal ? useradd : enter} alt={showRegistrationFormLokal ? "useradd" : "enter"} />
+                    <b>{showRegistrationFormLokal ? "Create Account" : "Log In"}</b>
                   </button>
                 </form>
                 <hr />

@@ -99,7 +99,7 @@ console.log(imageSource)
                     {fieldState.color && fieldState.color !== '' ? fieldState.color : 'Color:'}
                     {el.colorblock && el.colorblock !== '' ? (
                       <>
-                        <b>↔️{el.color}↔️</b>
+                        <b>{'<<'}{el.color}{'>>'}</b>
                         {colorRGB[el.color.trim()] && (
                            <span
                            className='circle' 
