@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect  } from 'react';
 import { BooksContext } from '../../BooksContext';
-import IconPath from '../utils/IconPath'; 
-import langicon from '../assets/img/lang.png';
+import iconPath from '../utils/IconPath'; 
+//import lang from '../assets/iconimg/lang.png';
 
 
 
@@ -10,7 +10,7 @@ const LangComponent = () => {
   const { author } = uiMain;
   const [activeLangId, setActiveLangId] = useState(null);
 
-const lang = IconPath('lang.png') || langicon;
+  const lang = iconPath('lang.png') ;
 
   console.log(lang)
 
