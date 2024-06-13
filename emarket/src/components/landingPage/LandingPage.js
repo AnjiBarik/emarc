@@ -84,7 +84,10 @@ function LandingPage() {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
+            const publicUrl = `${window.location.origin}${window.location.pathname}`;
+            const folder = 'data'
+            const tuningUrl =`${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
+            //const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
             const response = await fetch(tuningUrl);
             const tuningData = await response.json();
             console.log(tuningData)
