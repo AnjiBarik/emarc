@@ -46,12 +46,15 @@ export default function SpecificBook() {
   const [colors, setColors] = useState({});
   const [colorRGB, setColorRGB] = useState({});
 
+  const publicUrl = `${window.location.origin}${window.location.pathname}`;
+  const folder = 'img';
+
   useEffect(() => {
     const processImages = () => {
       if (selectedBook) {
         if (selectedBook.imageblockpublic && selectedBook.imageblockpublic !== '') {
           setImages(
-            selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`)
+            selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/${folder}/${element}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${element}`)
           );
         } else if (selectedBook.imageblock && selectedBook.imageblock !== '') {
           setImages(selectedBook.imageblock.split(','));
@@ -62,7 +65,7 @@ export default function SpecificBook() {
     };
 
     processImages();
-  }, [selectedBook]);
+  }, [selectedBook, publicUrl]);
   
   // if (books.length === 0 || specificBook.length === 0) {
   //   window.location.href = '/';

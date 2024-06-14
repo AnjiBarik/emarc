@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 //import notFound from './img/imageNotFound.png';
 import LazyImage from './LazyImage';
@@ -11,7 +11,9 @@ import popular from '../cart/img/popular.png';
 
 export default function Shelf(props) {
   const { setSpecificBook, fieldState } = useContext(BooksContext);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  //const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const currentImageIndex = 0
+
 //  const [supportsIntersectionObserver, setSupportsIntersectionObserver] = useState(false);
 
 
@@ -46,12 +48,15 @@ export default function Shelf(props) {
   //   });
   // };
 
+  const publicUrl = `${window.location.origin}${window.location.pathname}`;
+  const folder = 'img';
+
   const shelf = props.book.map((el, index) => {
   //  const images = el.imageblock.split(',');
   //  const imageSource = el.image && el.image !== '' ? el.image : images[currentImageIndex];
 
-const imagespublic = el.imageblockpublic && el.imageblockpublic!=="" ? el.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`):el.imageblock.split(',');
-const imageSource = el.imagepublic && el.imagepublic!=="" ?`${process.env.PUBLIC_URL}/img/${el.imagepublic}`:el.image && el.image !== '' ? el.image : imagespublic[currentImageIndex] ;
+const imagespublic = el.imageblockpublic && el.imageblockpublic!=="" ? el.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${element}`):el.imageblock.split(',');
+const imageSource = el.imagepublic && el.imagepublic!=="" ?`${process.env.PUBLIC_URL}/img/${el.imagepublic}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${el.imagepublic}`:el.image && el.image !== '' ? el.image : imagespublic[currentImageIndex] ;
 console.log(imagespublic)
 //console.log(imageSourcepublic)
 console.log(imageSource)
