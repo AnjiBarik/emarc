@@ -15,6 +15,11 @@ function LandingPage() {
    // const [load, setLoad] = useState(true);
     const [error, setError] = useState(null);
 
+    const publicUrl = `${window.location.origin}${window.location.pathname}`;
+    const folder = 'data';
+    //const tuningUrl = `${process.env.PUBLIC_URL}/${folder}/tuning.json`|| `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;
+    const tuningUrl =`${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
+
     useEffect(() => {
         const handleMessage = (event) => {
             if (event.data.type === 'iframeError') {
@@ -84,10 +89,12 @@ function LandingPage() {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const publicUrl = `${window.location.origin}${window.location.pathname}`;
-            const folder = 'data'
-            const tuningUrl =`${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
+          //  const publicUrl = `${window.location.origin}${window.location.pathname}`;
+          //  const folder = 'data';
             //const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
+            //const tuningUrl = `${process.env.PUBLIC_URL}/${folder}/tuning.json`|| `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;
+          //  const tuningUrl =`${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
+          console.log(tuningUrl)  
             const response = await fetch(tuningUrl);
             const tuningData = await response.json();
             console.log(tuningData)
@@ -101,7 +108,7 @@ function LandingPage() {
         };
     
         fetchData();
-      }, [fieldState, uiMain, initializeState]);  
+      }, [fieldState, uiMain, initializeState, tuningUrl]);  
 
     //  console.log(load)
 

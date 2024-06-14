@@ -1,6 +1,8 @@
 const iconPath = (iconName) => {
   const folder = 'iconimg'
   //const publicUrl = process.env.PUBLIC_URL || '';
+  //const publicUrl = process.env.PUBLIC_URL || `${window.location.origin}${window.location.pathname}`;
+  // return `${process.env.PUBLIC_URL}/iconimg/${iconName}`;
   const publicUrl = `${window.location.origin}${window.location.pathname}`;
   console.log(publicUrl)
   return `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${iconName}`;

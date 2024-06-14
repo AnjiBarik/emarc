@@ -237,7 +237,7 @@ export default function RegistrationForm({ isVerification: propIsVerification })
                     {showRegistrationFormLokal ? (
                       <><img className="back-button" src={enter} alt="enter" /> <b> Log In </b></>
                     ) : (
-                      <><img className="back-button" src={useradd} alt="useradd" /> Create Account </>
+                      <><img className="back-button" src={useradd} alt="useradd" /> <b>Create Account </b></>
                     )}
                   </button>
                   <button className='form-button' onClick={toggleSections}>
