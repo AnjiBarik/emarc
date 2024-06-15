@@ -138,7 +138,9 @@ figure{
   
 
   .img-conteiner{
-position: relative;
+    position: relative;
+    display: flex;
+    justify-content: center;
   }
   .art-icon{
     position:absolute;
