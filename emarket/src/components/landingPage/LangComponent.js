@@ -14,9 +14,8 @@ const LangComponent = () => {
   //const lang = iconPath('lang.png') ||langicon ;
   const lang = iconPath('lang.png') ;
 
-  console.log(lang)
+  //console.log(lang)
 
-  // Функция для отображения кнопок с языками
   const renderLangButtons = () => {
     return uiState
       .filter(item => item.author === author)
@@ -32,24 +31,13 @@ const LangComponent = () => {
       ));
   };
 
-  // Обработчик нажатия на кнопку языка
   const handleLangClick = langId => {
     setActiveLangId(langId);
-
-    // Находим объект в uiState по id и устанавливаем uiMain
-    const selectedLang = uiState.find(item => item.id === langId);
-    // если найдено совпадение по id, то устанавливаем uiMain, иначе не делаем ничего
-    //console.log(uiMain)
-    //console.log(selectedLang)
+  
+    const selectedLang = uiState.find(item => item.id === langId);    
     
-    if (selectedLang) {
-      // Устанавливаем новый uiMain с отфильтрованным uiState
-      setUiMain(selectedLang)
-      // setUiMain({
-      //   ...uiMain,
-      //   ...selectedLang,
-      // });
-      //console.log(uiMain)
+    if (selectedLang) {     
+      setUiMain(selectedLang)      
     }
   };
 
@@ -59,9 +47,7 @@ const LangComponent = () => {
 
   return (
     <div className='filters'>
-      <img className="back-button selected" src={lang} alt='Language Selection'/>
-      {/* <img className="back-button selected" src={`${process.env.PUBLIC_URL}/img/lang.png`} alt='Language Selection'/> */}
-      {/* Отображаем кнопки с языками */}
+      <img className="back-button selected" src={lang} alt='Language Selection'/>      
       {renderLangButtons()}
     </div>
   );

@@ -5,20 +5,17 @@ import Submit from './Form';
 import { BooksContext } from '../../BooksContext';
 import LangComponent from  './LangComponent';
 import RSAGenerator from '../rsacomponent/RSAGenerator';
-//import ExampleApp from '../rsacomponent/ExampleApp';
 import tuning from '../assets/data/tuning.json';
 
 function LandingPage() {
     const { theme,  uiMain, fieldState, setUiState, setUiMain} = React.useContext(BooksContext);
 
-    const [loading, setLoading] = useState(true);
-   // const [load, setLoad] = useState(true);
+    const [loading, setLoading] = useState(true);   
     const [error, setError] = useState(null);
 
     const publicUrl = `${window.location.origin}${window.location.pathname}`;
-    const folder = 'data';
-    //const tuningUrl = `${process.env.PUBLIC_URL}/${folder}/tuning.json`|| `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;
-    const tuningUrl =`${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
+    const folder = 'data';    
+    const tuningUrl = `${process.env.PUBLIC_URL}/${folder}/tuning.json` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
 
     useEffect(() => {
         const handleMessage = (event) => {
@@ -49,12 +46,7 @@ function LandingPage() {
         console.log(visibilityKeyGen)
       }
       console.log(e.key)
-    };
-
-
-    // const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
-    // console.log(tuningUrl)
-    
+    };    
        
       const initializeState = useCallback((data) => {
         setUiState(data.tuning);
@@ -73,68 +65,47 @@ function LandingPage() {
             if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
             if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
             updatedUiMain.Urprice = fieldState.Urprice;
-            updatedUiMain.logo = fieldState.logo;
-            // updatedUiMain.author = fieldState.author || (uiMain.author + (fieldState.idprice || "LOL"));
+            updatedUiMain.logo = fieldState.logo;            
             updatedUiMain.author = fieldState.authorprice || (uiMain.author + (fieldState.idprice || "LOL"));
             updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
             updatedUiMain.id = maxId + 1;
     
             return [...prevState, updatedUiMain];
           });
-        }
-    
-      // setLoad(false);
+        }    
+      
       }, [fieldState, uiMain, setUiMain, setUiState]);
     
       useEffect(() => {
         const fetchData = async () => {
-          try {
-          //  const publicUrl = `${window.location.origin}${window.location.pathname}`;
-          //  const folder = 'data';
-            //const tuningUrl = `${process.env.PUBLIC_URL}/data/tuning.json`;
-            //const tuningUrl = `${process.env.PUBLIC_URL}/${folder}/tuning.json`|| `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;
-          //  const tuningUrl =`${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
-          console.log(tuningUrl)  
+          try {      
             const response = await fetch(tuningUrl);
             const tuningData = await response.json();
-            console.log(tuningData)
+            //console.log(tuningData)
             initializeState(tuningData);
-          } catch  {
-          // } catch (err) {
-            //console.log(err.message);
-            console.log(tuning)
+          } catch  {          
+            //console.log(tuning)
             initializeState(tuning);
           }
         };
     
         fetchData();
-      }, [fieldState, uiMain, initializeState, tuningUrl]);  
-
-    //  console.log(load)
-
-    // if (load) {
-    // return <div>...Loading...</div>;
-    // }
-
+      }, [fieldState, uiMain, initializeState, tuningUrl]); 
 
     return (
-        <div className={theme} onKeyDown={handleKeyDown} tabIndex={0}>
-            
-            <section className="intro">
-               
+        <div className={theme} onKeyDown={handleKeyDown} tabIndex={0}>            
+            <section className="intro">               
                 <LangComponent/> 
-
-              <div >
+              <div>
               {/* Your RSA components */}
               {visibilityKeyGen &&  <div><RSAGenerator/></div>}
               </div>
 
             </section>
             <section className="slider-section">
-                <Slider />
-             
+                <Slider />             
             </section>
-            {loading && (uiMain.UrFrame || uiMain.UrFrame!=="") && <p>Loading content...</p>}
+            {loading && (uiMain.UrFrame || uiMain.UrFrame!=="") && <p>🌀Loading content...</p>}
             {error && <p>Error loading content</p>}
             {uiMain.UrFrame && uiMain.UrFrame!==""&&(
             <section style={{ height: '100vh' }}>

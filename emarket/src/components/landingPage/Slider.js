@@ -31,10 +31,8 @@ function Slider() {
     };
 
     const getImageSrc = (slide) => {
-        if (slide.logopablic) {
-            //return `${process.env.PUBLIC_URL}/logoimg/${slide.logopablic}`;
-            //return `${process.env.PUBLIC_URL}/${folder}/${slide.logopablic}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${slide.logopablic}`;
-            return `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${slide.logopablic}`;
+        if (slide.logopablic) {            
+            return `${process.env.PUBLIC_URL}/${folder}/${slide.logopablic}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${slide.logopablic}`;           
         }
         return slide.logo || '';
     };

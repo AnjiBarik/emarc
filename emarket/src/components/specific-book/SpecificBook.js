@@ -28,22 +28,11 @@ export default function SpecificBook() {
     colorblock
   } = specificBook;
 
-  
-  
-  
-  
-  // if (books.length === 0 || specificBook.length === 0) {
-  //   window.location.href = '/';
-  // }
-
-  //const [selectedSize, setSelectedSize] = useState(size);
-  //const [selectedBook, setSelectedBook] = useState(books.find(book => book.id === id));
-  //const [selectedColor, setSelectedColor] = useState(color);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedBook, setSelectedBook] = useState(() => books.find(book => book.id === id));
   const [images, setImages] = useState([]);
-  const [sizes, setSizes] = useState({});
-  const [colors, setColors] = useState({});
+  const [sizes, setSizes] = useState([]);
+  const [colors, setColors] = useState([]);
   const [colorRGB, setColorRGB] = useState({});
 
   const publicUrl = `${window.location.origin}${window.location.pathname}`;
@@ -67,133 +56,57 @@ export default function SpecificBook() {
     processImages();
   }, [selectedBook, publicUrl]);
   
-  // if (books.length === 0 || specificBook.length === 0) {
-  //   window.location.href = '/';
-  // }
 
-  // let images = [];
 
-  // if (selectedBook) {
-  //   if (selectedBook.imageblockpublic && selectedBook.imageblockpublic !== '') {
-  //     images = selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`);
-  //   } else if (selectedBook.imageblock && selectedBook.imageblock !=="") {
-  //     images = selectedBook.imageblock.split(',');
-  //   }
-  // }
-  
 
-  // let images = [];
-  // if (selectedBook && selectedBook.imageblock) {
-  //   images = selectedBook.imageblock.split(',');
 
-  // }
-console.log(images)
 
 useEffect(() => {
+  if (selectedBook && selectedBook.length !== 0) {
   const parseBlock = (block) => {
     if (!block || block === "") {
-      return {};
+      return [];
     }
 
-    return block.split(',').reduce((acc, pair) => {
+    const pairs = block.split(',').map(pair => {
       const [itemId, value] = pair.trim().split(':');
-      if (itemId && value) {
-        acc[itemId] = value;
-      }
-      return acc;
-    }, {});
+      return { itemId, value };
+    }).filter(pair => pair.itemId && pair.value);
+
+    const selectedPair = pairs.find(pair => pair.itemId === selectedBook.id);
+    const otherPairs = pairs.filter(pair => pair.itemId !== selectedBook.id);
+
+    return selectedPair ? [selectedPair, ...otherPairs] : otherPairs;
   };
 
-  setSizes(parseBlock(sizeblock));
-  setColors(parseBlock(colorblock));
-}, [sizeblock, colorblock]);
+  const sizesOrdered = parseBlock(selectedBook.sizeblock);
+  const colorsOrdered = parseBlock(selectedBook.colorblock);
+
+  setSizes(sizesOrdered);
+  setColors(colorsOrdered);
+}
+}, [selectedBook]);
 
 
 
+// console.log(selectedBook)
+// console.log(sizeblock)
+// console.log(colorblock)
 
-// const sizes = sizeblock && sizeblock!==""
-// ? sizeblock.split(',').reduce((acc, pair) => {
-//     const [itemId, sizeValue] = pair.trim().split(':');
-//     if (itemId && sizeValue) {
-//       acc[itemId] = sizeValue;
-//     }
-//     return acc;
-//   }, {})
-// : {};
 
-  // const sizes = {};
+  const handleSizeClick = (itemId) => {   
 
-  // if (sizeblock) {
-  //   for (const pair of sizeblock.split(',')) {
-  //     const [itemId, sizeValue] = pair.trim().split(':');
-  //     if (itemId && sizeValue) {
-  //       sizes[itemId] = sizeValue;
-  //     }
-  //   }
-  // }
+    const newSelectedBook = books.find(book => book.id === itemId);
+    setSelectedBook(newSelectedBook);
+  };
 
-console.log(sizes)
-
-  // const parseSizeBlock = (sizeBlock) => {
-  //   const sizes = {};
-  //   if (sizeBlock) {
-  //     const sizePairs = sizeBlock.split(',');
-  //     sizePairs.forEach(pair => {
-  //       const [itemId, sizeValue] = pair.split(':');
-  //       if (itemId && sizeValue) {
-  //         sizes[itemId.trim()] = sizeValue.trim();
-  //       }
-  //     });
-  //   }
-  //   return sizes;
-  // };
-
-  // const sizes = parseSizeBlock(sizeblock);
-
-  const handleSizeClick = (itemId) => {
-    //setSelectedSize(itemId);
+  const handleColorClick = (itemId) => {    
     setCurrentImageIndex(0);
 
     const newSelectedBook = books.find(book => book.id === itemId);
     setSelectedBook(newSelectedBook);
   };
 
-  // const colors = colorblock && colorblock!==""
-  //     ? colorblock.split(',').reduce((acc, pair) => {
-  //       const [itemId, colorValue] = pair.trim().split(':');
-  //       if (itemId && colorValue) {
-  //         acc[itemId] = colorValue;
-  //       }
-  //       return acc;
-  //     }, {})
-  //   : {};
-
-console.log(colors)
-  // const parseColorBlock = (colorBlock) => {
-  //   const colors = {};
-  //   if (colorBlock) {
-  //     const colorPairs = colorBlock.split(',');
-  //     colorPairs.forEach(pair => {
-  //       const [itemId, colorValue] = pair.split(':');
-  //       if (itemId && colorValue) {
-  //         colors[itemId.trim()] = colorValue.trim();
-  //       }
-  //     });
-  //   }
-  //   return colors;
-  // };
-
-  // const colors = parseColorBlock(colorblock);
-
-  const handleColorClick = (itemId) => {
-    //setSelectedColor(itemId);
-    setCurrentImageIndex(0);
-
-    const newSelectedBook = books.find(book => book.id === itemId);
-    setSelectedBook(newSelectedBook);
-  };
-
-  // const [isFullscreen, setIsFullscreen] = useState(false);
 
   const openFullscreen = () => {
     setIsFullscreen(true);
@@ -203,9 +116,6 @@ console.log(colors)
     setIsFullscreen(false);
   };
 
-  //const navigate = useNavigate();
-
- 
 
   useEffect(() => {
     const parseColorBlock = (colorblock) => {
@@ -225,19 +135,12 @@ console.log(colors)
   }, [fieldState.colorblock]);
 
   
-  console.log(colorRGB)
-  // const colorRGB = fieldState.colorblock
-  // ? fieldState.colorblock
-  //     .split(';')
-  //     .map(colorItem => colorItem.split(':'))
-  //     .reduce((acc, [colorName, rgb]) => ({ ...acc, [colorName.trim()]: rgb.trim().slice(1, -1) }), {})
-  // : {};
-
+  
   useEffect(() => {
-    if (books.length === 0) {
+    if (books.length === 0 && specificBook.length === 0) {
       navigate('/');
     }
-  }, [books, navigate]);
+  }, [books, specificBook, navigate]);
 
   if (books.length === 0) {
     return null;
@@ -258,7 +161,7 @@ console.log(colors)
           <section className="about">
             <div className="book-text">
               <b>{fieldState.id && fieldState.id !== "" ? fieldState.id : "id:"}</b>
-              {selectedBook.id}
+              <span><strong>{selectedBook.id}</strong></span>
               <div className={isFullscreen ? 'fullscreen-overlay' : 'img-conteiner'}>
                 {selectedBook.sorted === 'new' &&
                   <img src={newcart} className="art-icon" alt="New" />
@@ -291,7 +194,8 @@ console.log(colors)
             <div className="book-buttons">
               {selectedBook.imageblock.split(',').length > 1 &&
                 selectedBook.imageblock.split(',').map((_, index) => (
-                  <button className={`img-icon ${currentImageIndex === index ? 'selected-img-icon' : ''}`} key={index} onClick={() => setCurrentImageIndex(index)}>
+                  <button className={`img-icon ${currentImageIndex === index ? 'selected-img-icon' : ''}`}
+                   key={index} onClick={() => setCurrentImageIndex(index)}>
                     <img
                       src={images[index]}
                       className='artmini'
@@ -303,16 +207,16 @@ console.log(colors)
                   </button>
                 ))}
             </div>
-            <div className="size-buttons">
+            <div className="size-buttons" >
               {sizeblock !== undefined && size !== '' && (<b>{fieldState.size && fieldState.size !== "" ? fieldState.size : "Size:"}</b>)}
-              {size !== '' &&
-                Object.entries(sizes).map(([itemId, sizeValue]) => (
+              {size !== '' && sizes.length > 0 &&
+                sizes.map(({ itemId, value }) => (
                   <button
-                    key={sizeValue}
+                    key={itemId}
                     className={`size-button ${selectedBook.id === itemId ? 'selected' : ''}`}
                     onClick={() => handleSizeClick(itemId)}
                   >
-                    {sizeValue}
+                   {itemId} {value}
                   </button>
                 ))}
               {sizeblock === "" && (<b>{size}</b>)}
@@ -320,18 +224,18 @@ console.log(colors)
             </div>
             <div className="size-buttons">
               {colorblock !== undefined && color !== '' && (<b>{fieldState.color && fieldState.color !== "" ? fieldState.color : "Color:"}</b>)}
-              {color !== '' &&
-                Object.entries(colors).map(([itemId, colorValue]) => (
+              {color !== '' && colors.length > 0 &&
+                colors.map(({ itemId, value }) => (
                   <button
-                    key={colorValue}
+                    key={itemId}
                     className={`size-button ${selectedBook.id === itemId ? 'selected' : ''}`}
                     onClick={() => handleColorClick(itemId)}
                   >
-                    {colorValue}
-                    {colorRGB[colorValue.trim()] && (
+                    {value}
+                    {colorRGB[value.trim()] && (
                         <span
                         className='circle' 
-                        style={{ backgroundColor: `rgb(${colorRGB[colorValue.trim()]})` }}
+                        style={{ backgroundColor: `rgb(${colorRGB[value.trim()]})` }}
                       ></span>
                       )}
                   </button>
@@ -443,6 +347,520 @@ console.log(colors)
     </section>
   );
 }
+
+
+// import React, { useState, useEffect, useContext } from 'react';
+// import './specificBook.css';
+// import PriceBlock from './PriceBlock';
+// import ScrollToTopButton from '../book-list/ScrollToTopButton';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { BooksContext } from '../../BooksContext';
+// import discont from '../cart/img/discont.png';
+// import newcart from '../cart/img/new.png';
+// import back from '../cart/img/back.png';
+// import carticon from '../cart/img/carticon.png';
+// import popular from '../cart/img/popular.png';
+// import zoomout from '../cart/img/zoomout.png';
+// import zoomin from '../cart/img/zoomin.png';
+// import notFound from '../cart/img/notFound.gif';
+// import InfoModal from './InfoModal';
+
+
+// export default function SpecificBook() {
+//   const { books, specificBook, theme, fieldState } = useContext(BooksContext);
+//   const [isFullscreen, setIsFullscreen] = useState(false);
+//   const navigate = useNavigate();
+
+//   const {
+//     id,
+//     size,
+//     sizeblock,
+//     color,
+//     colorblock
+//   } = specificBook;
+
+  
+  
+  
+  
+//   // if (books.length === 0 || specificBook.length === 0) {
+//   //   window.location.href = '/';
+//   // }
+
+//   //const [selectedSize, setSelectedSize] = useState(size);
+//   //const [selectedBook, setSelectedBook] = useState(books.find(book => book.id === id));
+//   //const [selectedColor, setSelectedColor] = useState(color);
+//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+//   const [selectedBook, setSelectedBook] = useState(() => books.find(book => book.id === id));
+//   const [images, setImages] = useState([]);
+//   const [sizes, setSizes] = useState({});
+//   const [colors, setColors] = useState({});
+//   const [colorRGB, setColorRGB] = useState({});
+
+//   const publicUrl = `${window.location.origin}${window.location.pathname}`;
+//   const folder = 'img';
+
+//   useEffect(() => {
+//     const processImages = () => {
+//       if (selectedBook) {
+//         if (selectedBook.imageblockpublic && selectedBook.imageblockpublic !== '') {
+//           setImages(
+//             selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/${folder}/${element}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${element}`)
+//           );
+//         } else if (selectedBook.imageblock && selectedBook.imageblock !== '') {
+//           setImages(selectedBook.imageblock.split(','));
+//         } else {
+//           setImages([]); // Handle the case where there are no image sources
+//         }
+//       }
+//     };
+
+//     processImages();
+//   }, [selectedBook, publicUrl]);
+  
+//   // if (books.length === 0 || specificBook.length === 0) {
+//   //   window.location.href = '/';
+//   // }
+
+//   // let images = [];
+
+//   // if (selectedBook) {
+//   //   if (selectedBook.imageblockpublic && selectedBook.imageblockpublic !== '') {
+//   //     images = selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}`);
+//   //   } else if (selectedBook.imageblock && selectedBook.imageblock !=="") {
+//   //     images = selectedBook.imageblock.split(',');
+//   //   }
+//   // }
+  
+
+//   // let images = [];
+//   // if (selectedBook && selectedBook.imageblock) {
+//   //   images = selectedBook.imageblock.split(',');
+
+//   // }
+// console.log(images)
+// //!!!defolt
+// useEffect(() => {
+//   const parseBlock = (block) => {
+//     if (!block || block === "") {
+//       return {};
+//     }
+
+//     return block.split(',').reduce((acc, pair) => {
+//       const [itemId, value] = pair.trim().split(':');
+//       if (itemId && value) {
+//         acc[itemId] = value;
+//       }
+//       return acc;
+//     }, {});
+//   };
+
+//   setSizes(parseBlock(sizeblock));
+//   setColors(parseBlock(colorblock));
+// }, [sizeblock, colorblock]);
+
+// // useEffect(() => {
+// //   const parseBlock = (block) => {
+// //     if (!block || block === "") {
+// //       return {};
+// //     }
+
+// //     const pairs = block.split(',').map(pair => {
+// //       const [itemId, value] = pair.trim().split(':');
+// //       return { itemId, value };
+// //     }).filter(pair => pair.itemId && pair.value);
+
+// //     const selectedPair = pairs.find(pair => pair.itemId === selectedBook.id);
+// //     const otherPairs = pairs.filter(pair => pair.itemId !== selectedBook.id);
+
+// //     const orderedPairs = selectedPair ? [selectedPair, ...otherPairs] : otherPairs;
+
+// //     return orderedPairs.reduce((acc, { itemId, value }) => {
+// //       acc[itemId] = value;
+// //       return acc;
+// //     }, {});
+// //   };
+
+// //   setSizes(parseBlock(sizeblock));
+// //   setColors(parseBlock(colorblock));
+// // }, [sizeblock, colorblock, selectedBook.id]);
+
+
+// // console.log(selectedBook.id)
+// // console.log(sizeblock)
+// // console.log(colorblock)
+
+// // useEffect(() => {
+// //   const parseBlock = (block, selectedId) => {
+// //       if (!block || block === "") {
+// //           return {};
+// //       }
+
+// //       const entries = block.split(',').reduce((acc, pair) => {
+// //           const [itemId, value] = pair.trim().split(':');
+// //           if (itemId && value) {
+// //               acc[itemId] = value;
+// //           }
+// //           return acc;
+// //       }, {});
+
+// //       // Reorder entries to have the selectedId first
+// //       if (entries[selectedId]) {
+// //           const reorderedEntries = { [selectedId]: entries[selectedId] };
+// //           for (const key in entries) {
+// //               if (key !== selectedId) {
+// //                   reorderedEntries[key] = entries[key];
+// //               }
+// //           }
+// //           return reorderedEntries;
+// //       }
+
+// //       return entries;
+// //   };
+
+// //   setSizes(parseBlock(sizeblock, selectedBook.id));
+// //   setColors(parseBlock(colorblock, selectedBook.id));
+// // }, [sizeblock, colorblock, selectedBook.id]);
+
+
+
+
+
+
+// // const sizes = sizeblock && sizeblock!==""
+// // ? sizeblock.split(',').reduce((acc, pair) => {
+// //     const [itemId, sizeValue] = pair.trim().split(':');
+// //     if (itemId && sizeValue) {
+// //       acc[itemId] = sizeValue;
+// //     }
+// //     return acc;
+// //   }, {})
+// // : {};
+
+//   // const sizes = {};
+
+//   // if (sizeblock) {
+//   //   for (const pair of sizeblock.split(',')) {
+//   //     const [itemId, sizeValue] = pair.trim().split(':');
+//   //     if (itemId && sizeValue) {
+//   //       sizes[itemId] = sizeValue;
+//   //     }
+//   //   }
+//   // }
+
+// console.log(sizes)
+
+//   // const parseSizeBlock = (sizeBlock) => {
+//   //   const sizes = {};
+//   //   if (sizeBlock) {
+//   //     const sizePairs = sizeBlock.split(',');
+//   //     sizePairs.forEach(pair => {
+//   //       const [itemId, sizeValue] = pair.split(':');
+//   //       if (itemId && sizeValue) {
+//   //         sizes[itemId.trim()] = sizeValue.trim();
+//   //       }
+//   //     });
+//   //   }
+//   //   return sizes;
+//   // };
+
+//   // const sizes = parseSizeBlock(sizeblock);
+
+//   const handleSizeClick = (itemId) => {
+//     //setSelectedSize(itemId);
+//     setCurrentImageIndex(0);
+
+//     const newSelectedBook = books.find(book => book.id === itemId);
+//     setSelectedBook(newSelectedBook);
+//   };
+
+//   // const colors = colorblock && colorblock!==""
+//   //     ? colorblock.split(',').reduce((acc, pair) => {
+//   //       const [itemId, colorValue] = pair.trim().split(':');
+//   //       if (itemId && colorValue) {
+//   //         acc[itemId] = colorValue;
+//   //       }
+//   //       return acc;
+//   //     }, {})
+//   //   : {};
+
+// console.log(colors)
+//   // const parseColorBlock = (colorBlock) => {
+//   //   const colors = {};
+//   //   if (colorBlock) {
+//   //     const colorPairs = colorBlock.split(',');
+//   //     colorPairs.forEach(pair => {
+//   //       const [itemId, colorValue] = pair.split(':');
+//   //       if (itemId && colorValue) {
+//   //         colors[itemId.trim()] = colorValue.trim();
+//   //       }
+//   //     });
+//   //   }
+//   //   return colors;
+//   // };
+
+//   // const colors = parseColorBlock(colorblock);
+
+//   const handleColorClick = (itemId) => {
+//     //setSelectedColor(itemId);
+//     setCurrentImageIndex(0);
+
+//     const newSelectedBook = books.find(book => book.id === itemId);
+//     setSelectedBook(newSelectedBook);
+//   };
+
+//   // const [isFullscreen, setIsFullscreen] = useState(false);
+
+//   const openFullscreen = () => {
+//     setIsFullscreen(true);
+//   };
+
+//   const closeFullscreen = () => {
+//     setIsFullscreen(false);
+//   };
+
+//   //const navigate = useNavigate();
+
+ 
+
+//   useEffect(() => {
+//     const parseColorBlock = (colorblock) => {
+//       if (!colorblock) {
+//         return {};
+//       }
+
+//       return colorblock.split(';')
+//         .map(colorItem => colorItem.split(':'))
+//         .reduce((acc, [colorName, rgb]) => ({
+//           ...acc,
+//           [colorName.trim()]: rgb.trim().slice(1, -1),
+//         }), {});
+//     };
+
+//     setColorRGB(parseColorBlock(fieldState.colorblock));
+//   }, [fieldState.colorblock]);
+
+  
+//   console.log(colorRGB)
+//   // const colorRGB = fieldState.colorblock
+//   // ? fieldState.colorblock
+//   //     .split(';')
+//   //     .map(colorItem => colorItem.split(':'))
+//   //     .reduce((acc, [colorName, rgb]) => ({ ...acc, [colorName.trim()]: rgb.trim().slice(1, -1) }), {})
+//   // : {};
+
+//   useEffect(() => {
+//     if (books.length === 0) {
+//       navigate('/');
+//     }
+//   }, [books, navigate]);
+
+//   if (books.length === 0) {
+//     return null;
+//   }
+
+//   return (
+//     <section className={theme}>
+//       <section className="filters">
+//         <button className='sort-button selected' onClick={() => navigate(-1)}>
+//           <img src={back} className="back-button selected" alt="Back to main page" />
+//         </button>
+//         <Link to="/cart">
+//           <img src={carticon} className="back-button selected" alt="Go to cart" />
+//         </Link>
+//       </section>
+//       {selectedBook && (
+//         <section className="book-page">
+//           <section className="about">
+//             <div className="book-text">
+//               <b>{fieldState.id && fieldState.id !== "" ? fieldState.id : "id:"}</b>
+//               <span><strong>{selectedBook.id}</strong></span>
+//               <div className={isFullscreen ? 'fullscreen-overlay' : 'img-conteiner'}>
+//                 {selectedBook.sorted === 'new' &&
+//                   <img src={newcart} className="art-icon" alt="New" />
+//                 }
+//                 {selectedBook.sorted === 'sale' &&
+//                   <img src={discont} className="art-icon" alt="Discount" />
+//                 }
+//                 {selectedBook.sorted === 'popular' &&
+//                   <img src={popular} className="art-icon" alt="Popular" />
+//                 }
+//                 <img
+//                   src={images[currentImageIndex]}
+//                   alt={selectedBook.title}
+//                   onError={(e) => { e.target.src = notFound; }}
+//                   onClick={!isFullscreen? openFullscreen:closeFullscreen}
+//                   className={isFullscreen ? 'fullscreen-image' : (selectedBook.art === "width" ? 'artwidth' : 'art')}
+//                 />
+//                 {!isFullscreen && (
+//                   <button onClick={openFullscreen} className="zoom-button">
+//                     <img src={zoomin} alt="Zoom" className='zoom-img' />
+//                   </button>
+//                 )}
+//                 {isFullscreen && (
+//                   <button onClick={closeFullscreen} className="close-button">
+//                     <img src={zoomout} alt="Zoom Out" className='zoom-img' />
+//                   </button>
+//                 )}
+//               </div>
+//             </div>
+//             <div className="book-buttons">
+//               {selectedBook.imageblock.split(',').length > 1 &&
+//                 selectedBook.imageblock.split(',').map((_, index) => (
+//                   <button className={`img-icon ${currentImageIndex === index ? 'selected-img-icon' : ''}`} key={index} onClick={() => setCurrentImageIndex(index)}>
+//                     <img
+//                       src={images[index]}
+//                       className='artmini'
+//                       alt={selectedBook.title}
+//                       onError={(e) => {
+//                         e.target.src = notFound;
+//                       }}
+//                     />
+//                   </button>
+//                 ))}
+//             </div>
+//             <div className="size-buttons" >
+//               {sizeblock !== undefined && size !== '' && (<b>{fieldState.size && fieldState.size !== "" ? fieldState.size : "Size:"}</b>)}
+//               {size !== '' &&
+//                 Object.entries(sizes).map(([itemId, sizeValue]) => (
+//                   <button
+//                      key={sizeValue}
+//                     //key={itemId}
+//                     className={`size-button ${selectedBook.id === itemId ? 'selected' : ''}`}
+//                     onClick={() => handleSizeClick(itemId)}
+//                   >
+//                     {sizeValue}
+//                   </button>
+//                 ))}
+//               {sizeblock === "" && (<b>{size}</b>)}
+//               {fieldState.sizeblockinfo && fieldState.sizeblockinfo !== "" && (<InfoModal text={fieldState.sizeblockinfo} />)}
+//             </div>
+//             <div className="size-buttons">
+//               {colorblock !== undefined && color !== '' && (<b>{fieldState.color && fieldState.color !== "" ? fieldState.color : "Color:"}</b>)}
+//               {color !== '' &&
+//                 Object.entries(colors).map(([itemId, colorValue]) => (
+//                   <button
+//                      key={colorValue}
+//                     //key={itemId}
+//                     className={`size-button ${selectedBook.id === itemId ? 'selected' : ''}`}
+//                     onClick={() => handleColorClick(itemId)}
+//                   >
+//                     {colorValue}
+//                     {colorRGB[colorValue.trim()] && (
+//                         <span
+//                         className='circle' 
+//                         style={{ backgroundColor: `rgb(${colorRGB[colorValue.trim()]})` }}
+//                       ></span>
+//                       )}
+//                   </button>
+//                 ))}
+//               {colorblock === "" && (<b>{color}
+//                {colorRGB[color.trim()] && (
+//                <span
+//                className='circle' 
+//                style={{ backgroundColor: `rgb(${colorRGB[color.trim()]})` }}
+//                ></span>
+//                )}
+//                </b>
+//               )}
+//             </div>
+//             <p className='cart-text'>
+//               <b>{fieldState.title && fieldState.title !== "" ? fieldState.title : "Product Name:"}</b>
+//               {selectedBook.title}
+//             </p>
+//             <PriceBlock showPrice={true} id={selectedBook.id} />
+          
+//            </section>
+//           <section className="about">
+//             {selectedBook.author !== undefined && selectedBook.author !== "" && (
+//               <p>
+//                 <b>{fieldState.author && fieldState.author !== "" ? fieldState.author : "Author:"}</b>
+//                 {selectedBook.author}
+//               </p>
+//             )}
+//             {selectedBook.tags1 !== undefined && selectedBook.tags1 !== "" && (
+//               <p>
+//                 <b>{fieldState.tags1 && fieldState.tags1 !== "" ? fieldState.tags1 : "Tags 1:"}</b>
+//                 {selectedBook.tags1}
+//               </p>
+//             )}
+//             {selectedBook.tags2 !== undefined && selectedBook.tags2 !== "" && (
+//               <p>
+//                 <b>{fieldState.tags2 && fieldState.tags2 !== "" ? fieldState.tags2 : "Tags 2:"}</b>
+//                 {selectedBook.tags2}
+//               </p>
+//             )}
+//             {selectedBook.tags3 !== undefined && selectedBook.tags3 !== "" && (
+//               <p>
+//                 <b>{fieldState.tags3 && fieldState.tags3 !== "" ? fieldState.tags3 : "Tags 3:"}</b>
+//                 {selectedBook.tags3}
+//               </p>
+//             )}
+//             {selectedBook.tags4 !== undefined && selectedBook.tags4 !== "" && (
+//               <p>
+//                 <b>{fieldState.tags4 && fieldState.tags4 !== "" ? fieldState.tags4 : "Tags 4:"}</b>
+//                 {selectedBook.tags4}
+//               </p>
+//             )}
+
+//             {selectedBook.shortDescription !== undefined && selectedBook.shortDescription !== "" && (
+//               <p className='cart-text'>
+//                 <b> {fieldState.shortDescription && fieldState.shortDescription !== "" ? fieldState.shortDescription : "shortDescription:"} </b>
+//                 {selectedBook.shortDescription}
+//               </p>
+//             )}
+//             {(selectedBook.tags5 || selectedBook.tags6 || selectedBook.tags7 || selectedBook.tags8) && (
+//               <section className="about">
+//                 <div className='size-buttons'>
+//                 <b>{fieldState.additionalTags && fieldState.additionalTags !== "" ? fieldState.additionalTags : "Additional Tags:"}</b>
+//                 {fieldState.additionalTagsinfo && fieldState.additionalTagsinfo !== "" && (<InfoModal text={fieldState.additionalTagsinfo} />)}
+//                 </div>
+//                 <table>
+//                   <tbody>
+//                     {selectedBook.tags5 && selectedBook.tags5 !== "" && (
+//                       <tr>
+//                         <td><b>{fieldState.tags5 && fieldState.tags5 !== "" ? fieldState.tags5 : "Tags 5:"}</b></td>
+//                         <td>{selectedBook.tags5}</td>
+//                       </tr>
+//                     )}
+//                     {selectedBook.tags6 && selectedBook.tags6 !== "" && (
+//                       <tr>
+//                         <td><b>{fieldState.tags6 && fieldState.tags6 !== "" ? fieldState.tags6 : "Tags 6:"}</b></td>
+//                         <td>{selectedBook.tags6}</td>
+//                       </tr>
+//                     )}
+//                     {selectedBook.tags7 && selectedBook.tags7 !== "" && (
+//                       <tr>
+//                         <td><b>{fieldState.tags7 && fieldState.tags7 !== "" ? fieldState.tags7 : "Tags 7:"}</b></td>
+//                         <td>{selectedBook.tags7}</td>
+//                       </tr>
+//                     )}
+//                     {selectedBook.tags8 && selectedBook.tags8 !== "" && (
+//                       <tr>
+//                         <td><b>{fieldState.tags8 && fieldState.tags8 !== "" ? fieldState.tags8 : "Tags 8:"}</b></td>
+//                         <td>{selectedBook.tags8}</td>
+//                       </tr>
+//                     )}
+//                   </tbody>
+//                 </table>
+//               </section>
+//             )}
+//           </section >
+//           {selectedBook.description !== undefined && selectedBook.description !== "" && (
+//             <section className="about">
+//               <p className='cart-text'>
+//                 <b>{fieldState.description && fieldState.description !== "" ? fieldState.description : "Description:"} </b>
+//                 {selectedBook.description}
+//               </p>
+//             </section>
+//           )}
+//         </section>
+//       )}
+//       <ScrollToTopButton />
+    
+//     </section>
+//   );
+// }
 
 
 // import React, { useState, useContext } from 'react';
