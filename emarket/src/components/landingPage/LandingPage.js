@@ -9,7 +9,7 @@ import LangComponent from  './LangComponent';
 import tuning from '../assets/data/tuning.json';
 
 function LandingPage() {
-    const { theme,  uiMain, fieldState, setUiState, setUiMain} = React.useContext(BooksContext);
+    const { theme,  uiMain, fieldState, setUiState, setUiMain, promo } = React.useContext(BooksContext);
 
     const [loading, setLoading] = useState(true);   
     const [error, setError] = useState(null);
@@ -18,21 +18,21 @@ function LandingPage() {
     const folder = 'data';    
     const tuningUrl = `${process.env.PUBLIC_URL}/${folder}/tuning.json` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/tuning.json`;            
 
-    useEffect(() => {
-        const handleMessage = (event) => {
-            if (event.data.type === 'iframeError') {
-                console.error('Error loading iframe content:', event.data.error);
-                setError(event.data.error);
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const handleMessage = (event) => { console.log(event.data)
+    //         if (event.data.type === 'iframeError') {
+    //             console.error('Error loading iframe content:', event.data.error);
+    //             setError(event.data.error);
+    //             setLoading(false);
+    //         }
+    //     };
 
-        window.addEventListener('message', handleMessage);
+    //     window.addEventListener('message', handleMessage);
 
-        return () => {
-            window.removeEventListener('message', handleMessage);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('message', handleMessage);
+    //     };
+    // }, []);
 
     const handleLoad = () => {
         setLoading(false);
@@ -81,11 +81,9 @@ function LandingPage() {
         const fetchData = async () => {
           try {      
             const response = await fetch(tuningUrl);
-            const tuningData = await response.json();
-            //console.log(tuningData)
+            const tuningData = await response.json();            
             initializeState(tuningData);
-          } catch  {          
-            //console.log(tuning)
+          } catch  {            
             initializeState(tuning);
           }
         };
@@ -93,13 +91,14 @@ function LandingPage() {
         fetchData();
       }, [fieldState, uiMain, initializeState, tuningUrl]); 
 
+    
     return (
         <div className={theme} onKeyDown={handleKeyDown} tabIndex={0}>            
             <section className="intro">               
                 <LangComponent/> 
               <div>
               {/* Your RSA components */}
-              {visibilityKeyGen &&  
+              {(visibilityKeyGen || promo === fieldState.idprice)  &&  
                <Link to="/AdminPanel" >AdminPanel</Link>
               }
               </div>
@@ -118,7 +117,7 @@ function LandingPage() {
                     src={uiMain.UrFrame}
                     title="External Content"
                     width="100%"
-                    height="100%"
+                    height="100%"                    
                     onLoad={handleLoad}
                 ></iframe>
             </section>
