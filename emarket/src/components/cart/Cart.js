@@ -9,7 +9,7 @@ import back from '../cart/img/back.png';
 import upload from '../cart/img/orderfailure.png';
 import check from '../cart/img/check.png';
 import CartMemo from "./CartMemo";
-import MyForm from "./MyForm";
+//import MyForm from "./MyForm";
 
 export default function Cart() {
   const { setCartItems, cartItems, theme, setTotalPrice, totalPrice, setTotalCount, loggedIn, promo, books, fieldState } = React.useContext(BooksContext);
@@ -32,7 +32,7 @@ export default function Cart() {
         <div className="main">
           <img src={cart} alt="cart empty" />
           <span>Cart empty..</span>
-          {promo === fieldState.idprice && <MyForm />}
+          {/* {promo === fieldState.idprice && <MyForm />} */}
         </div>
       );
     } else {
@@ -64,7 +64,7 @@ export default function Cart() {
           <img src={back} className="back-button selected" alt="Back to main page" />
         </Link>
         {cartItems.length !== 0 && (
-          <Link to="/Form" >
+          <Link to="/OrderForm" >
             <img src={check} className="back-button selected rotate" alt="Proceed to checkout" />
           </Link>
         )}

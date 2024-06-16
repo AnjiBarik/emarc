@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import Slider from './Slider';
 import './LandingPage.css';
-import Submit from './Form';
+import Submit from './LoadForm';
 import { BooksContext } from '../../BooksContext';
 import LangComponent from  './LangComponent';
-import RSAGenerator from '../rsacomponent/RSAGenerator';
+//import RSAGenerator from '../rsacomponent/RSAGenerator';
 import tuning from '../assets/data/tuning.json';
 
 function LandingPage() {
@@ -98,7 +99,9 @@ function LandingPage() {
                 <LangComponent/> 
               <div>
               {/* Your RSA components */}
-              {visibilityKeyGen &&  <div><RSAGenerator/></div>}
+              {visibilityKeyGen &&  
+               <Link to="/AdminPanel" >AdminPanel</Link>
+              }
               </div>
 
             </section>

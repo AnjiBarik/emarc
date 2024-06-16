@@ -141,7 +141,7 @@ export default function SpecificBook() {
           <section className="about"> 
             <div className="book-text">
               <b>{fieldState.id && fieldState.id !== "" ? fieldState.id : "id:"}</b>
-              <span><strong>{selectedBook.id}</strong></span>
+              <span translate="no"><strong>{selectedBook.id}</strong></span>
               <div className={isFullscreen ? 'fullscreen-overlay' : 'img-conteiner'}>
                 {selectedBook.sorted === 'new' &&
                   <img src={newcart} className="art-icon" alt="New" />
@@ -240,13 +240,13 @@ export default function SpecificBook() {
             {selectedBook.author !== undefined && selectedBook.author !== "" && (
               <p>
                 <b>{fieldState.author && fieldState.author !== "" ? fieldState.author : "Author:"}</b>
-                <strong>{selectedBook.author}</strong>
+                <span>{selectedBook.author}</span>
               </p>
             )}
             {selectedBook.tags1 !== undefined && selectedBook.tags1 !== "" && (
               <p>
                 <b>{fieldState.tags1 && fieldState.tags1 !== "" ? fieldState.tags1 : "Tags 1:"}</b>
-                <strong>{selectedBook.tags1}</strong>
+                <span>{selectedBook.tags1}</span>
               </p>
             )}
             {selectedBook.tags2 !== undefined && selectedBook.tags2 !== "" && (
@@ -271,7 +271,7 @@ export default function SpecificBook() {
             {selectedBook.shortDescription !== undefined && selectedBook.shortDescription !== "" && (
               <p className='cart-text'>
                 <b> {fieldState.shortDescription && fieldState.shortDescription !== "" ? fieldState.shortDescription : "shortDescription:"} </b>
-                {selectedBook.shortDescription}
+                <span>{selectedBook.shortDescription}</span>
               </p>
             )}
             {(selectedBook.tags5 || selectedBook.tags6 || selectedBook.tags7 || selectedBook.tags8) && (
@@ -315,7 +315,7 @@ export default function SpecificBook() {
             <section className="about">
               <p className='cart-text'>
                 <b>{fieldState.description && fieldState.description !== "" ? fieldState.description : "Description:"} </b>
-                {selectedBook.description}
+                <span>{selectedBook.description}</span>
               </p>
             </section>
           )}

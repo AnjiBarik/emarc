@@ -102,7 +102,7 @@ export default function PriceBlock({ id, showPrice }) {
             </div>
 
             {specificBookIndex === -1 && (
-              <Link to={`/Form?id=${id}&title=${selectedBook.title}&count=${count}&price=${selectedBook.price}`}>
+              <Link to={`/OrderForm?id=${id}&title=${selectedBook.title}&count=${count}&price=${selectedBook.price}`}>
                 <img
                   className="ccart-icon"
                   src={buynow}

@@ -5,13 +5,14 @@ import Cart from "./components/cart/Cart";
 import SpecificBook from "./components/specific-book/SpecificBook";
 import Page404 from "./components/Page404";
 import { Layout } from "./components/Layout";
-import Form from "./components/cart/Rform";
+import OrderForm from "./components/cart/OrderForm";
 //import { BooksContext } from "./BooksContext";
 //import useGoogleSheets from 'use-google-sheets';
 import RegistrationForm from "./components/cart/RegistrationForm"
 import Filter from "./components/book-list/Filter";
 import Search from "./components/book-list/Search";
 import LandingPage from "./components/landingPage/LandingPage";
+import AdminPanel from "./components/admincomponent/AdminPanel";
 
 function App() {
 
@@ -25,7 +26,8 @@ return (
       <Route path="Filter" element={<Filter />} />
       <Route path="Search" element={<Search />} />
       <Route path="RegistrationForm" element={<RegistrationForm />} />
-      <Route path="Form" element={<Form />} />
+      <Route path="OrderForm" element={<OrderForm />} />
+      <Route path="AdminPanel" element={<AdminPanel />} />
       <Route path="*" element={<Page404 />} />
     </Route>
   </Routes>

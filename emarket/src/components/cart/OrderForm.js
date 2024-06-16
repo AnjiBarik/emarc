@@ -12,7 +12,7 @@ import chat from '../cart/img/chat.png';
 import back from '../cart/img/back.png';
 import addressIcon from '../cart/img/location.png';
 
-export default function Form() {
+export default function OrderForm() {
   const { 
     showRegistrationForm, 
     setShowRegistrationForm, 

@@ -7,7 +7,8 @@ const BooksContext = createContext();
 const BooksProvider = ({ children }) => {
   // const [loading, setLoading] = useState(true);
   const [books, setBooks] = useState([]);
-  const [specificBook, setSpecificBook] = useState([]);
+  // const [specificBook, setSpecificBook] = useState([]);
+  const [specificBook, setSpecificBook] = useState({});
   const [fieldState, setFieldState] = useState({});
   const [uiState, setUiState] = useState([]);
   const [uiMain, setUiMain] = useState([]);
