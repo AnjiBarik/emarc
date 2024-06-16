@@ -16,8 +16,7 @@ body {
 
 .header-right{
     display: flex;
-    flex-direction: row;
-    /* justify-content: space-between; */
+    flex-direction: row;    
     align-items: center;
     flex-wrap: wrap;
     margin: 5px;
@@ -29,16 +28,7 @@ body {
     align-items: center;
 }
 
-/* .header-right button{
-    height: 40px;
-    width: 90px;
-    font-weight: 600;
-    font-size: 13px;
-    border: 1px solid rgb(119, 118, 118);
-    border-radius: 7px;
-    background-color: rgb(241, 241, 241);
-    margin:0 3px;
-} */
+
 .user{
     display: flex;
     align-items: center;
@@ -75,7 +65,3 @@ body {
     font-weight: bold;
     text-shadow: 3px 3px 5px white;
 }
-
-/* .active{
-    background-image: linear-gradient(to right, #ff9e9d ,#fadfdf);
-} */

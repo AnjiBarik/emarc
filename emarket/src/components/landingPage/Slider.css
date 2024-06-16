@@ -1,29 +1,21 @@
 .slider-container {
-    position: relative;
-    /* width: 100%; */
-    max-width: 90vw; /* Примерная ширина слайдера */
-    margin: 0 auto; /* Центрируем слайдер по горизонтали */
+    position: relative;   
+    max-width: 90vw; 
+    margin: 0 auto; 
     display: flex;
     flex-wrap: wrap;
-    align-items: center; /* Centers items vertically */
-    /* justify-content: space-between;  */
+    align-items: center;     
     cursor: pointer;
 }
 
 .slide {
     width: 100%;
-    height: auto; /* Адаптивная высота */
+    height: auto; 
     max-width: 340px;
     max-height: 340px;
     display: block;
-    margin: 0 auto; /* Centers the image horizontally */
+    margin: 0 auto; 
 }
-
-/* .slide:hover {
-    border: 2px solid rgb(188, 190, 192); 
-    border-radius: 10px;
-} */
-
 
 .active{
     border: 2px solid black;
@@ -33,7 +25,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5); /* Прозрачный черный цвет */
+    background-color: rgba(0, 0, 0, 0.5); 
     color: white;
     font-size: 20px;
     padding: 10px;
@@ -44,7 +36,7 @@
 }
 
 .prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.8); /* Увеличение прозрачности при наведении */
+    background-color: rgba(0, 0, 0, 0.8); 
 }
 
 .prev {
@@ -59,9 +51,7 @@
 .slide-text {
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* flex-grow: 1;  */
-    /* padding: 5px; */
+    justify-content: center;    
     font-weight: bold;
     font-size: large;
     padding: 0 5px;

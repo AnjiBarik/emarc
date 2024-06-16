@@ -1,27 +1,26 @@
-/* Стили для заголовка */
 header {
     text-align: center;
     padding: 20px 0;
 }
 
-/* Стили для вступительного абзаца */
+
 .intro {
     text-align: center;
     padding: 20px 0;
 }
 
-/* Стили для слайдера */
+
 .slider-section {
     margin: 20px 0;
 }
 
-/* Стили для описания */
+
 .description {
     text-align: center;
     padding: 20px 0;
 }
 
-/* Стили для блоков приемуществ */
+
 .features {
     display: flex;
     justify-content: space-around;
@@ -39,7 +38,7 @@ header {
     height: 100px;
 }
 
-/* Медиа запросы для адаптивности */
+
 @media (max-width: 768px) {
     .features {
         flex-direction: column;
