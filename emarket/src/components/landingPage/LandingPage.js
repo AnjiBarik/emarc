@@ -99,7 +99,11 @@ function LandingPage() {
               <div>
               {/* Your RSA components */}
               {(visibilityKeyGen || promo === fieldState.idprice)  &&  
-               <Link to="/AdminPanel" >AdminPanel</Link>
+               <Link to="/AdminPanel" >
+                 <button className='back-button selected'>
+                 AdminPanel
+                 </button>
+               </Link>
               }
               </div>
 

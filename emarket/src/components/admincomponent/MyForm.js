@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import RSAEncryption from '../rsacomponent/RSAEncryption';  
 import { BooksContext } from '../../BooksContext';
+import DecryptPrivateKey from '../rsacomponent/DecryptPrivateKey'; 
 
 const MyForm = () => {
   const { uiMain, fieldState } = useContext(BooksContext);
@@ -17,11 +18,20 @@ const MyForm = () => {
   const [showDecryptButton, setShowDecryptButton] = useState(false);
   const [selectAllText, setSelectAllText] = useState('Select All');
   const [submitting, setSubmitting] = useState(false);
+  const [encryptedPrivateKey, setEncryptedPrivateKey] = useState(''); // Add state for encrypted private key
+  const [decryptedPrivateKey, setDecryptedPrivateKey] = useState(''); // Add state for decrypted private key
+  const [decryptEnabled, setDecryptEnabled] = useState(false); // Add state for decrypt enabled
   const { decryptRSA } = RSAEncryption();
 
   useEffect(() => {
     setShowDecryptButton(privateKey !== '');
   }, [privateKey]);
+
+  useEffect(() => {
+    if (decryptedPrivateKey) {
+      setPrivateKey(decryptedPrivateKey);
+    }
+  }, [decryptedPrivateKey]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,17 +153,6 @@ const MyForm = () => {
     });
   };
   
-  
-  // const filterData = (data) => {
-  //   if (!searchValue || !filterField) {
-  //     return data;
-  //   }
-
-  //   return data.filter((item) =>
-  //     item[filterField].toLowerCase().includes(searchValue.toLowerCase())
-  //   );
-  // };
-
   const renderFilteredData = () => {
     const filteredData = filterData(outputData);
     return (
@@ -223,17 +222,9 @@ const MyForm = () => {
       .catch((error) => console.error('Failed to copy selected data to clipboard: ', error));
   };
   
-
-  // const copySelectedDataToClipboard = () => {
-  //   const selectedItems = selectedData.map((index) => outputData[index]);
-  //   const clipboardText = JSON.stringify(selectedItems, null, 2);
-  //   navigator.clipboard.writeText(clipboardText)
-  //     .then(() => console.log('Selected data copied to clipboard'))
-  //     .catch((error) => console.error('Failed to copy selected data to clipboard: ', error));
-  // };
-console.log(selectedData)
-console.log(outputData)
-console.log(filterData(outputData).length)
+  console.log(selectedData)
+  console.log(outputData)
+  console.log(filterData(outputData).length)
   return (
     <> 
     {showPrivateKeyInput && (
@@ -244,6 +235,20 @@ console.log(filterData(outputData).length)
           </label>
           <button className='selected' onClick={handleImportFromClipboard}>Import from Clipboard</button>
           <input className='selected' type="file" onChange={handleFileUpload} />
+          <label>
+            <input
+              type="checkbox"
+              checked={decryptEnabled}
+              onChange={(e) => setDecryptEnabled(e.target.checked)}
+            />
+            Decrypt Private Key
+          </label>
+          {decryptEnabled && (
+            <DecryptPrivateKey
+              encryptedKey={encryptedPrivateKey}
+              onDecrypted={(key) => setDecryptedPrivateKey(key)}
+            />
+          )}
         </div>
       )}
      
@@ -307,6 +312,318 @@ console.log(filterData(outputData).length)
 };
 
 export default MyForm;
+
+
+
+// import React, { useContext, useState, useEffect } from 'react';
+// import RSAEncryption from '../rsacomponent/RSAEncryption';  
+// import { BooksContext } from '../../BooksContext';
+
+// const MyForm = () => {
+//   const { uiMain, fieldState } = useContext(BooksContext);
+//   const [userid, setUserid] = useState('');
+//   const [idprice, setIdprice] = useState(fieldState.idprice || "");
+//   const [verificationStatus, setVerificationStatus] = useState('');
+//   const [responseData, setResponseData] = useState([]);
+//   const [decryptedData, setDecryptedData] = useState([]);
+//   const [privateKey, setPrivateKey] = useState('');
+//   const [showPrivateKeyInput, setShowPrivateKeyInput] = useState(false);
+//   const [searchValue, setSearchValue] = useState('');
+//   const [filterField, setFilterField] = useState('');
+//   const [selectedData, setSelectedData] = useState([]);
+//   const [showDecryptButton, setShowDecryptButton] = useState(false);
+//   const [selectAllText, setSelectAllText] = useState('Select All');
+//   const [submitting, setSubmitting] = useState(false);
+//   const { decryptRSA } = RSAEncryption();
+
+//   useEffect(() => {
+//     setShowDecryptButton(privateKey !== '');
+//   }, [privateKey]);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+    
+//     setSubmitting(true);
+
+//     const formData = new FormData();
+//     formData.append('userid', userid);
+//     formData.append('idpric', idprice);
+    
+//     const apiUrl = uiMain.Urorder;
+//     try {
+//       const response = await fetch(apiUrl, {
+//         method: 'POST',
+//         body: formData
+//       });
+
+//       const data = await response.json();
+
+//       if (response.ok) {
+//         console.log('Response:', data);
+//         if (data !== "Incorrect username or password.") {
+//           setVerificationStatus('verified');
+//           setResponseData(data);
+//           setShowPrivateKeyInput(true);
+//         } else {
+//           setVerificationStatus('error');
+//           alert("⚠️Incorrect username or password!")
+//           setResponseData([]);
+//           setShowPrivateKeyInput(false);
+//         }
+       
+//       } else {
+//         console.error('Error:1', data.message);
+//         setVerificationStatus('error');
+//         setShowPrivateKeyInput(false);
+//       }
+//     } catch (error) {
+//       console.error('Error:2', error);
+//       setVerificationStatus('error');
+//       setShowPrivateKeyInput(false);
+//     } finally {
+//       // В конце обработки запроса устанавливаем состояние отправки в false
+//       setSubmitting(false);
+//     }
+//   };
+
+//   const handleDecryptField = async (fieldValue1, fieldValue2) => {
+//     const encryptedMessage = fieldValue1 + fieldValue2;
+//     const decryptedText = await decryptRSA(privateKey, encryptedMessage);
+//     return decryptedText;
+//   };
+
+//   const handleDecryptAll = async () => {
+//     const decrypted = await Promise.all(responseData.map(async (item) => {
+//       const decryptedItem = {};
+//       for (const field in item) {
+//         if (field.endsWith('1')) {
+//           const counterpart = field.slice(0, -1) + '2';
+//           const value1 = item[field];
+//           const value2 = item[counterpart];
+//           if (value1 && value2 && value1 !== "" && value2 !== "") {
+//             const decryptedValue = await handleDecryptField(value1, value2);
+//             decryptedItem[field] = decryptedValue;
+//           } else {
+//             decryptedItem[field] = "";
+//           }
+//         }
+//       }
+//       return decryptedItem;
+//     }));
+//     setDecryptedData(decrypted);
+//   };
+
+//   const handleOutputData = () => {
+//     const output = [];
+//     responseData.forEach((item, index) => {
+//       const outputItem = {};
+//       for (const field in item) {
+//         if (!field.endsWith('1') && !field.endsWith('2')) {
+//           if (decryptedData[index] && decryptedData[index][field + '1']) {
+//             outputItem[field] = decryptedData[index][field + '1'] !== "" ? decryptedData[index][field + '1'] : item[field];
+//           } else {
+//             outputItem[field] = item[field];
+//           }
+//         }
+//       }
+//       output.push(outputItem);
+//     });
+//     return output;
+//   };
+
+//   const outputData = handleOutputData();
+
+//   const handleImportFromClipboard = () => {
+//     navigator.clipboard.readText()
+//       .then(text => setPrivateKey(text))
+//       .catch(err => console.error('Failed to read clipboard contents: ', err));
+//   };
+
+//   const handleFileUpload = (event) => {
+//     const file = event.target.files[0];
+//     const reader = new FileReader();
+//     reader.onload = (event) => {
+//       setPrivateKey(event.target.result);
+//     };
+//     reader.readAsText(file);
+//   };
+
+//   const filterData = (data) => {
+//     if (!searchValue || !filterField) {
+//       return data;
+//     }
+  
+//     return data.filter((item) => {
+//       // Проверяем, является ли значение строкой перед вызовом toLowerCase()
+//       const fieldValue = typeof item[filterField] === 'string' ? item[filterField] : String(item[filterField]);
+//       return fieldValue !== "" && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
+//     });
+//   };
+  
+  
+//   // const filterData = (data) => {
+//   //   if (!searchValue || !filterField) {
+//   //     return data;
+//   //   }
+
+//   //   return data.filter((item) =>
+//   //     item[filterField].toLowerCase().includes(searchValue.toLowerCase())
+//   //   );
+//   // };
+
+//   const renderFilteredData = () => {
+//     const filteredData = filterData(outputData);
+//     return (
+//       <div className='dekrypted-container'>
+//         {filteredData.map((outputItem, index) => (
+//           <div className='dekrypted' key={index}>
+//             <div className='filters'>
+//             <input
+//               type="checkbox"
+//               style={{ cursor: 'pointer' }}
+//               className='selected'
+//               checked={selectedData.includes(index)}
+//               onChange={() => toggleSelect(index)}
+//             />
+//             <h3>Decrypted Data # {index + 1}</h3>
+//             </div>
+//             <ul className='no-markers'>
+//               {Object.entries(outputItem).map(([field, value]) => (
+//                 <li key={field}>
+//                   {field}: {value}
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+//         ))}
+//       </div>
+//     );
+//   };
+
+//   const toggleSelect = (index) => {
+//     if (selectedData.includes(index)) {
+//       setSelectedData(selectedData.filter((item) => item !== index));
+//     } else {
+//       setSelectedData([...selectedData, index]);
+//     }
+//   };
+
+//   const handleSelectAll = () => {
+//     if (selectAllText === 'Select All') {
+//       const allFilteredIndexes = filterData(outputData).map((item, index) => index);
+//       setSelectedData(allFilteredIndexes);
+//       setSelectAllText('Deselect All');
+//     } else {
+//       setSelectedData([]);
+//       setSelectAllText('Select All');
+//     }
+//   };
+
+//   const copySelectedDataToClipboard = () => {
+//     const selectedItems = selectedData.map((index) => {
+//       const item = outputData[index];
+//       const filteredItem = {};
+//       for (const [key, value] of Object.entries(item)) {
+//         // Пропускаем ключи с пустыми значениями
+//         if (value !== '') {
+//           filteredItem[key] = value;
+//         }
+//       }
+//       return filteredItem;
+//     });
+//     const clipboardText = selectedItems.map((item) => {
+//      // return Object.values(item).join(';');
+//      return Object.entries(item).map(([key, value]) => `${key}:${value}`).join(',')
+//     }).join(';\n');
+//     navigator.clipboard.writeText(clipboardText)
+//       .then(() => alert('Selected data copied to clipboard'))
+//       .catch((error) => console.error('Failed to copy selected data to clipboard: ', error));
+//   };
+  
+
+//   // const copySelectedDataToClipboard = () => {
+//   //   const selectedItems = selectedData.map((index) => outputData[index]);
+//   //   const clipboardText = JSON.stringify(selectedItems, null, 2);
+//   //   navigator.clipboard.writeText(clipboardText)
+//   //     .then(() => console.log('Selected data copied to clipboard'))
+//   //     .catch((error) => console.error('Failed to copy selected data to clipboard: ', error));
+//   // };
+// console.log(selectedData)
+// console.log(outputData)
+// console.log(filterData(outputData).length)
+//   return (
+//     <> 
+//     {showPrivateKeyInput && (
+//         <div className='filters'>
+//           <label>
+//             <b>{privateKey ? 'Private Key loaded' : 'Private Key:'}</b>
+//             <input type="hidden" className='form-input' value={privateKey} onChange={(e) => setPrivateKey(e.target.value)} />
+//           </label>
+//           <button className='selected' onClick={handleImportFromClipboard}>Import from Clipboard</button>
+//           <input className='selected' type="file" onChange={handleFileUpload} />
+//         </div>
+//       )}
+     
+//       <form onSubmit={handleSubmit}>
+//         {!showPrivateKeyInput && (
+//           <div className='filters' style={{ "marginBottom": "70px"}}>
+//             <label>
+//               <b>User ID:</b>
+//               <input type="text" className='form-input' value={userid} onChange={(e) => setUserid(e.target.value)} required/>
+//             </label>
+//             <label>
+//               <b>Price ID:</b>
+//               <input type="text" className='form-input' value={idprice} onChange={(e) => setIdprice(e.target.value)} />
+//             </label>
+//             <button className='back-button selected' type="submit" disabled={submitting}>Submit</button>
+//           </div>
+//         )}
+//       </form>
+//       {verificationStatus === 'verified' && responseData && (
+//         <div className='filters'>
+//           <input
+//             type="search"
+//             className='form-input'
+//             value={searchValue}
+//             onChange={(e) => setSearchValue(e.target.value)}
+//             placeholder="Filter..."
+//           />
+//           <select className='form-input' value={filterField} onChange={(e) => setFilterField(e.target.value)}>
+//             <option value="">Select Filter Field</option>
+//             {outputData.length > 0 &&
+//               Object.keys(outputData[0]).map((field) => (
+//                 <option key={field} value={field}>
+//                   {field}
+//                 </option>
+//               ))
+//             }
+//           </select>
+//           <div className='filters'>
+//             {showPrivateKeyInput && showDecryptButton && (
+//               <>
+//                 <button className='back-button selected' onClick={handleDecryptAll}>Decrypt All Fields</button>
+                
+//               </>
+//             )}
+//             {outputData && filterData(outputData).length>0 &&(
+//             <button className='back-button selected' onClick={handleSelectAll}>{selectAllText}</button>
+//             )}
+//             {selectedData&&selectedData.length>0&&(
+//             <button className='back-button selected' onClick={copySelectedDataToClipboard}>Copy Selected to Clipboard</button>
+//              )}
+//             <div className='dekrypted-container'>
+//               {renderFilteredData()}
+//             </div>
+//           </div>
+//         </div>  
+//       )}
+//       {verificationStatus === 'error' && <p>⚠️Incorrect username or password!</p>}
+    
+//     </>  
+//   );
+// };
+
+// export default MyForm;
 
 
 // import React, { useContext, useState } from 'react';
