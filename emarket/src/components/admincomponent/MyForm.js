@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RSAEncryption from '../rsacomponent/RSAEncryption';  
 import { BooksContext } from '../../BooksContext';
 import DecryptPrivateKey from '../rsacomponent/DecryptPrivateKey'; 
@@ -18,10 +19,20 @@ const MyForm = () => {
   const [showDecryptButton, setShowDecryptButton] = useState(false);
   const [selectAllText, setSelectAllText] = useState('Select All');
   const [submitting, setSubmitting] = useState(false);
-  const [encryptedPrivateKey, setEncryptedPrivateKey] = useState(''); // Add state for encrypted private key
+  //const [encryptedPrivateKey, setEncryptedPrivateKey] = useState(''); // Add state for encrypted private key
   const [decryptedPrivateKey, setDecryptedPrivateKey] = useState(''); // Add state for decrypted private key
   const [decryptEnabled, setDecryptEnabled] = useState(false); // Add state for decrypt enabled
   const { decryptRSA } = RSAEncryption();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (uiMain.length === 0) {
+      navigate('/');
+    }
+  }, [uiMain, navigate]);
+
+  
 
   useEffect(() => {
     setShowDecryptButton(privateKey !== '');
@@ -73,8 +84,7 @@ const MyForm = () => {
       console.error('Error:2', error);
       setVerificationStatus('error');
       setShowPrivateKeyInput(false);
-    } finally {
-      // В конце обработки запроса устанавливаем состояние отправки в false
+    } finally {      
       setSubmitting(false);
     }
   };
@@ -129,7 +139,7 @@ const MyForm = () => {
   const handleImportFromClipboard = () => {
     navigator.clipboard.readText()
       .then(text => setPrivateKey(text))
-      .catch(err => console.error('Failed to read clipboard contents: ', err));
+      .catch(err => alert('⚠️Failed to read clipboard contents: ', err));
   };
 
   const handleFileUpload = (event) => {
@@ -146,8 +156,7 @@ const MyForm = () => {
       return data;
     }
   
-    return data.filter((item) => {
-      // Проверяем, является ли значение строкой перед вызовом toLowerCase()
+    return data.filter((item) => {      
       const fieldValue = typeof item[filterField] === 'string' ? item[filterField] : String(item[filterField]);
       return fieldValue !== "" && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
     });
@@ -205,26 +214,21 @@ const MyForm = () => {
     const selectedItems = selectedData.map((index) => {
       const item = outputData[index];
       const filteredItem = {};
-      for (const [key, value] of Object.entries(item)) {
-        // Пропускаем ключи с пустыми значениями
+      for (const [key, value] of Object.entries(item)) {       
         if (value !== '') {
           filteredItem[key] = value;
         }
       }
       return filteredItem;
     });
-    const clipboardText = selectedItems.map((item) => {
-     // return Object.values(item).join(';');
+    const clipboardText = selectedItems.map((item) => {     
      return Object.entries(item).map(([key, value]) => `${key}:${value}`).join(',')
     }).join(';\n');
     navigator.clipboard.writeText(clipboardText)
       .then(() => alert('Selected data copied to clipboard'))
-      .catch((error) => console.error('Failed to copy selected data to clipboard: ', error));
-  };
-  
-  console.log(selectedData)
-  console.log(outputData)
-  console.log(filterData(outputData).length)
+      .catch((error) => alert('⚠️Failed to copy selected data to clipboard: ', error));
+  };  
+
   return (
     <> 
     {showPrivateKeyInput && (
@@ -244,8 +248,8 @@ const MyForm = () => {
             Decrypt Private Key
           </label>
           {decryptEnabled && (
-            <DecryptPrivateKey
-              encryptedKey={encryptedPrivateKey}
+            <DecryptPrivateKey             
+              encryptedKey={ privateKey}
               onDecrypted={(key) => setDecryptedPrivateKey(key)}
             />
           )}

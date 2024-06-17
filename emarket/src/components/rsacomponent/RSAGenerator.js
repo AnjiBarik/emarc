@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DecryptPrivateKey from './DecryptPrivateKey'; 
+//import DecryptPrivateKey from './DecryptPrivateKey'; 
 
 const logChunks = (label, data) => {
   const chunks = [];
@@ -10,9 +10,9 @@ const logChunks = (label, data) => {
 };
 
 const copyToClipboard = (text) => {
-  navigator.clipboard.writeText(text).then(
-    () => console.log('Copied to clipboard successfully!'),
-    (err) => console.error('Failed to copy to clipboard:', err)
+  navigator.clipboard.writeText(text).then(   
+    () => alert('Copied to clipboard successfully!'),
+    (err) => alert('⚠️Failed to copy to clipboard:', err)
   );
 };
 
@@ -24,45 +24,39 @@ const saveToFile = (filename, content) => {
   link.click();
 };
 
+
 const encryptPrivateKey = async (privateKeyBase64, password) => {
   const enc = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey(
+  
+  // Hash the password using SHA-256 to get a fixed-size key
+  const passwordHash = await crypto.subtle.digest('SHA-256', enc.encode(password));
+  
+  // Import the hashed password as a key
+  const key = await crypto.subtle.importKey(
     'raw',
-    enc.encode(password),
-    'PBKDF2',
-    false,
-    ['deriveKey']
-  );
-
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const key = await crypto.subtle.deriveKey(
-    {
-      name: 'PBKDF2',
-      salt: salt,
-      iterations: 100000,
-      hash: 'SHA-256'
-    },
-    keyMaterial,
+    passwordHash,
     { name: 'AES-GCM', length: 256 },
     false,
     ['encrypt']
   );
 
-  const iv = crypto.getRandomValues(new Uint8Array(12));
+  // Derive IV from the password hash (first 12 bytes)
+  const iv = new Uint8Array(passwordHash).slice(0, 12);
+
+  // Encrypt the private key
   const encrypted = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
       iv: iv
     },
     key,
-    new TextEncoder().encode(privateKeyBase64)
+    enc.encode(privateKeyBase64)
   );
 
+  // Encode the encrypted data to base64
   const encryptedBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(encrypted)));
-  const ivBase64 = btoa(String.fromCharCode.apply(null, iv));
-  const saltBase64 = btoa(String.fromCharCode.apply(null, salt));
-
-  return `${saltBase64}:${ivBase64}:${encryptedBase64}`;
+ 
+  return encryptedBase64;
 };
 
 const RSAGenerator = () => {
@@ -96,6 +90,7 @@ const RSAGenerator = () => {
       setPrivateKey(privateKeyBase64);
     } catch (error) {
       console.error('Error generating keys:', error);
+      alert('⚠️Error generating keys::', error)
     }
   };
 
@@ -105,12 +100,17 @@ const RSAGenerator = () => {
       setEncryptedPrivateKey(encryptedKey);
     } else {
       console.error('Passwords do not match');
+      alert('⚠️Passwords do not match')
     }
+  };
+
+  const handleTextareaChange = (event) => {
+    setPrivateKey(event.target.value);
   };
 
   return (
     <div>
-      <button onClick={generateKeys}>RSA Key Pair Generator</button>
+      <button className='selected' onClick={generateKeys}>RSA Key Pair Generator</button>
 
       {publicKeyChunks.length > 0 && (
         <div>
@@ -118,10 +118,10 @@ const RSAGenerator = () => {
           {publicKeyChunks.map((chunk, index) => (
             <div key={index}>
               <div className="filters">
-                <button onClick={() => copyToClipboard(chunk)}>Copy Public Key {index + 1}</button>
+                <button className='selected' onClick={() => copyToClipboard(chunk)}>Copy Public Key {index + 1}</button>
               </div>
               <div className="filters">
-                <textarea value={chunk} readOnly rows={7} cols={40} />
+                <textarea className='form-input' value={chunk} readOnly rows={7} cols={40} />
               </div>
             </div>
           ))}
@@ -132,14 +132,14 @@ const RSAGenerator = () => {
         <div>
           <h3>Private Key:</h3>
           <div className="filters">
-            <button onClick={() => copyToClipboard(privateKey)}>Copy Private Key</button>
-            <button onClick={() => saveToFile('privateKey.txt', privateKey)}>Save Private Key to File</button>
+            <button className='selected' onClick={() => copyToClipboard(privateKey)}>Copy Private Key</button>
+            <button className='selected' onClick={() => saveToFile('privateKey.txt', privateKey)}>Save Private Key to File</button>
           </div>
           <div className="filters">
-            <textarea defaultValue={privateKey}  rows={8} cols={40} />
+            <textarea className='form-input' defaultValue={privateKey} onChange={handleTextareaChange} rows={8} cols={40} />
           </div>
         </div>
-      )}
+      )} 
 
       {privateKey && (
         <div>
@@ -158,24 +158,32 @@ const RSAGenerator = () => {
             <div>
               <div className="filters">
                 <input
+                  className='form-input' autoFocus
                   type="password"
+                  minLength={3}
+                  maxLength={42}
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <div className="filters">
                 <input
+                  className='form-input'
                   type="password"
+                  minLength={3}
+                  maxLength={42}
                   placeholder="Confirm password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
               </div>
               <div className="filters">
-                <button
+                <button className={confirmPassword!=="" && password === confirmPassword ?'selected':""}
                   onClick={handleEncryptPrivateKey}
-                  disabled={password !== confirmPassword}
+                  disabled={confirmPassword!=="" && password !== confirmPassword}
                 >
                   Encrypt Private Key
                 </button>
@@ -184,12 +192,11 @@ const RSAGenerator = () => {
                 <div>
                   <h4>Encrypted Private Key:</h4>
                   <div className="filters">
-                    <button onClick={() => copyToClipboard(encryptedPrivateKey)}>Copy Encrypted Private Key</button>
-                    <button onClick={() => saveToFile('encryptedPrivateKey.txt', encryptedPrivateKey)}>Save Encrypted Private Key to File</button>
+                    <button className='selected' onClick={() => copyToClipboard(encryptedPrivateKey)}>Copy Encrypted Private Key</button>
+                    <button className='selected' onClick={() => saveToFile('encryptedPrivateKey.txt', encryptedPrivateKey)}>Save Encrypted Private Key to File</button>
                   </div>
-                  <div className="filters">
-                    {/* <textarea value={encryptedPrivateKey} readOnly rows={8} cols={40} /> */}
-                    <textarea value={encryptedPrivateKey} readOnly rows={8} cols={40} />
+                  <div className="filters">                   
+                    <textarea className='form-input' value={encryptedPrivateKey} readOnly rows={8} cols={40} />
                   </div>
                 </div>
               )}
@@ -198,12 +205,12 @@ const RSAGenerator = () => {
         </div>
       )}
 
-      {encryptedPrivateKey && (
+      {/* {encryptedPrivateKey && (
         <div>
           <h3>Decrypt Private Key:</h3>
           <DecryptPrivateKey encryptedKey={encryptedPrivateKey} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
