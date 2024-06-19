@@ -4,7 +4,7 @@
 			"id": 1,
 			"author": "David Flanagan",
 			"type":"start",
-			"lang": "uk",
+			"lang": "en",
 			"loadprice": "true",
 			"fone": "(044)235-78-96",
 			"inst":"hfgfhfh",
@@ -18,13 +18,14 @@
 			"Urorder":"https://script.google.com/macros/s/AKfycbz2Y76UyHDo9dOSecGyiCg-S8-MOdYs5Qgx0cR_Gr-aV_jV0acHPr_pVxlwS2AFoyDL/exec",
 			"order":"rsa",
 			"shopping":"К покупкам",
-			"logopablic":"lang.png"
+			"logopablic":"lang.png",
+			"langstart": "auto"
 		},
 		{
 			"id": 2,
 			"author": "David Flanagan",
-			"type":"replacing",
-			"lang": "en",
+			"type":"start",
+			"lang": "uk",
 			"loadprice": "true",
 			"card":"09990000023232",
 			"logo": "https://courses.prometheus.org.ua/asset-v1:Ciklum+FEB101+2022_T3+type@asset+block@react_up_and_running_2nd_edition.jpg",
@@ -34,7 +35,8 @@
 			"Urregform": "https://script.google.com/macros/s/AKfycbwK2UThi-5CjlU1OFt-kzsXClbuPUGFKM0I6PSj2U5rlPEPADrObjEp2G2jWP0InYGc/exec",
 			"Urorder": "https://script.google.com/macros/s/AKfycbz2Y76UyHDo9dOSecGyiCg-S8-MOdYs5Qgx0cR_Gr-aV_jV0acHPr_pVxlwS2AFoyDL/exec",
 			"orderform":"FirstName,MiddleName,LastName,Email,Phone,Address,Message",
-			"nopriceblock": "true"
+			"nopriceblock": "true",
+			"langstart": "auto"
 		},
 		{
 			"id": 3,
@@ -43,7 +45,7 @@
 			"lang": "ru",
 			"logo": "https://courses.prometheus.org.ua/asset-v1:Ciklum+FEB101+2022_T3+type@asset+block@javascript_everywhere.jpg",
 			"title": "JavaScript: The Definitive Guide, 7th Edition",
-			"UrFrame": "https://sinoptik.ua/%D0%BF%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0-%D0%BA%D0%B8%D0%B5%D0%B2",
+			"UrFrame": "https://777sinoptik.ua/%D0%BF%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0-%D0%BA%D0%B8%D0%B5%D0%B2",
 			"Urprice": "https://script.google.com/macros/s/AKfycbybvuGbsK7-2Wa8PFYurOjt7R6a4wq3NnzqAcMn6tLLGBIxpa6o_KUkVLXX5SDkG7P4ng/exec",
 			"Urregform": "https://script.google.com/macros/s/AKfycbwK2UThi-5CjlU1OFt-kzsXClbuPUGFKM0I6PSj2U5rlPEPADrObjEp2G2jWP0InYGc/exec",
 			"Urorder":"https://script.google.com/macros/s/AKfycbz2Y76UyHDo9dOSecGyiCg-S8-MOdYs5Qgx0cR_Gr-aV_jV0acHPr_pVxlwS2AFoyDL/exec",
