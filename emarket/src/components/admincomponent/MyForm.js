@@ -24,6 +24,9 @@ const MyForm = () => {
   const [decryptEnabled, setDecryptEnabled] = useState(false); // Add state for decrypt enabled
   const { decryptRSA } = RSAEncryption();
 
+  const [startDate, setStartDate] = useState(''); // Add state for start date
+  const [endDate, setEndDate] = useState(''); // Add state for end date
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +55,8 @@ const MyForm = () => {
     const formData = new FormData();
     formData.append('userid', userid);
     formData.append('idpric', idprice);
+    //formData.append('startDate', startDate);
+    //formData.append('endDate', endDate);
     
     const apiUrl = uiMain.Urorder;
     try {
@@ -152,13 +157,33 @@ const MyForm = () => {
   };
 
   const filterData = (data) => {
-    if (!searchValue || !filterField) {
+    if (!searchValue && !filterField && !startDate && !endDate) {
       return data;
     }
   
-    return data.filter((item) => {      
-      const fieldValue = typeof item[filterField] === 'string' ? item[filterField] : String(item[filterField]);
-      return fieldValue !== "" && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
+    // return data.filter((item) => {      
+    //   const fieldValue = typeof item[filterField] === 'string' ? item[filterField] : String(item[filterField]);
+    //   return fieldValue !== "" && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
+    // });
+    return data.filter((item) => {
+      let isMatch = true;
+  
+      if (searchValue && filterField) {
+        const fieldValue = typeof item[filterField] === 'string' ? item[filterField] : String(item[filterField]);
+        isMatch = fieldValue !== "" && fieldValue.toLowerCase().includes(searchValue.toLowerCase());
+      }
+  
+      if (isMatch && startDate && endDate) {
+        const itemDate = new Date(item.currentDateTime);
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        isMatch = itemDate >= start && itemDate <= end;
+        console.log( itemDate)
+        console.log(start)
+        console.log(isMatch)
+      }
+  
+      return isMatch;
     });
   };
   
@@ -267,6 +292,26 @@ const MyForm = () => {
               <b>Price ID:</b>
               <input type="text" className='form-input' value={idprice} onChange={(e) => setIdprice(e.target.value)} />
             </label>
+
+            {/* <label>
+            <b>Start Date:</b>
+            <input
+              type="date"
+              className='form-input'
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </label>
+          <label>
+            <b>End Date:</b>
+            <input
+              type="date"
+              className='form-input'
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </label> */}
+
             <button className='back-button selected' type="submit" disabled={submitting}>Submit</button>
           </div>
         )}
@@ -290,6 +335,27 @@ const MyForm = () => {
               ))
             }
           </select>
+
+
+          <label>
+            <b>Start Date:</b>
+            <input
+              type="date"
+              className='form-input'
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </label>
+          <label>
+            <b>End Date:</b>
+            <input
+              type="date"
+              className='form-input'
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </label>
+
           <div className='filters'>
             {showPrivateKeyInput && showDecryptButton && (
               <>

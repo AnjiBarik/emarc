@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect  } from 'react';
+import { Link } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
 import iconPath from '../utils/IconPath'; 
 //import langicon from '../assets/iconimg/lang.png';
@@ -10,11 +11,10 @@ const LangComponent = () => {
   const { uiState, uiMain, setUiMain } = useContext(BooksContext);
   const { author } = uiMain;
   const [activeLangId, setActiveLangId] = useState(null);
+  const [visibilityKeyGen, setVisibilityKeyGen] = useState(false);
 
   //const lang = iconPath('lang.png') ||langicon ;
-  const lang = iconPath('lang.png') ;
-
-  //console.log(lang)
+  const lang = iconPath('lang.png') ;  
 
   const renderLangButtons = () => {
     return uiState
@@ -44,11 +44,23 @@ const LangComponent = () => {
   useEffect(() => {
     setActiveLangId(uiMain.id);
   }, [uiMain]);
+  
+  const handleDoubleClick = () => {
+    setVisibilityKeyGen(prevValue => !prevValue);
+  };
 
   return (
-    <div className='filters'>
-      <img className="back-button selected" src={lang} alt='Language Selection'/>      
+    <div className='filters'  >
+      <img className="back-button selected" src={lang} onDoubleClick={handleDoubleClick} alt='Language Selection' />      
+      {visibilityKeyGen   &&  
+               <Link to="/AdminPanel" >
+                 <button className='back-button selected'>
+                 AdminPanel
+                 </button>
+               </Link>
+              }
       {renderLangButtons()}
+     
     </div>
   );
 };

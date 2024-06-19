@@ -19,15 +19,12 @@ import about from '../cart/img/about.png';
 
 export default function Header() {
   const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain } = React.useContext(BooksContext);
-  //const { logo, title } = uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0];
-
   const [logo, setLogo] = useState('');
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState('');  
 
   useEffect(() => {
-    const selectedUiState = uiState[idLoudPrice - 1] || uiState.find(item => item.type === "start");
-    if (selectedUiState) {
-      //setLogo(selectedUiState.logo);
+    const selectedUiState = uiState[idLoudPrice - 1] || uiState.find(item => item.type === "start") || uiState[0];
+    if (selectedUiState) {     
       setLogo((selectedUiState.logopablic ? `${process.env.PUBLIC_URL}/logoimg/${selectedUiState.logopablic}` : selectedUiState.logo))
       setTitle(selectedUiState.title);
     }
@@ -56,28 +53,26 @@ export default function Header() {
   };
 
   const HandleLoad = () => {
-    setUiMain(uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0]);
+    // setUiMain(uiState[idLoudPrice - 1] || uiState.filter(item => item.type === "start")[0] || uiState[0]);
+    setUiMain(uiState[idLoudPrice - 1] || uiState.find(item => item.type === "start") || uiState[0]);
   };
 
   const [currentLink, setCurrentLink] = useState(null);
   const [currentButtonIndex, setCurrentButtonIndex] = useState(null);
 
   const handleButtonClick = (link, index) => {
-    if (currentButtonIndex === index && currentLink === link) {
-      // Если текущая ссылка уже открыта, закрываем её
+    if (currentButtonIndex === index && currentLink === link) {      
       setCurrentLink(null);
       setCurrentButtonIndex(null);
-    } else {
-      // Если текущая ссылка не совпадает с новой, открываем новую ссылку
+    } else {      
       setCurrentLink(link);
       setCurrentButtonIndex(index);
     }
-  };
+  }; 
 
   return (
     <section className={theme}>
-      <section className='header'>
-        {/* Левая часть хедера */}
+      <section className='header'>       
         <section className="header-left">
            <Link to="/" className='sort-button selected'>
              <div onClick={HandleLoad}>
@@ -96,8 +91,7 @@ export default function Header() {
                <img className="back-button" src={light} alt="light theme"/>
              )}
            </button>
-         </section>   
-        {/* Правая часть хедера */}
+         </section>          
         <section className="header-right">
           {((uiMain.fone && uiMain.fone !== "") || 
             (uiMain.inst && uiMain.inst !== "") || 
