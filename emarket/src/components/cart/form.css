@@ -8,6 +8,7 @@
     border-radius: 10px;
     outline: none;
     transition: border-color 0.3s ease;
+    margin: 5px;
 }
 
 input:focus {

@@ -8,7 +8,7 @@ import iconPath from '../utils/IconPath';
 
 
 const LangComponent = () => {
-  const { uiState, uiMain, setUiMain } = useContext(BooksContext);
+  const { uiState, uiMain, setUiMain, idLoudPrice } = useContext(BooksContext);
   const { author } = uiMain;
   const [activeLangId, setActiveLangId] = useState(null);
   const [visibilityKeyGen, setVisibilityKeyGen] = useState(false);
@@ -46,7 +46,9 @@ const LangComponent = () => {
   }, [uiMain]);
   
   const handleDoubleClick = () => {
-    setVisibilityKeyGen(prevValue => !prevValue);
+    idLoudPrice && idLoudPrice > 0 ? 
+    setVisibilityKeyGen(prevValue => !prevValue) :
+    setVisibilityKeyGen(false);   
   };
 
   return (
