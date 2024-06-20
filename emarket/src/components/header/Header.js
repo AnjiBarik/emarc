@@ -190,9 +190,12 @@ export default function Header() {
                 )}
                 {uiMain.card && uiMain.card !== "" && (
                   <div>
-                    <button className='sort-button' onClick={() => handleButtonClick(uiMain.card, 7)}>
+                    {/* <button className='sort-button' onClick={() => handleButtonClick(uiMain.card, 7)}>
                       <img src={card} className="back-button" alt={uiMain.card}/>
-                    </button>
+                    </button> */}
+                     
+                      <img src={card} className="back-button selected" onClick={() => handleButtonClick(uiMain.card, 7)} alt={uiMain.card}/>
+                    
                     {currentButtonIndex === 7 && (
                       <a href={currentLink} target="_blank" rel="noopener noreferrer">
                         {currentLink}

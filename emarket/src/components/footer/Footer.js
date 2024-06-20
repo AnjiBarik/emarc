@@ -75,7 +75,7 @@ export default function Footer() {
                 <Link to="/cart">
                   <img className={`back-button ${selectedImage === 'cart' ? 'sel' : ''}`} onClick={() => handleImageClick('cart')} src={cart} alt="cart" />
                   {totalCount > 0 && (
-                    <span className="cartcount"><b>{totalCount}</b></span>
+                    <span className="cartcount rotate"><b>{totalCount}</b></span>
                   )}
                 </Link>
               </section>
