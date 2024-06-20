@@ -67,7 +67,8 @@ figure{
 
   .img-icon{
     border-radius: 10px;
-    margin: 5px;    
+    margin: 5px; 
+    cursor: pointer;   
   }
 
   .img-conteiner{
@@ -102,12 +103,14 @@ figure{
   .art {
     width: 240px;
     height: 320px;
+    cursor: pointer;
     object-fit: contain;
   }
   
   .artwidth {
     width: 320px;
     height: 320px;
+    cursor: pointer;
     object-fit: fill;
   }
 

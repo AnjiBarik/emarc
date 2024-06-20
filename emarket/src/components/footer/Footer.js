@@ -12,8 +12,7 @@ import RegistrationForm from '../cart/RegistrationForm';
 
 export default function Footer() {
   const { theme, cartItems, totalCount, setTotalCount, savedLogin, uiMain, idLoudPrice, showRegistrationForm, setShowRegistrationForm } = React.useContext(BooksContext);
-  const [selectedImage, setSelectedImage] = useState(null);
-  //const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);  
 
   const location = useLocation();
 
@@ -93,8 +92,7 @@ export default function Footer() {
                 </Link>
               </section>
 
-              <section className="cart">
-                {/* <img className={`back-button ${selectedImage === 'avatar' ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} /> */}
+              <section className="cart">               
                 <img className={`back-button ${showRegistrationForm ? 'sel' : ''}`} onClick={() => handleImageClick('avatar')} src={ava} alt="avatar" style={{ cursor: 'pointer' }} />
                 {savedLogin && (
                   <span className="cartcount" translate="no"><strong>{savedLogin.slice(0, 2) + '...'}</strong></span>

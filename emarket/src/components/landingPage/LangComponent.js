@@ -68,36 +68,3 @@ const LangComponent = () => {
 };
 
 export default LangComponent;
-
-
-// import React, { useContext } from 'react';
-// import { BooksContext } from '../../BooksContext';
-
-// const Lang = () => {
-//   const { uiState, uiMain } = useContext(BooksContext);
-
-//   const { logo, title, author } = uiMain;
-
-//   // Функция для отображения кнопок с языками
-//   const renderLangButtons = () => {
-//     return uiState.filter(item => item.author === author).map((item, index) => (
-//       <button key={index}>{item.lang}</button>
-//     ));
-//   };
-
-//   return (
-//     <div>
-//       {/* Отображаем логотип, если он есть, иначе отображаем название */}
-//       {logo ? (
-//         <img src={logo} alt={title} />
-//       ) : (
-//         <h1>{title}</h1>
-//       )}
-
-//       {/* Отображаем кнопки с языками */}
-//       {renderLangButtons()}
-//     </div>
-//   );
-// };
-
-// export default Lang;

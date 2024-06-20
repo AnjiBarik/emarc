@@ -17,7 +17,7 @@ const ErrorBoundary = ({ children }) => {
 
   React.useEffect(() => {
     const errorHandler = (event) => {
-      console.error('Unhandled error:', event.error); // Log error to console
+      console.error('Unhandled error:', event.error); 
       setHasError(true);
     };
 

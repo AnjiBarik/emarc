@@ -20,9 +20,7 @@ function Slider() {
 
     //console.log(language)
 
-    const handleImageError = () => {
-        // Handle image loading errors here
-        //console.log('Image failed to load');
+    const handleImageError = () => {       
         setImageError(true);
     };
 
@@ -72,4 +70,3 @@ function Slider() {
 }
 
 export default Slider;
-

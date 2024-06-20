@@ -1,8 +1,4 @@
-//import React, { useState } from 'react';
-
-
-const RSAEncryption = () => {
-  //const [encryptedMessage, setEncryptedMessage] = useState('');
+const RSAEncryption = () => { 
 
   const encryptRSA = async (publicKeyText, plaintext) => {
     try {
@@ -16,8 +12,7 @@ const RSAEncryption = () => {
         new TextEncoder().encode(plaintext)
       );
 
-      const base64EncodedEncryptedMessage = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
-      //setEncryptedMessage(base64EncodedEncryptedMessage);
+      const base64EncodedEncryptedMessage = btoa(String.fromCharCode(...new Uint8Array(encrypted)));     
 
       return base64EncodedEncryptedMessage;
     } catch (error) {
@@ -74,8 +69,7 @@ const RSAEncryption = () => {
     );
   };
 
-  return {
-    //encryptedMessage,
+  return {    
     encryptRSA,
     decryptRSA
   };
