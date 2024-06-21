@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { BooksContext } from '../../BooksContext';
 import RSAGenerator from '../rsacomponent/RSAGenerator';
-import MyForm from './MyForm';
+import OrderFormAndDecryption from './OrderSubmissionForm';
 
 export default function AdminPanel  ()  {
   const {theme} = useContext(BooksContext);
@@ -17,7 +17,7 @@ export default function AdminPanel  ()  {
     </section>
     <hr />
     <section className="filters"> 
-      <MyForm />
+      <OrderFormAndDecryption />
     </section>   
     </div>
     

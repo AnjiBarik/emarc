@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './specificBook.css';
 import PriceBlock from './PriceBlock';
-import ScrollToTopButton from '../book-list/ScrollToTopButton';
+import ScrollToTopButton from '../utils/ScrollToTopButton';
 import { Link, useNavigate} from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
 import discont from '../cart/img/discont.png';

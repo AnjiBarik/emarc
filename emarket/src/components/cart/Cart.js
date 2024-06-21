@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./cart.css";
 import { BooksContext } from '../../BooksContext';
-import ScrollToTopButton from '../book-list/ScrollToTopButton';
+import ScrollToTopButton from '../utils/ScrollToTopButton';
 import Shelf from '../book-list/Shelf';
 import { Link, useNavigate } from 'react-router-dom';
 import cart from './img/cart.svg';

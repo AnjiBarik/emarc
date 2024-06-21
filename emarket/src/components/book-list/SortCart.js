@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import Shelf from './Shelf';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
-import ScrollToTopButton from './ScrollToTopButton';
+import ScrollToTopButton from '../utils/ScrollToTopButton';
 import down_sort from '../cart/img/down_sort.png';
 import up_sort from '../cart/img/up_sort.png';
 import list_icon from '../cart/img/list_icon.png';

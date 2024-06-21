@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ScrollToTopButton from '../utils/ScrollToTopButton';
 
 const logChunks = (label, data) => {
   const chunks = [];
@@ -109,7 +110,7 @@ const RSAGenerator = () => {
 
   return (
     <div>
-      <button className='selected' onClick={generateKeys}>RSA Key Pair Generator</button>
+      <button className='back-button selected' onClick={generateKeys}>RSA Key Pair Generator</button>
 
       {publicKeyChunks.length > 0 && (
         <div>
@@ -117,7 +118,7 @@ const RSAGenerator = () => {
           {publicKeyChunks.map((chunk, index) => (
             <div key={index}>
               <div className="filters">
-                <button className='selected' onClick={() => copyToClipboard(chunk)}>Copy Public Key {index + 1}</button>
+                <button className='back-button selected' onClick={() => copyToClipboard(chunk)}>Copy Public Key {index + 1}</button>
               </div>
               <div className="filters">
                 <textarea className='form-input' value={chunk} readOnly rows={7} cols={40} />
@@ -131,8 +132,8 @@ const RSAGenerator = () => {
         <div>
           <h3>Private Key:</h3>
           <div className="filters">
-            <button className='selected' onClick={() => copyToClipboard(privateKey)}>Copy Private Key</button>
-            <button className='selected' onClick={() => saveToFile('privateKey.txt', privateKey)}>Save Private Key to File</button>
+            <button className='back-button selected' onClick={() => copyToClipboard(privateKey)}>Copy Private Key</button>
+            <button className='back-button selected' onClick={() => saveToFile('privateKey.txt', privateKey)}>Save Private Key to File</button>
           </div>
           <div className="filters">
             <textarea className='form-input' defaultValue={privateKey} onChange={handleTextareaChange} rows={8} cols={40} />
@@ -180,9 +181,10 @@ const RSAGenerator = () => {
                 />
               </div>
               <div className="filters">
-                <button className={confirmPassword!=="" && password === confirmPassword ?'selected':""}
+                <button className={confirmPassword!=="" && password === confirmPassword ?'back-button selected':""}
                   onClick={handleEncryptPrivateKey}
-                  disabled={confirmPassword!=="" && password !== confirmPassword}
+                  disabled={(password ==="" && confirmPassword ==="") || (password.length < 3 && confirmPassword.length < 3)
+                   || password !== confirmPassword}
                 >
                   Encrypt Private Key
                 </button>
@@ -191,8 +193,8 @@ const RSAGenerator = () => {
                 <div>
                   <h4>Encrypted Private Key:</h4>
                   <div className="filters">
-                    <button className='selected' onClick={() => copyToClipboard(encryptedPrivateKey)}>Copy Encrypted Private Key</button>
-                    <button className='selected' onClick={() => saveToFile('encryptedPrivateKey.txt', encryptedPrivateKey)}>Save Encrypted Private Key to File</button>
+                    <button className='back-button selected' onClick={() => copyToClipboard(encryptedPrivateKey)}>Copy Encrypted Private Key</button>
+                    <button className='back-button selected' onClick={() => saveToFile('encryptedPrivateKey.txt', encryptedPrivateKey)}>Save Encrypted Private Key to File</button>
                   </div>
                   <div className="filters">                   
                     <textarea className='form-input' value={encryptedPrivateKey} readOnly rows={8} cols={40} />
@@ -202,8 +204,9 @@ const RSAGenerator = () => {
             </div>
           )}
         </div>
-      )}     
-    </div>
+      )}    
+       <ScrollToTopButton />
+    </div>    
   );
 };
 
