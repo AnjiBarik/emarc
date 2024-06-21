@@ -65,7 +65,11 @@ export default function Cart() {
            </button>
           </Link>
         )}
-         {loggedIn&&(<CartMemo/>)}
+         {loggedIn&&(
+          <div className="filter">
+           <CartMemo/>
+           </div> 
+          )}
         {cartItems.length !== 0 && totalPrice !== 0 && (
           <p id="total"><b className="back-button selected">Total Price: <strong>{totalPrice}</strong></b></p>
         )}

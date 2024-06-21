@@ -218,9 +218,9 @@ body {
   .book{
     flex-wrap: wrap;    
   }
-  .back-button{
+  /* .back-button{
     height: 50px;
-  }
+  } */
   .widhtblock{
     width: 370px;
     display: flex;

@@ -38,7 +38,7 @@ const CartMemo = () => {
   }, [loggedIn, order]);
 
   const handleAdd = () => {
-    if (window.confirm("Are you sure you want to add these items to the cart?")) {
+    if (window.confirm("Are you sure you want to add favorites items to the cart?")) {
       const itemsToAdd = selectedItems.filter(item => item.idpraceorder === fieldState.idprice);
       const updatedCartItems = [...cartItems];
       itemsToAdd.forEach(item => {
@@ -114,7 +114,8 @@ const CartMemo = () => {
 
   return (
     <>
-      {loggedIn && order && order !== "" && order.trim() !== "" && (       
+      {loggedIn && order && order !== "" && order.trim() !== "" && fieldState.idprice 
+      && fieldState.idprice!=="" && order.includes(fieldState.idprice) && (       
            <img src={favorite} onClick={handleAdd} className="back-button selected" alt="favorite cart" />       
       )}
          
@@ -126,7 +127,8 @@ const CartMemo = () => {
           <img src={addfavorite} onClick={handleAddToFavorites} className="back-button selected" alt="add favorite cart" />       
       )}
 
-      {loggedIn && order && order !== "" && order.trim() !== "" && (
+      {loggedIn && order && order !== "" && order.trim() !== "" && fieldState.idprice 
+      && fieldState.idprice!=="" && order.includes(fieldState.idprice) && (
         <button className='back-button selected' onClick={handleClearFavorites}>
           Favs❌
         </button>

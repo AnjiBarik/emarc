@@ -156,15 +156,21 @@ const MyForm = () => {
     reader.readAsText(file);
   };
 
+  // !convert to UTC ISO 8601
+  const convertToUTC = (dateString) => {
+    const date = new Date(dateString);
+    return new Date(date.getTime() + date.getTimezoneOffset() * 60000).toISOString();
+  };
+
   const filterData = (data) => {
     if (!searchValue && !filterField && !startDate && !endDate) {
       return data;
     }
     // !convert to UTC ISO 8601
-    const convertToUTC = (dateString) => {
-      const date = new Date(dateString);
-      return new Date(date.getTime() + date.getTimezoneOffset() * 60000).toISOString();
-    };
+    // const convertToUTC = (dateString) => {
+    //   const date = new Date(dateString);
+    //   return new Date(date.getTime() + date.getTimezoneOffset() * 60000).toISOString();
+    // };
 
     // return data.filter((item) => {      
     //   const fieldValue = typeof item[filterField] === 'string' ? item[filterField] : String(item[filterField]);
@@ -214,8 +220,11 @@ const MyForm = () => {
             </div>
             <ul className='no-markers'>
               {Object.entries(outputItem).map(([field, value]) => (
-                <li key={field}>
-                  {field}: {value}
+                // <li key={field}>
+                //   {field}: {value}
+                // </li>
+                <li key={field} style={getFieldStyle(field, value)}>
+                  {field}: {formatFieldValue(field, value)}
                 </li>
               ))}
             </ul>
@@ -223,6 +232,24 @@ const MyForm = () => {
         ))}
       </div>
     );
+  };
+
+  const getFieldStyle = (field, value) => {
+    if (field === 'orderNumber') {
+      return { fontWeight: 'bold' };
+    }
+    if (field === 'currentDateTime') {
+      return { color: 'blue' };
+    }
+    return {};
+  };
+
+  const formatFieldValue = (field, value) => {
+    if (field === 'currentDateTime') {
+      // return `New (${value})`;
+      return <strong translate="no">{value} <br /> UTC ISO { convertToUTC(value)}</strong>
+    }
+    return value;
   };
 
   const toggleSelect = (index) => {
@@ -268,33 +295,36 @@ const MyForm = () => {
     setStartDate("")
     setSearchValue("")
   }
-
+//console.log(privateKey)
   return (
     <> 
     {showPrivateKeyInput && (
-        <div className='filters'>
+      <div className='filters'>
           <label>
             <b>{privateKey ? 'Private Key loaded' : 'Private Key:'}</b>
             <input type="hidden" className='form-input' value={privateKey} onChange={(e) => setPrivateKey(e.target.value)} />
           </label>
-          <button className='selected' onClick={handleImportFromClipboard}>Import from Clipboard</button>
-          <input className='selected' type="file" onChange={handleFileUpload} />
+          <button className='form-input' onClick={handleImportFromClipboard}>Import from Clipboard</button>
+          <input className='form-input' type="file" onChange={handleFileUpload} />
+        {privateKey && privateKey !== '' && (
           <label>
             <input
               type="checkbox"
-              checked={decryptEnabled}
+              checked={decryptEnabled}              
               onChange={(e) => setDecryptEnabled(e.target.checked)}
             />
             Decrypt Private Key
           </label>
-          {decryptEnabled && (
+        )}  
+          {decryptEnabled && 
             <DecryptPrivateKey             
               encryptedKey={ privateKey}
               onDecrypted={(key) => setDecryptedPrivateKey(key)}
             />
-          )}
-        </div>
-      )}
+          }
+          
+      </div>
+    )}
      
       <form onSubmit={handleSubmit}>
         {!showPrivateKeyInput && (
@@ -387,7 +417,7 @@ const MyForm = () => {
             <button className='back-button selected' onClick={copySelectedDataToClipboard}>Copy Selected to Clipboard</button>
              )}
             <div className='dekrypted-container'>
-              {renderFilteredData()}
+              {renderFilteredData()}            
             </div>
           </div>
         </div>  
