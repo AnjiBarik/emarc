@@ -139,9 +139,9 @@ const FilteredDataDisplay = ({ outputData }) => {
     setSearchValue('');
   };
 
-  return (
-   <>
-     <div className='filters'>
+  return ( 
+   <> 
+     <div className='filters'> 
       <input
         type="search"
         className='form-input'

@@ -57,11 +57,18 @@ const DecryptPrivateKey = ({ encryptedKey, onDecrypted }) => {
         <input
           className='form-input' autoFocus
           type="password"
+          minLength={3}
+          maxLength={42}
           placeholder="Enter password to decrypt"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button className='selected' onClick={handleDecrypt}>Decrypt Private Key</button>
+        <button className={ (!password &&  password === "") || password.length < 3 ? "" :'back-button selected'}
+         onClick={handleDecrypt}
+         disabled={ (!password &&  password === "") || password.length < 3}>
+          Decrypt Private Key
+        </button>
       </div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {decryptedKey && (

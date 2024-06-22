@@ -36,8 +36,8 @@ const RSAEncryption = () => {
 
       return new TextDecoder().decode(decrypted);
     } catch (error) {
-      console.error('Error decrypting:', error);
-      //alert('⚠️Error decrypting:', error)
+      //console.error('Error decrypting:', error);
+      return `Error decrypting: ${error}`;    
     }
   };
 
