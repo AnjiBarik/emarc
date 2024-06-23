@@ -71,4 +71,4 @@
  * @license MIT
  */
 
-//!
+//!!! Basic logik
