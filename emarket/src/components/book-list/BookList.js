@@ -2,12 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
+import { useIcons } from '../../IconContext';
 
-import burger from '../cart/img/burger.png';
-import cancel from '../cart/img/cancel.png';
-import upmenu from '../cart/img/upmenu.png';
-import filter from '../cart/img/filter.png';
-import search from '../cart/img/search.png';
+// import burger from '../cart/img/burger.png';
+// import cancel from '../cart/img/cancel.png';
+// import upmenu from '../cart/img/upmenu.png';
+// import filter from '../cart/img/filter.png';
+// import search from '../cart/img/search.png';
 
 import SortCart from './SortCart';
 
@@ -20,6 +21,12 @@ export default function BookList() {
     selectedSubsection,
     setSelectedSubsection,
   } = useContext(BooksContext);
+  const {
+    burger,
+    cancel,
+    upmenu,
+    filter,
+    search, } = useIcons();
 
   const [sections, setSections] = useState([]);
   const [subsections, setSubsections] = useState({});

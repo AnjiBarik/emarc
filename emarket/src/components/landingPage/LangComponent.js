@@ -1,20 +1,15 @@
 import React, { useState, useContext, useEffect  } from 'react';
 import { Link } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
-import iconPath from '../utils/IconPath'; 
-//import langicon from '../assets/iconimg/lang.png';
-//import lang from '../assets/iconimg/lang.png';
-
-
+import { useIcons } from '../../IconContext';
 
 const LangComponent = () => {
   const { uiState, uiMain, setUiMain, idLoudPrice } = useContext(BooksContext);
+  const { lang } = useIcons();
   const { author } = uiMain;
   const [activeLangId, setActiveLangId] = useState(null);
   const [visibilityKeyGen, setVisibilityKeyGen] = useState(false);
-
-  //const lang = iconPath('lang.png') ||langicon ;
-  const lang = iconPath('lang.png') ;  
+  
 
   const renderLangButtons = () => {
     return uiState

@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { HashRouter } from 'react-router-dom';
 import { BooksProvider } from './BooksContext';
+import { IconProvider } from './IconContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -38,7 +39,9 @@ root.render(
     <ErrorBoundary>
       <HashRouter>
         <BooksProvider>
+         <IconProvider>
           <App />
+          </IconProvider>
         </BooksProvider>
       </HashRouter>
     </ErrorBoundary>
