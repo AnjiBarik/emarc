@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { BooksContext } from '../../BooksContext';
+import { useIcons } from '../../IconContext';
 import './form.css';
 import { hashPasswordAndUsername } from './HashUtils';
 import LoadingAnimation from '../utils/LoadingAnimation';  
-import enter from '../cart/img/enter.png';
-import useradd from '../cart/img/useradd.png';
-import logout from '../cart/img/logout.png';
-import cancel from '../cart/img/cancel.png';
-import userok from '../cart/img/userok.png';
-import nickname from '../cart/img/nickname.png';
-import password from '../cart/img/password.png';
+
+// import enter from '../cart/img/enter.png';
+// import useradd from '../cart/img/useradd.png';
+// import logout from '../cart/img/logout.png';
+// import cancel from '../cart/img/cancel.png';
+// import userok from '../cart/img/userok.png';
+// import nickname from '../cart/img/nickname.png';
+// import password from '../cart/img/password.png';
 
 export default function RegistrationForm({ isVerification: propIsVerification }) {
   const { 
@@ -27,6 +29,15 @@ export default function RegistrationForm({ isVerification: propIsVerification })
     setSavedPassword, 
     uiMain 
   } = useContext(BooksContext);
+
+  const {
+    cancel,
+    enter,
+    useradd,
+    logout,
+    userok,
+    nickname,
+    password, } = useIcons();
 
   const [formData, setFormData] = useState({
     Name: '',

@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import LazyImage from './LazyImage';
 import PriceBlock from '../specific-book/PriceBlock';
 import { BooksContext } from '../../BooksContext';
-import { useContext } from 'react';
-import discont from '../cart/img/discont.png';
-import newcart from '../cart/img/new.png';
-import popular from '../cart/img/popular.png';
+import { useIcons } from '../../IconContext';
+//import { useContext } from 'react';
+
+
+// import discont from '../cart/img/discont.png';
+// import newcart from '../cart/img/new.png';
+// import popular from '../cart/img/popular.png';
 
 export default function Shelf(props) {
   const { setSpecificBook, fieldState } = useContext(BooksContext);  
+  const {
+    discont,
+    newcart, 
+    popular,  } = useIcons();
   const currentImageIndex = 0
 
   const publicUrl = `${window.location.origin}${window.location.pathname}`;

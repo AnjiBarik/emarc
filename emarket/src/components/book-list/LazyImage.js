@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import notFound from './img/imageNotFound.png';
+import { useIcons } from '../../IconContext';
+//import notFound from './img/imageNotFound.png';
 
 const LazyImage = ({ src, alt, className }) => {
+  const {
+    notFound, } = useIcons();
   const imgRef = useRef(null);
 
   useEffect(() => {

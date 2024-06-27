@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import './bookList.css';
-import { BooksContext } from '../../BooksContext';
 import { useNavigate, Link } from 'react-router-dom';
-import cancel from '../cart/img/cancel.png';
-import search from '../cart/img/search.png';
-import upmenu from '../cart/img/upmenu.png';
-import burger from '../cart/img/burger.png';
-import filter from '../cart/img/filter.png';
+import { BooksContext } from '../../BooksContext';
+import { useIcons } from '../../IconContext';
 import SortCart from './SortCart';
+
+// import cancel from '../cart/img/cancel.png';
+// import search from '../cart/img/search.png';
+// import upmenu from '../cart/img/upmenu.png';
+// import burger from '../cart/img/burger.png';
+// import filter from '../cart/img/filter.png';
 
 export default function Search() {
   const {
@@ -19,6 +21,13 @@ export default function Search() {
     setSearchOptions,
     fieldState,
   } = useContext(BooksContext);
+
+  const {
+    burger,
+    cancel,
+    upmenu,
+    filter,
+    search, } = useIcons();
 
   const [sortBook, setSortBook] = useState([]);
   const [showSections, setShowSections] = useState(false);

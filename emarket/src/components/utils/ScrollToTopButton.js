@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useIcons } from '../../IconContext';
 import './scrollToTopButton.css';
-import up from '../cart/img/up.png';
+
+//import up from '../cart/img/up.png';
 
 export default function ScrollToTopButton() {
+    const { up } = useIcons();
     const [showButton, setShowButton] = useState(false);
 
     const scrollUp = () => {

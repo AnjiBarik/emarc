@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import loading3 from '../cart/img/loading3.png';
-import loading2 from '../cart/img/loading2.png';
-import loading1 from '../cart/img/loading1.png';
+import { useIcons } from '../../IconContext';
+
+// import loading3 from '../cart/img/loading3.png';
+// import loading2 from '../cart/img/loading2.png';
+// import loading1 from '../cart/img/loading1.png';
 
 const LoadingAnimation = () => {
+  const {
+    loading3,
+    loading2,
+    loading1, } = useIcons();
   const [loadingImage, setLoadingImage] = useState(loading1);
 
   useEffect(() => {
@@ -21,7 +27,8 @@ const LoadingAnimation = () => {
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  // }, []);
+}, [loading1, loading2, loading3]);
 
   return <img src={loadingImage} className='loading' alt="Loading" />;
 };

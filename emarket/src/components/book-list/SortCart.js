@@ -2,20 +2,32 @@ import React, { useEffect, useState, useContext } from 'react';
 import Shelf from './Shelf';
 import './bookList.css';
 import { BooksContext } from '../../BooksContext';
+import { useIcons } from '../../IconContext';
 import ScrollToTopButton from '../utils/ScrollToTopButton';
-import down_sort from '../cart/img/down_sort.png';
-import up_sort from '../cart/img/up_sort.png';
-import list_icon from '../cart/img/list_icon.png';
-import comfy_icon from '../cart/img/comfy_icon.png';
-import discont from '../cart/img/discont.png';
-import newcart from '../cart/img/new.png';
-import popular from '../cart/img/popular.png';
+
+// import down_sort from '../cart/img/down_sort.png';
+// import up_sort from '../cart/img/up_sort.png';
+// import list_icon from '../cart/img/list_icon.png';
+// import comfy_icon from '../cart/img/comfy_icon.png';
+
+// import discont from '../cart/img/discont.png';
+// import newcart from '../cart/img/new.png';
+// import popular from '../cart/img/popular.png';
 
 
 export default function SortCart({props}) {
   const {
     theme,  uiMain      
   } = useContext(BooksContext);
+
+  const {   
+        discont,
+        newcart, 
+        popular, 
+        down_sort,  
+        up_sort,  
+        list_icon, 
+        comfy_icon, } = useIcons();
  
   const [widthBlock, setWidthBlock] = useState(0);
   const [sortBooks, setSortBooks] = useState([]);

@@ -1,16 +1,18 @@
 import React, { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
+import { useIcons } from '../../IconContext';
 import './form.css';
 import InfoModal from '../specific-book/InfoModal';
 import RSAEncryption from '../rsacomponent/RSAEncryption';
 import LoadingAnimation from '../utils/LoadingAnimation'; 
-import call from '../cart/img/call.png';
-import email from '../cart/img/email.png';
-import user from '../cart/img/user.png';
-import chat from '../cart/img/chat.png';
-import back from '../cart/img/back.png';
-import addressIcon from '../cart/img/location.png';
+
+// import call from '../cart/img/call.png';
+// import email from '../cart/img/email.png';
+// import user from '../cart/img/user.png';
+// import chat from '../cart/img/chat.png';
+// import back from '../cart/img/back.png';
+// import addressIcon from '../cart/img/location.png';
 
 export default function OrderForm() {
   const { 
@@ -27,6 +29,14 @@ export default function OrderForm() {
     uiMain, 
     fieldState 
   } = useContext(BooksContext);
+
+  const {
+    back,
+    call,
+    email,
+    user,
+    chat,
+    addressIcon, } = useIcons();
   
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

@@ -4,18 +4,30 @@ import PriceBlock from './PriceBlock';
 import ScrollToTopButton from '../utils/ScrollToTopButton';
 import { Link, useNavigate} from 'react-router-dom';
 import { BooksContext } from '../../BooksContext';
-import discont from '../cart/img/discont.png';
-import newcart from '../cart/img/new.png';
-import back from '../cart/img/back.png';
-import carticon from '../cart/img/carticon.png';
-import popular from '../cart/img/popular.png';
-import zoomout from '../cart/img/zoomout.png';
-import zoomin from '../cart/img/zoomin.png';
-import notFound from '../cart/img/notFound.gif';
+import { useIcons } from '../../IconContext';
 import InfoModal from './InfoModal';
+
+// import discont from '../cart/img/discont.png';
+// import newcart from '../cart/img/new.png';
+// import back from '../cart/img/back.png';
+// import carticon from '../cart/img/carticon.png';
+// import popular from '../cart/img/popular.png';
+// import zoomout from '../cart/img/zoomout.png';
+// import zoomin from '../cart/img/zoomin.png';
+// import notFound from '../cart/img/notFound.gif';
 
 export default function SpecificBook() {
   const { books, specificBook, theme, fieldState } = useContext(BooksContext);
+
+  const {    
+    notFound,
+    discont,
+    newcart, 
+    popular,     
+    back,    
+    carticon,    
+    zoomout,
+    zoomin, } = useIcons();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const navigate = useNavigate(); 
   const { id } = specificBook;  

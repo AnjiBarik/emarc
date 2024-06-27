@@ -2,13 +2,22 @@ import React, { useContext, useState, useMemo, useEffect, useCallback } from 're
 import { Link } from 'react-router-dom';
 import './priceBlock.css';
 import { BooksContext } from '../../BooksContext';
-import cartIcon from '../cart/img/carticon.png';
-import cartadd from '../cart/img/cartaddicon.png';
-import cartupl from '../cart/img/uploadcarticon.png';
-import buynow from '../cart/img/buynow.png';
+import { useIcons } from '../../IconContext';
+
+
+// import carticon from '../cart/img/carticon.png';
+// import cartadd from '../cart/img/cartaddicon.png';
+// import cartupl from '../cart/img/uploadcarticon.png';
+// import buynow from '../cart/img/buynow.png';
 
 export default function PriceBlock({ id, showPrice }) {
   const { setCartItems, books, cartItems, theme, fieldState } = useContext(BooksContext);
+
+  const {
+    carticon,
+    cartadd,
+    cartupl,
+    buynow,} = useIcons();
 
   const booksInCart = useMemo(() => cartItems || [], [cartItems]);
   const specificBookIndex = useMemo(() => booksInCart.findIndex((el) => el.id === id), [booksInCart, id]);
@@ -58,7 +67,8 @@ export default function PriceBlock({ id, showPrice }) {
       <section className="contener">       
         <section  className="price-block Price">
           {specificBookIndex !== -1 && (
-            <img src={cartupl} alt='remove from Cart' className="ccart-icon" onClick={() => removeBookFromCart(id)} tabIndex={-1} />
+            <img src={cartupl} alt='remove from Cart' className="ccart-icon" 
+            onClick={() => removeBookFromCart(id)} tabIndex={-1} />
           )}
 
           <section className="price-block Price">
@@ -120,7 +130,7 @@ export default function PriceBlock({ id, showPrice }) {
             )}
             {specificBookIndex !== -1 && (
               <Link to="/cart">              
-                <img src={cartIcon} alt="Cart" className="ccart-icon Linkcart rotate" />             
+                <img src={carticon} alt="Cart" className="ccart-icon Linkcart rotate" />             
               </Link>
             )}
           </section>

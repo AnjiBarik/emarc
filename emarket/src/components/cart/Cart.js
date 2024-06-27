@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import "./cart.css";
 import { BooksContext } from '../../BooksContext';
+import { useIcons } from '../../IconContext';
 import ScrollToTopButton from '../utils/ScrollToTopButton';
 import Shelf from '../book-list/Shelf';
-import { Link, useNavigate } from 'react-router-dom';
-import cart from './img/cart.svg';
-import back from '../cart/img/back.png';
-import upload from '../cart/img/orderfailure.png';
-import check from '../cart/img/check.png';
 import CartMemo from "./CartMemo";
+
+
+// import cart from './img/cart.svg';
+// import back from '../cart/img/back.png';
+// import upload from '../cart/img/orderfailure.png';
+// import check from '../cart/img/check.png';
+
 
 export default function Cart() {
   const { setCartItems, cartItems, theme, setTotalPrice, totalPrice, setTotalCount, loggedIn, promo, books, fieldState } = React.useContext(BooksContext);
+
+  const {
+    cart,
+    back,
+    upload,
+    check, } = useIcons();
+
   const [cartContent, setCartContent] = useState(null);
   const navigate = useNavigate();
 
@@ -32,7 +43,7 @@ export default function Cart() {
     } else {
       setCartContent(<Shelf book={cartItems} widhtblock={1} />);
     }
-  }, [cartItems, promo, fieldState.idprice]);
+  }, [cartItems, promo, fieldState.idprice, cart]);
 
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
