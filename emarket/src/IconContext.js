@@ -156,9 +156,10 @@ export const IconProvider = ({ children }) => {
     const publicUrl = `${window.location.origin}${window.location.pathname}`;        
     console.log(publicUrl)
     // const url = `${process.env.PUBLIC_URL}/${folder}/${iconName}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${iconName}`;
-    const url = `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${iconName}`;
+    //const url = `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${iconName}`;
+     const url = `${process.env.PUBLIC_URL}/${folder}/${iconName}`; 
     console.log(url)  
-   // const url = `${process.env.PUBLIC_URL}/${folder}/${iconName}`;
+  
 
     try {
       const exists = await checkImageExists(url);
