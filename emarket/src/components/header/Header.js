@@ -20,6 +20,8 @@ export default function Header() {
     card,
     location,
     about, } = useIcons();
+console.log(dark)  
+console.log(light)   
   const [logo, setLogo] = useState('');
   const [title, setTitle] = useState('');  
 
