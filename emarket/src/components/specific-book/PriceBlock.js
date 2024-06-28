@@ -5,11 +5,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 
 
-// import carticon from '../cart/img/carticon.png';
-// import cartadd from '../cart/img/cartaddicon.png';
-// import cartupl from '../cart/img/uploadcarticon.png';
-// import buynow from '../cart/img/buynow.png';
-
 export default function PriceBlock({ id, showPrice }) {
   const { setCartItems, books, cartItems, theme, fieldState } = useContext(BooksContext);
 

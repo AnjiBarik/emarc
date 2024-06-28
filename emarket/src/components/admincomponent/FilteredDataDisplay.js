@@ -125,7 +125,7 @@ const FilteredDataDisplay = ({ outputData }) => {
         <strong translate="no">
           <br /> UTC {value}
           <br /> Current local time: {formattedDate || 'Unable to determine local time'}
-          <br /> GMT+3: {new Date(value).toLocaleString('ru-RU', {
+          {/* <br /> GMT+3: {new Date(value).toLocaleString('ru-RU', {
             timeZone: 'Europe/Moscow',
             formatMatcher: 'best fit',
             day: '2-digit',
@@ -134,7 +134,7 @@ const FilteredDataDisplay = ({ outputData }) => {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',
-          })}
+          })} */}
         </strong>
       );
     }

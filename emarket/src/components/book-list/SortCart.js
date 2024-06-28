@@ -5,16 +5,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 import ScrollToTopButton from '../utils/ScrollToTopButton';
 
-// import down_sort from '../cart/img/down_sort.png';
-// import up_sort from '../cart/img/up_sort.png';
-// import list_icon from '../cart/img/list_icon.png';
-// import comfy_icon from '../cart/img/comfy_icon.png';
-
-// import discont from '../cart/img/discont.png';
-// import newcart from '../cart/img/new.png';
-// import popular from '../cart/img/popular.png';
-
-
 export default function SortCart({props}) {
   const {
     theme,  uiMain      
@@ -40,8 +30,7 @@ export default function SortCart({props}) {
     setPriceblock(true); // Price block is not displayed
     }
   }, [uiMain, uiMain.nopriceblock]);
-  //console.log(uiMain.nopriceblock)
-  //console.log(priceblock)
+  
   useEffect(() => {
     if (props) {
       setSortBooks(props);

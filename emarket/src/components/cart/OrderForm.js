@@ -7,13 +7,6 @@ import InfoModal from '../specific-book/InfoModal';
 import RSAEncryption from '../rsacomponent/RSAEncryption';
 import LoadingAnimation from '../utils/LoadingAnimation'; 
 
-// import call from '../cart/img/call.png';
-// import email from '../cart/img/email.png';
-// import user from '../cart/img/user.png';
-// import chat from '../cart/img/chat.png';
-// import back from '../cart/img/back.png';
-// import addressIcon from '../cart/img/location.png';
-
 export default function OrderForm() {
   const { 
     showRegistrationForm, 

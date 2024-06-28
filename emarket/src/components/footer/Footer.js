@@ -5,13 +5,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 import RegistrationForm from '../cart/RegistrationForm';
 
-// import ava from '../cart/img/user.png';
-// import carticon from '../cart/img/carticon.png';
-// import home from '../cart/img/home.png';
-// import search from '../cart/img/search.png';
-// import filter from '../cart/img/filter.png';
-// import category from '../cart/img/category.png';
-
 export default function Footer() {
   const { theme, cartItems, totalCount, setTotalCount, savedLogin, uiMain, idLoudPrice, showRegistrationForm, setShowRegistrationForm } = React.useContext(BooksContext);
 

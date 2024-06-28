@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useIcons } from '../../IconContext';
 import './InfoModal.css'; 
 
-//import info from '../cart/img/info.png';
 
 const InfoModal = ({ text }) => {
 

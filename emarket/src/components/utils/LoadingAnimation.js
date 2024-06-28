@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useIcons } from '../../IconContext';
 
-// import loading3 from '../cart/img/loading3.png';
-// import loading2 from '../cart/img/loading2.png';
-// import loading1 from '../cart/img/loading1.png';
-
 const LoadingAnimation = () => {
   const {
     loading3,

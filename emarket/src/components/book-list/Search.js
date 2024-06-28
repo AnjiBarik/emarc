@@ -5,12 +5,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 import SortCart from './SortCart';
 
-// import cancel from '../cart/img/cancel.png';
-// import search from '../cart/img/search.png';
-// import upmenu from '../cart/img/upmenu.png';
-// import burger from '../cart/img/burger.png';
-// import filter from '../cart/img/filter.png';
-
 export default function Search() {
   const {
     books,
@@ -201,4 +195,3 @@ export default function Search() {
     </section>
   );
 }
-

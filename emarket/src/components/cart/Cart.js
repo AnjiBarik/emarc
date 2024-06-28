@@ -7,13 +7,6 @@ import ScrollToTopButton from '../utils/ScrollToTopButton';
 import Shelf from '../book-list/Shelf';
 import CartMemo from "./CartMemo";
 
-
-// import cart from './img/cart.svg';
-// import back from '../cart/img/back.png';
-// import upload from '../cart/img/orderfailure.png';
-// import check from '../cart/img/check.png';
-
-
 export default function Cart() {
   const { setCartItems, cartItems, theme, setTotalPrice, totalPrice, setTotalCount, loggedIn, promo, books, fieldState } = React.useContext(BooksContext);
 

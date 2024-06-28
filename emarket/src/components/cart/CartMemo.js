@@ -3,10 +3,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 import { hashPasswordAndUsername } from './HashUtils';
 
-
-// import favorite from '../cart/img/favorite.png';
-// import addfavorite from '../cart/img/addfavorite.png';
-
 const CartMemo = () => {
   const {
     setCartItems,

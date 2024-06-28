@@ -5,14 +5,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 import SortCart from './SortCart';
 
-// import cancel from '../cart/img/cancel.png';
-// import filter from '../cart/img/filter.png';
-// import filterremove from '../cart/img/filterremove.png';
-// import upmenu from '../cart/img/upmenu.png';
-// import burger from '../cart/img/burger.png';
-// import search from '../cart/img/search.png';
-
-
 // Utility function to apply filters
 const applyFilters = (books, filters) => {
   let filteredBooks = books.filter((book) => book.Visibility !== '0');

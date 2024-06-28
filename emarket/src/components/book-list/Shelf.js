@@ -4,12 +4,6 @@ import LazyImage from './LazyImage';
 import PriceBlock from '../specific-book/PriceBlock';
 import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
-//import { useContext } from 'react';
-
-
-// import discont from '../cart/img/discont.png';
-// import newcart from '../cart/img/new.png';
-// import popular from '../cart/img/popular.png';
 
 export default function Shelf(props) {
   const { setSpecificBook, fieldState } = useContext(BooksContext);  
@@ -27,9 +21,6 @@ export default function Shelf(props) {
 
 const imagespublic = el.imageblockpublic && el.imageblockpublic!=="" ? el.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/img/${element}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${element}`):el.imageblock.split(',');
 const imageSource = el.imagepublic && el.imagepublic!=="" ?`${process.env.PUBLIC_URL}/img/${el.imagepublic}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${el.imagepublic}`:el.image && el.image !== '' ? el.image : imagespublic[currentImageIndex] ;
-console.log(imagespublic)
-
-console.log(imageSource)
 
     const colorRGB = fieldState.colorblock
       ? fieldState.colorblock

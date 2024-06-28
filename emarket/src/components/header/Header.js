@@ -4,20 +4,6 @@ import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 import './header.css';
 
-// import dark from '../cart/img/dark.png';
-// import light from '../cart/img/light.png';
-// import inst from '../cart/img/inst.png';
-// import face from '../cart/img/face.png';
-// import telegram from '../cart/img/telegram.png';
-// import fone from '../cart/img/fone.png';
-// import email from '../cart/img/email.png';
-// import tik from '../cart/img/tik.png';
-// import you from '../cart/img/you.png';
-// import card from '../cart/img/card.png';
-// import location from '../cart/img/location.png';
-// import about from '../cart/img/about.png';
-
-
 export default function Header() {
   const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain } = React.useContext(BooksContext);
 

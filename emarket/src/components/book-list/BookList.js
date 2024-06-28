@@ -4,12 +4,6 @@ import './bookList.css';
 import { BooksContext } from '../../BooksContext';
 import { useIcons } from '../../IconContext';
 
-// import burger from '../cart/img/burger.png';
-// import cancel from '../cart/img/cancel.png';
-// import upmenu from '../cart/img/upmenu.png';
-// import filter from '../cart/img/filter.png';
-// import search from '../cart/img/search.png';
-
 import SortCart from './SortCart';
 
 export default function BookList() {

@@ -19,9 +19,6 @@ export default function AdminPanel  ()  {
     <section className="filters"> 
       <OrderFormAndDecryption />
     </section>   
-    </div>
-    
+    </div>    
   );
 };
-
-

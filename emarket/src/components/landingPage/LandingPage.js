@@ -91,11 +91,12 @@ function LandingPage() {
             </section>
             <section className="slider-section">
                 <Slider />             
-            </section>
-            <button onClick={() => window.open(uiMain.UrFrame, '_blank')}>Open in new tab</button>
+            </section>           
             {loading && (uiMain.UrFrame || uiMain.UrFrame!=="") && <p>🌀Loading content...</p>}           
             {uiMain.UrFrame && uiMain.UrFrame!==""&&(
-            <section style={{ height: '100vh' }}>
+            <>  
+            <button className='selected-button' onClick={() => window.open(uiMain.UrFrame, '_blank')}>Open in new tab</button>
+            <section style={{ height: '100vh' }}>           
                 <iframe style={{ border: 'none' }}               
                     // sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                     sandbox="allow-scripts allow-popups allow-forms"
@@ -106,6 +107,7 @@ function LandingPage() {
                     onLoad={handleLoad}
                 ></iframe>
             </section>
+            </>
             )}
              {(!uiMain.UrFrame || uiMain.UrFrame==="")&&(
                 <div className='main'></div>
