@@ -1,19 +1,14 @@
 {
   "files": {
-    "main.css": "/emarc/static/css/main.0a252c5c.css",
-    "main.js": "/emarc/static/js/main.bf5653d9.js",
-    "static/media/notFound1.gif": "/emarc/static/media/notFound1.afc5dd167890b62cd0ef.gif",
-    "static/media/notFound.gif": "/emarc/static/media/notFound.b86bcddc05ce363ed3ed.gif",
-    "static/media/nickname.gif": "/emarc/static/media/nickname.dc389121c31d9f64b922.gif",
-    "static/media/password.gif": "/emarc/static/media/password.ea1ec22c01b6fb8096d4.gif",
-    "static/media/shopping_cart_add_icon_177407.png": "/emarc/static/media/shopping_cart_add_icon_177407.bb1442b46b9a295cee1d.png",
+    "main.css": "/emarc/static/css/main.6d067d15.css",
+    "main.js": "/emarc/static/js/main.7133db4e.js",
     "static/media/cart.svg": "/emarc/static/media/cart.5a1c3c755c07e59db7d6.svg",
     "index.html": "/emarc/index.html",
-    "main.0a252c5c.css.map": "/emarc/static/css/main.0a252c5c.css.map",
-    "main.bf5653d9.js.map": "/emarc/static/js/main.bf5653d9.js.map"
+    "main.6d067d15.css.map": "/emarc/static/css/main.6d067d15.css.map",
+    "main.7133db4e.js.map": "/emarc/static/js/main.7133db4e.js.map"
   },
   "entrypoints": [
-    "static/css/main.0a252c5c.css",
-    "static/js/main.bf5653d9.js"
+    "static/css/main.6d067d15.css",
+    "static/js/main.7133db4e.js"
   ]
 }
