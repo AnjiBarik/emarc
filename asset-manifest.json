@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/emarc/static/css/main.6d067d15.css",
-    "main.js": "/emarc/static/js/main.7e448bad.js",
+    "main.css": "/emarc/static/css/main.db3287ba.css",
+    "main.js": "/emarc/static/js/main.b5be8e5d.js",
     "static/media/cart.svg": "/emarc/static/media/cart.5a1c3c755c07e59db7d65be6bc8d8bfb.svg",
     "index.html": "/emarc/index.html",
-    "main.6d067d15.css.map": "/emarc/static/css/main.6d067d15.css.map",
-    "main.7e448bad.js.map": "/emarc/static/js/main.7e448bad.js.map"
+    "main.db3287ba.css.map": "/emarc/static/css/main.db3287ba.css.map",
+    "main.b5be8e5d.js.map": "/emarc/static/js/main.b5be8e5d.js.map"
   },
   "entrypoints": [
-    "static/css/main.6d067d15.css",
-    "static/js/main.7e448bad.js"
+    "static/css/main.db3287ba.css",
+    "static/js/main.b5be8e5d.js"
   ]
 }
