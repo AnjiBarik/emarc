@@ -93,6 +93,20 @@ header {
 
 @keyframes loading {
     0% {
+        background-color: #91eaa8;
+        color: #140e0f;
+    }
+    50% {
+        background-color: #d5f3d6;
+        transform: scale(0.95);
+    }
+    
+    100% {
+        background-color: #2dba34;
+        color: #025d40;
+        transform: scale(1);
+/* 
+    0% {
         background-color: #4CAF50;
         color: #140e0f;
     }
@@ -103,7 +117,7 @@ header {
     100% {
         background-color: #4CAF50;
         color: #025d40;
-        transform: scale(1);
+        transform: scale(1); */
     }
 }
 
