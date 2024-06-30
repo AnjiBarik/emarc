@@ -45,4 +45,30 @@
 ## Example
 For an example of Google Sheets scripts and tables for deployment, see the samples folder of the project repository
 
+## Configuration file example explanationExample 
+"tuning": [
+    {
+        "id": 1, // unique sequential record number
+        "author": "David Flanagan", // organization name of the price author
+        "type": "start", // type start initial record display can be multiple but with different language values
+        "lang": "en", // price language in the standard returned by the browser
+        "loadprice": "true", // when true - ability to load additional price from current (Urprice link in the current price), false - do not load if additional price exists
+        "fone": "(044)235-78-96", // contact phone link in the header if available
+        "card": "09990000023232", // link to contact bank account in the header if available
+        "inst": "hfgfhfh", // Instagram link in the header if available
+        "location": "Your address", // address link in maps in the header if available
+        "email": "example@gmail.com", // contact email link in the header if available
+        "logo": "https://***.jpg", // company logo image if available, displays title if absent
+        "title": "***", // name of the author's company
+        "UrFrame": "https://***", // link to the author's company website (must allow opening in a frame)
+        "Urprice": "https://script.google.com/macros/***", // link to the price script or screening
+        "Urregform": "https://script.google.com/macros/***", // link to the registration script or screening
+        "Urorder": "https://script.google.com/macros/s/***", // link to the order script or screening
+        "order": "rsa", // if present, encrypts customer contact data
+        "shopping": "To shopping", // alternative button title to enter shopping for the current price if available
+        "logopablic": "lang.png", // author's company logo from a public folder (preferred over logo if available)
+        "langstart": "auto", // if present, automatically selects language based on browser default
+        "orderform": "FirstName,MiddleName,LastName,Email,Phone,Address,Message" // if present, list of displayed customer contact fields; all except Message are mandatory, all are displayed if absent
+    }
+]
 
