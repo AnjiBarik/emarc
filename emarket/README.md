@@ -43,7 +43,6 @@
 </p>
 ## Example of Google Sheets Scripts
 
-### Urprice
 
 ```javascript
 // Urprice script
