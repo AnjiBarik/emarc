@@ -41,6 +41,8 @@
 <p>
   The project aims to ensure flexibility and ease of use, as well as to facilitate the process of maintenance and updates.
 </p>
-## For an example of Google Sheets scripts and tables for deployment, see the samples folder of the project repository
+
+## Example
+For an example of Google Sheets scripts and tables for deployment, see the samples folder of the project repository
 
 
