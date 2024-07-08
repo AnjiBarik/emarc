@@ -45,6 +45,21 @@
 ## Example
 For an example of Google Sheets scripts and tables for deployment, see the samples folder of the project repository
 
+## Program Description: Language Selection and Admin Panel
+When a user performs a triple click on the globe during language selection, an Admin Panel appears. This Admin Panel serves two main functions:
+
+Key Generation:
+The Admin Panel allows users to generate keys.
+Two public keys (Key1 and Key2) are required for encryption using the RCA (Randomized Cipher Algorithm).
+Users can insert these public keys into the corresponding cells of the price table.
+These keys play a crucial role in securing sensitive data during communication or data storage.
+Order Decryption and Filtering:
+The Admin Panel provides tools for order management.
+Users can decrypt and filter orders based on specific criteria.
+Decryption ensures that authorized personnel can access order details securely.
+Filtering options allow users to narrow down orders based on relevant parameters.
+By combining language selection with administrative functionality, this program enhances security and streamlines order processing.
+
 ## Configuration file example explanationExample 
 "tuning": [
     {
