@@ -85,7 +85,7 @@ function LandingPage() {
 
     
     return (
-        <div className={theme} tabIndex={0}>            
+        <div className={theme} tabIndex={0}>         
             <section className="intro">               
                 <LangComponent/> 
             </section>

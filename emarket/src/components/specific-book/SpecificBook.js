@@ -41,7 +41,7 @@ export default function SpecificBook() {
             selectedBook.imageblockpublic.split(',').map(element => `${process.env.PUBLIC_URL}/${folder}/${element}` || `${publicUrl}${publicUrl.endsWith('/') ? '' : '/'}${folder}/${element}`)
           );
         } else if (selectedBook.imageblock && selectedBook.imageblock !== '') {
-          setImages(selectedBook.imageblock.split(','));
+          setImages(selectedBook.imageblock.split(','));        
         } else {
           setImages([]); // Handle the case where there are no image sources
         }
@@ -114,7 +114,7 @@ export default function SpecificBook() {
   }, [fieldState.colorblock]);
 
   useEffect(() => {
-    if (books.length === 0 && specificBook.length === 0) {
+    if (books.length === 0 || specificBook.length === 0) {
       navigate('/');
     }
   }, [books, specificBook, navigate]);
@@ -126,7 +126,7 @@ export default function SpecificBook() {
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
   };
-
+  
   return (
     <section className={theme}>
       <section className="filters">
@@ -152,8 +152,8 @@ export default function SpecificBook() {
                 }
                 {selectedBook.sorted === 'popular' &&
                   <img src={popular} className="art-icon" alt="Popular" />
-                }
-                <img
+                }  
+                <img               
                   src={images[currentImageIndex]}
                   alt={selectedBook.title}
                   onError={(e) => { e.target.src = notFound; }}
