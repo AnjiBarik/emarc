@@ -1,10 +1,12 @@
 import { BooksContext } from '../../BooksContext';
 import React, { useContext, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../utils/LoadingAnimation';  
 
 export default function Form() {
   const { setBooks, setFieldState, uiMain, idLoudPrice, setIdLoudPrice, setCartItems, setTotalPrice, setTotalCount } = useContext(BooksContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function Submit(e) {
     e.preventDefault();
@@ -37,6 +39,7 @@ export default function Form() {
       .finally(() => {
         setLoading(false);
         clearCart();
+        navigate('/BookList');
       });
   }
 
