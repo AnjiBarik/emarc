@@ -220,7 +220,7 @@ export default function SpecificBook() {
                       )}
                   </button>
                 ))}
-              {selectedBook.colorblock === "" && (<b className="size-button selected" >
+              {selectedBook.colorblock === "" && selectedBook.color!=="" && (<b className="size-button selected" >
                {selectedBook.color}
                {colorRGB[selectedBook.color.trim()] && (
                <span
