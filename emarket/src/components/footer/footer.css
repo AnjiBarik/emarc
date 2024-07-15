@@ -24,10 +24,7 @@ a {
     top: -300px;
     left: 1%;
   }
-
-  .cart{
-    position: relative;
-  }
+  
   .cartcount{
     position: absolute;
     bottom: 40px;
@@ -61,6 +58,13 @@ a {
     position: fixed;   
     background-color: #f0f0f0;
     color: black;
+  }
+
+  .cart{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .button-label {

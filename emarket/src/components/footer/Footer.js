@@ -61,7 +61,7 @@ export default function Footer() {
           <section className="foot">
             <section className="footer">
               <section className="cart">
-                <Link to="/">
+                <Link className="cart" to="/">
                   <img
                     className={`back-button ${selectedImage === 'home' ? 'sel' : ''}`}
                     onClick={() => handleImageClick('home')}
@@ -73,7 +73,7 @@ export default function Footer() {
               </section>
 
               <section className="cart">
-                <Link to="/BookList">
+                <Link className="cart" to="/BookList">
                   <img
                     className={`back-button ${selectedImage === 'category' ? 'sel' : ''}`}
                     onClick={() => handleImageClick('category')}
@@ -85,7 +85,7 @@ export default function Footer() {
               </section>
 
               <section className="cart">
-                <Link to="/cart">
+                <Link className="cart" to="/cart">
                   <img
                     className={`back-button ${selectedImage === 'cart' ? 'sel' : ''}`}
                     onClick={() => handleImageClick('cart')}
@@ -100,7 +100,7 @@ export default function Footer() {
               </section>
 
               <section className="cart">
-                <Link to="/Filter">
+                <Link className="cart" to="/Filter">
                   <img
                     className={`back-button ${selectedImage === 'filter' ? 'sel' : ''}`}
                     onClick={() => handleImageClick('filter')}
@@ -112,7 +112,7 @@ export default function Footer() {
               </section>
 
               <section className="cart">
-                <Link to="/Search">
+                <Link className="cart" to="/Search">
                   <img
                     className={`back-button ${selectedImage === 'search' ? 'sel' : ''}`}
                     onClick={() => handleImageClick('search')}
