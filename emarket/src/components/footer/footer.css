@@ -62,4 +62,14 @@ a {
     background-color: #f0f0f0;
     color: black;
   }
+
+  .button-label {
+    font-size: 12px;   
+    display: flex;    
+    position: fixed;
+    bottom: 1px;    
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+  }
    
