@@ -6,7 +6,7 @@ import { useIcons } from '../../IconContext';
 import RegistrationForm from '../cart/RegistrationForm';
 
 export default function Footer() {
-  const { theme, cartItems, totalCount, setTotalCount, savedLogin, uiMain, idLoudPrice, showRegistrationForm, setShowRegistrationForm, fieldState } = React.useContext(BooksContext);
+  const { theme, cartItems, totalCount, setTotalCount, savedLogin, uiMain, idLoudPrice, showRegistrationForm, setShowRegistrationForm, fieldState,  message, promo } = React.useContext(BooksContext);
 
   const {
     filter,
@@ -137,6 +137,9 @@ export default function Footer() {
                     <strong>{savedLogin.slice(0, 2) + '...'}</strong>
                   </span>
                 )}
+                {((message && message !=="") || (promo && promo !=="")) && (
+                    <span className="back-button button-label rotate"><b>.💬.</b></span>
+                  )}
                 {fieldState.ava && <span className="button-label">{fieldState.ava}</span>}
               </section>
             </section>

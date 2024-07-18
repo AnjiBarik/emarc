@@ -43,6 +43,7 @@ export default function OrderForm() {
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderNumber, setOrderNumber] = useState(null);
   const [encrypting, setEncrypting] = useState(false);
+  const [protect, setProtected] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -55,6 +56,8 @@ export default function OrderForm() {
 
   const [formErrors, setFormErrors] = useState({});
 
+  
+
   const isSubmitDisabled = useCallback(() => {
     const excludedFields = [''];
     return Object.keys(formData).some(field =>
@@ -64,7 +67,7 @@ export default function OrderForm() {
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
-    console.log(value)
+   // console.log(value)
     let errorMessage = '';
     if (validationPatterns.invalidChars.pattern.test(value)) {
       errorMessage = validationPatterns.invalidChars.message;
@@ -84,6 +87,14 @@ export default function OrderForm() {
       };
     }
   }, [loggedIn, handleInputChange]);
+
+//message Data is protected by encryption
+  useEffect(() => {
+    if (uiMain.order === 'rsa' && fieldState.publicKey1 && fieldState.publicKey1 !== "" &&
+        fieldState.publicKey2 && fieldState.publicKey2 !== "") {
+      setProtected(true);
+    }
+  }, [uiMain.order, fieldState.publicKey1, fieldState.publicKey2]);
 
   const handleEncrypt = async (publicKey1, publicKey2, plaintext) => {
     try {
@@ -113,7 +124,7 @@ export default function OrderForm() {
     const apiUrl = uiMain.Urorder;
 
     if (!isSubmitDisabled() && uiMain.order === 'rsa' && fieldState.publicKey1 && fieldState.publicKey2 && !encrypting) {
-      setEncrypting(true);
+      setEncrypting(true);     
 
       try {
         const encryptedFieldNames = ["FirstName", "MiddleName", "LastName", "Email", "Phone", "Message", "Address"];
@@ -241,13 +252,14 @@ export default function OrderForm() {
     );
   }
 
+
   return (
     <div className={`main-form ${theme}`}>
       <Link to="/cart" className="back-button">
         <img src={back} className="back-button selected" alt='back' />
       </Link>
       <h1 className="filters">ORDER FORM</h1>
-     
+        {protect && (<b>😎Data is protected by encryption</b>)}
       <div>        
         {loggedIn && !orderSubmitted && (
           <>

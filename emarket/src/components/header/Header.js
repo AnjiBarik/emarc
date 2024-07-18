@@ -5,7 +5,7 @@ import { useIcons } from '../../IconContext';
 import './header.css';
 
 export default function Header() {
-  const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain } = React.useContext(BooksContext);
+  const { theme, setTheme, uiState, idLoudPrice, setUiMain, uiMain, setSelectUiState } = React.useContext(BooksContext);
 
   const {    
     email,    
@@ -29,8 +29,9 @@ export default function Header() {
     if (selectedUiState) {     
       setLogo((selectedUiState.logopablic ? `${process.env.PUBLIC_URL}/logoimg/${selectedUiState.logopablic}` : selectedUiState.logo))
       setTitle(selectedUiState.title);
+      setSelectUiState(selectedUiState)
     }
-  }, [idLoudPrice, uiState]);
+  }, [idLoudPrice, uiState, setSelectUiState]);
 
   const toggleTheme = () => {
     setTheme((theme) => (theme === 'light' ? 'dark' : 'light'));

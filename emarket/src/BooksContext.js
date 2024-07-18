@@ -8,6 +8,7 @@ const BooksProvider = ({ children }) => {
   const [specificBook, setSpecificBook] = useState({});
   const [fieldState, setFieldState] = useState({});
   const [uiState, setUiState] = useState([]);
+  const [selectUiState, setSelectUiState] = useState([]);//
   const [uiMain, setUiMain] = useState([]);
   const [idLoudPrice, setIdLoudPrice] = useState(0);
   const [cartItems, setCartItems] = useState([]);
@@ -50,7 +51,7 @@ const [showRegistrationForm, setShowRegistrationForm] = useState(false);
     selectedSubsection, setSelectedSubsection, input, setInput, selectedTags1, setSelectedTags1, selectedTags2, setSelectedTags2,
     selectedAuthors, setSelectedAuthors, selectedSizes, setSelectedSizes, selectedColor, setSelectedColor, glsearch, setSearch, searchOptions, setSearchOptions,
     uiState, setUiState, uiMain, setUiMain, fieldState, setFieldState, idLoudPrice, setIdLoudPrice, selectedTags3, setSelectedTags3,
-    selectedTags4, setSelectedTags4, showRegistrationForm, setShowRegistrationForm
+    selectedTags4, setSelectedTags4, showRegistrationForm, setShowRegistrationForm, selectUiState, setSelectUiState
   };
 
   return (
