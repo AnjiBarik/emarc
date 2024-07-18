@@ -124,10 +124,11 @@ export default function Footer() {
                 </Link>
               </section>
 
-              <section className={`cart ${showRegistrationForm ? 'sel' : ''}`}>
+              <section onClick={() => handleImageClick('avatar')} 
+                className={`cart ${showRegistrationForm ? 'sel' : ''}`}>
                 <img
                   className="back-button"
-                  onClick={() => handleImageClick('avatar')}
+                  // onClick={() => handleImageClick('avatar')}
                   src={ava}
                   alt="avatar"
                   style={{ cursor: 'pointer' }}
@@ -138,7 +139,7 @@ export default function Footer() {
                   </span>
                 )}
                 {((message && message !=="") || (promo && promo !=="")) && (
-                    <span className="back-button button-label rotate"><b>.💬.</b></span>
+                    <span className="back-button button-label rotate"><b>'💬'</b></span>
                   )}
                 {fieldState.ava && <span className="button-label">{fieldState.ava}</span>}
               </section>

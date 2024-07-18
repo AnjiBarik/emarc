@@ -259,7 +259,7 @@ export default function OrderForm() {
         <img src={back} className="back-button selected" alt='back' />
       </Link>
       <h1 className="filters">ORDER FORM</h1>
-        {protect && (<b>😎Data is protected by encryption</b>)}
+        {protect && (<b className="filters">😎Data is protected by encryption</b>)}
       <div>        
         {loggedIn && !orderSubmitted && (
           <>
