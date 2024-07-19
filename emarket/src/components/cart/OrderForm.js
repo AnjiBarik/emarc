@@ -106,7 +106,7 @@ export default function OrderForm() {
       }
       return encryptedChunks;
     } catch (error) {
-      console.error('Encryption error:', error);
+      console.error('Encryption error:', error);      
       return [];
     }
   };
@@ -149,6 +149,7 @@ export default function OrderForm() {
 
       } catch (error) {
         console.error('Encryption error:', error);
+        alert('⚠️Encryption error.The unencrypted data hasnt been transmitted');
       } finally {
         setEncrypting(false);
       }
@@ -215,12 +216,20 @@ export default function OrderForm() {
     }).join('; ');
   }
 
-  useEffect(() => {
-    if (uiMain.length === 0) {
-      setShowRegistrationForm(false);
-      navigate('/');
-    }
-  }, [uiMain, navigate, setShowRegistrationForm]);
+//   useEffect(() => {
+//     if (uiMain.length === 0) {
+//       setShowRegistrationForm(false);
+//       navigate('/');
+//     }
+//   }, [uiMain, navigate, setShowRegistrationForm]);
+
+//   if (uiMain.length === 0) {
+//     return null;
+//   }
+
+// console.log(uiMain)
+// console.log(showRegistrationForm)
+
 
   useEffect(() => {
     if (!loggedIn) {
@@ -228,9 +237,22 @@ export default function OrderForm() {
     }
   }, [loggedIn, setShowRegistrationForm]);
 
-  if (uiMain.length === 0) {
-    return null;
-  }
+
+  useEffect(() => {
+    if (uiMain.length === 0) {
+      setShowRegistrationForm(false);
+      navigate('/');
+    }
+  }, [uiMain, navigate, setShowRegistrationForm]);
+
+  // if (uiMain.length === 0) {
+  //   return null;
+  // }
+
+console.log(uiMain)
+console.log(showRegistrationForm)
+
+ 
 
   if (!loggedIn) {
     if (showRegistrationForm) {      
@@ -259,7 +281,7 @@ export default function OrderForm() {
         <img src={back} className="back-button selected" alt='back' />
       </Link>
       <h1 className="filters">ORDER FORM</h1>
-        {protect && (<b className="filters">😎Data is protected by encryption</b>)}
+        {protect && (<b className="filters">Data is protected by encryption!</b>)}
       <div>        
         {loggedIn && !orderSubmitted && (
           <>

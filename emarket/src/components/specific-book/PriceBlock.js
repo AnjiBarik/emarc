@@ -69,7 +69,7 @@ export default function PriceBlock({ id, showPrice }) {
           <section className="price-block Price">
             {showPrice && (
               <div className="price-block-row">
-                <span>{fieldState.price && fieldState.price !== "" ? fieldState.price : "Price"}  </span>
+                <span>{fieldState.price && fieldState.price !== "" ? fieldState.price : "Price:"}  </span>
                 <span id="price">{selectedBook.price || 0}</span>
               </div>
             )}
@@ -99,7 +99,7 @@ export default function PriceBlock({ id, showPrice }) {
             )}
 
             <div className="price-block-row totalPrice">
-              <span>{fieldState.totalPrice && fieldState.totalPrice !== "" ? fieldState.totalPrice : "Total"}</span>
+              <span>{fieldState.totalPrice && fieldState.totalPrice !== "" ? fieldState.totalPrice : "Total:"}</span>
               <span id="totalPrice">
                 {(count * (selectedBook.price || 0)).toFixed(2)}
               </span>
