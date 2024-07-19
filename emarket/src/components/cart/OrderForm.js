@@ -66,8 +66,7 @@ export default function OrderForm() {
   }, [formData]);
 
   const handleInputChange = useCallback((e) => {
-    const { name, value } = e.target;
-   // console.log(value)
+    const { name, value } = e.target;   
     let errorMessage = '';
     if (validationPatterns.invalidChars.pattern.test(value)) {
       errorMessage = validationPatterns.invalidChars.message;
@@ -216,21 +215,6 @@ export default function OrderForm() {
     }).join('; ');
   }
 
-//   useEffect(() => {
-//     if (uiMain.length === 0) {
-//       setShowRegistrationForm(false);
-//       navigate('/');
-//     }
-//   }, [uiMain, navigate, setShowRegistrationForm]);
-
-//   if (uiMain.length === 0) {
-//     return null;
-//   }
-
-// console.log(uiMain)
-// console.log(showRegistrationForm)
-
-
   useEffect(() => {
     if (!loggedIn) {
       setShowRegistrationForm(true);
@@ -243,16 +227,7 @@ export default function OrderForm() {
       setShowRegistrationForm(false);
       navigate('/');
     }
-  }, [uiMain, navigate, setShowRegistrationForm]);
-
-  // if (uiMain.length === 0) {
-  //   return null;
-  // }
-
-console.log(uiMain)
-console.log(showRegistrationForm)
-
- 
+  }, [uiMain, navigate, setShowRegistrationForm]); 
 
   if (!loggedIn) {
     if (showRegistrationForm) {      

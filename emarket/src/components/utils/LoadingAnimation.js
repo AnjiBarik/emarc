@@ -22,9 +22,8 @@ const LoadingAnimation = () => {
     }, 200);
 
     // Cleanup interval on component unmount
-    return () => clearInterval(interval);
-  // }, []);
-}, [loading1, loading2, loading3]);
+    return () => clearInterval(interval); 
+  }, [loading1, loading2, loading3]);
 
   return <img src={loadingImage} className='loading' alt="Loading" />;
 };

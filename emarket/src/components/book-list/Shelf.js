@@ -128,7 +128,7 @@ const imageSource = el.imagepublic && el.imagepublic!=="" ?`${process.env.PUBLIC
             </p>
           
             <p className='view-price'>
-              <b>{fieldState.price && fieldState.price !== '' ? fieldState.price : 'Price, $'}</b> {el.saleprice ? (<><del>{el.saleprice}</del><b> {el.price}</b></>) : el.price}
+              <b>{fieldState.price && fieldState.price !== '' ? fieldState.price : 'Price:'}</b> {el.saleprice ? (<><del>{el.saleprice}</del><b> {el.price}</b></>) : el.price}
               <Link
                 style={{ cursor: 'pointer' }}
                 to='/specificbook'

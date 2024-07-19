@@ -127,8 +127,7 @@ export default function Footer() {
               <section onClick={() => handleImageClick('avatar')} 
                 className={`cart ${showRegistrationForm ? 'sel' : ''}`}>
                 <img
-                  className="back-button"
-                  // onClick={() => handleImageClick('avatar')}
+                  className="back-button"                  
                   src={ava}
                   alt="avatar"
                   style={{ cursor: 'pointer' }}

@@ -1,8 +1,27 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { BooksContext } from '../../BooksContext';
 
 export default function ClearAll({ clearLogin }) {
-  const { setCartItems, setTotalPrice, setTotalCount, setSelectedSection, setSelectedSubsection, setInput, setSelectedTags1, setSelectedTags2, setSelectedSizes, setSelectedColor, setSelectedAuthors, setSelectedTags3, setSelectedTags4, setSearch, setSearchOptions, setLoggedIn, setSavedLogin, setSavedPassword } = useContext(BooksContext);
+  const { 
+    setCartItems, 
+    setTotalPrice, 
+    setTotalCount, 
+    setSelectedSection, 
+    setSelectedSubsection, 
+    setInput, 
+    setSelectedTags1, 
+    setSelectedTags2, 
+    setSelectedSizes, 
+    setSelectedColor, 
+    setSelectedAuthors, 
+    setSelectedTags3, 
+    setSelectedTags4, 
+    setSearch, 
+    setSearchOptions, 
+    setLoggedIn, 
+    setSavedLogin, 
+    setSavedPassword 
+  } = useContext(BooksContext);
 
   const resetStates = () => {
     setCartItems([]);
