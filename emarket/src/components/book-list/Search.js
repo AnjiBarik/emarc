@@ -191,7 +191,8 @@ export default function Search() {
         </section>
       )}
 
-      <SortCart props={sortBook} />
+      {/* <SortCart props={sortBook} /> */}
+      <SortCart props={sortBook} componentName="Search" />
     </section>
   );
 }

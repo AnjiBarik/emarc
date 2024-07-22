@@ -40,9 +40,13 @@ const BooksProvider = ({ children }) => {
     byDescription: false
   });
 
-
-
 const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+
+const [sortStates, setSortStates] = useState({
+  BookList: { type: '', direction: '', view: '' },
+  Search: { type: '', direction: '', view: '' },
+  Filter: { type: '', direction: '', view: '' },
+});
 
   const contextValue = {
     message, setMessage, promo, setPromo, order, setOrder, loggedIn, setLoggedIn, savedLogin, setSavedLogin, savedPassword, setSavedPassword,
@@ -51,7 +55,7 @@ const [showRegistrationForm, setShowRegistrationForm] = useState(false);
     selectedSubsection, setSelectedSubsection, input, setInput, selectedTags1, setSelectedTags1, selectedTags2, setSelectedTags2,
     selectedAuthors, setSelectedAuthors, selectedSizes, setSelectedSizes, selectedColor, setSelectedColor, glsearch, setSearch, searchOptions, setSearchOptions,
     uiState, setUiState, uiMain, setUiMain, fieldState, setFieldState, idLoudPrice, setIdLoudPrice, selectedTags3, setSelectedTags3,
-    selectedTags4, setSelectedTags4, showRegistrationForm, setShowRegistrationForm, selectUiState, setSelectUiState
+    selectedTags4, setSelectedTags4, showRegistrationForm, setShowRegistrationForm, selectUiState, setSelectUiState, sortStates, setSortStates
   };
 
   return (

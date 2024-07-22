@@ -456,7 +456,8 @@ export default function Filter() {
           </section>
         )}
 
-        <SortCart props={sortedBooks} />
+        {/* <SortCart props={sortedBooks} /> */}
+        <SortCart props={sortedBooks} componentName="Filter" />
       </section>
     </>
   );

@@ -153,7 +153,8 @@ export default function BookList() {
       )}
       
       {/* Sorted books display */}
-      <SortCart props={sortedBooks}/>
+      {/* <SortCart props={sortedBooks}/> */}
+      <SortCart props={sortedBooks} componentName="BookList" />
     </section>
   );
 }

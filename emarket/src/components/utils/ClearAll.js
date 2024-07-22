@@ -20,7 +20,8 @@ export default function ClearAll({ clearLogin }) {
     setSearchOptions, 
     setLoggedIn, 
     setSavedLogin, 
-    setSavedPassword 
+    setSavedPassword,
+    setSortStates 
   } = useContext(BooksContext);
 
   const resetStates = () => {
@@ -44,6 +45,11 @@ export default function ClearAll({ clearLogin }) {
       byAuthor: true,
       byTags: false,
       byDescription: false
+    });
+    setSortStates({
+      BookList: { type: '', direction: '', view: '' },
+      Search: { type: '', direction: '', view: '' },
+      Filter: { type: '', direction: '', view: '' }
     });
 
     if (!clearLogin) {
