@@ -76,7 +76,8 @@ By combining language selection with administrative functionality, this program 
         "card": "09990000023232", // link to contact bank account in the header if available
         "inst": "hfgfhfh", // Instagram link in the header if available
         "location": "Your address", // address link in maps in the header if available
-        "email": "example@gmail.com", // contact email link in the header if available
+        "email": "example@gmail.com", // contact email link in the header if available and "face" "telegram" "tik" "you" "about" links 
+        //cocial networks and description of the enterprise
         "logo": "https://***.jpg", // company logo image if available, displays title if absent
         "title": "***", // name of the author's company
         "UrFrame": "https://***", // link to the author's company website (must allow opening in a frame)

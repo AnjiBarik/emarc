@@ -57,6 +57,16 @@ function LandingPage() {
             if (fieldState.titleprice) updatedUiMain.title = fieldState.titleprice;
             if (fieldState.lang) updatedUiMain.lang = fieldState.lang;
             if (fieldState.UrFrame) updatedUiMain.UrFrame = fieldState.UrFrame;
+            if (fieldState.fone && fieldState.fone!=="") updatedUiMain.fone = fieldState.fone;
+            if (fieldState.inst && fieldState.inst!=="") updatedUiMain.inst = fieldState.inst;
+            if (fieldState.face && fieldState.face!=="") updatedUiMain.face = fieldState.face;
+            if (fieldState.telegram && fieldState.telegram!=="") updatedUiMain.telegram = fieldState.telegram;
+            if (fieldState.email && fieldState.email!=="") updatedUiMain.email = fieldState.email;
+            if (fieldState.tik && fieldState.tik!=="") updatedUiMain.tik = fieldState.tik;
+            if (fieldState.you && fieldState.you!=="") updatedUiMain.you = fieldState.you;
+            if (fieldState.card && fieldState.card!=="") updatedUiMain.card = fieldState.card;
+            if (fieldState.location && fieldState.location!=="") updatedUiMain.location = fieldState.location;
+            if (fieldState.about && fieldState.about!=="") updatedUiMain.about = fieldState.about;
             updatedUiMain.Urprice = fieldState.Urprice;
             updatedUiMain.logo = fieldState.logo;            
             updatedUiMain.author = fieldState.authorprice || (uiMain.author + (fieldState.idprice || "LOL"));
