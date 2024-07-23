@@ -72,7 +72,7 @@ function LandingPage() {
             updatedUiMain.author = fieldState.authorprice || (uiMain.author + (fieldState.idprice || "LOL"));
             updatedUiMain.type = updatedUiMain.type === "start" ? "add" : updatedUiMain.type;
             updatedUiMain.id = maxId + 1;
-    
+
             return [...prevState, updatedUiMain];
           });
         }    
@@ -92,8 +92,7 @@ function LandingPage() {
     
         fetchData();
       }, [fieldState, uiMain, initializeState, tuningUrl]); 
-
-    
+ 
     return (
         <div className={theme} tabIndex={0}>         
             <section className="intro">               

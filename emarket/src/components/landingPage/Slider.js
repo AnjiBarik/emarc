@@ -36,7 +36,7 @@ function Slider() {
     };
 
     const getSlideClasses = (index) => {
-        return ` ${uiMain.id === index+1  ? 'active selected' : ''} `;
+        return ` ${uiMain.id === index+1  ? 'active selected highlighted' : ''} `;
     };
 
     const uniqueAuthors = [...new Set(uiState.map(slide => slide.author))];
