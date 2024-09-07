@@ -90,6 +90,7 @@ By combining language selection with administrative functionality, this program 
         "langstart": "auto", // if present, automatically selects language based on browser default
            // "regform": "test" /used for testing purposes without two-factor authentication or "twofactor" used for both registration and login with two-factor authentication / none by default typically used for registration with two-factor authentication and login without it 
         "orderform": "FirstName,MiddleName,LastName,Email,Phone,Address,Message" // if present, list of displayed customer contact fields; all except Message are mandatory, all are displayed if absent
+           // "regform": "test" /used for testing purposes without two-factor authentication or "twofactor" used for both registration and login with two-factor authentication / none by default typically used for registration with two-factor authentication and login without it 
     }
 ]
 
