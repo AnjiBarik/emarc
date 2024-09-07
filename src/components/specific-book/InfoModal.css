@@ -1,0 +1,29 @@
+.modal {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    background-color: #fefefe;
+    color: #333;
+    border: 1px solid #888;
+    border-radius: 10px;   
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);   
+    transform: translate(0, -50%);
+    max-width: 400px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
