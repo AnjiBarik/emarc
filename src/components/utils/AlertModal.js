@@ -29,7 +29,7 @@ const AlertModal = ({ infotext, showModal, toggleModal, showConfirm }) => {
                     <span className="close" onClick={handleCancel}>
                         <img className="cancel-button select" src={cancel} alt="cancel" />
                     </span>
-                    <p>{infotext}</p>
+                    <p className='message'>{infotext}</p>
                     <div className="modal-actions">
                         <div className="sort-button" onClick={handleOk}>
                             OK

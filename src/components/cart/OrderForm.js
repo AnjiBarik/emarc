@@ -18,6 +18,7 @@ export default function OrderForm() {
     savedLogin, 
     setCartItems,     
     totalPrice, 
+    setTotalPrice,
     setTotalCount, 
     cartItems, 
     uiMain, 
@@ -205,6 +206,19 @@ export default function OrderForm() {
     count = queryParams.get('count');
     price = queryParams.get('price');
   }
+
+  useEffect(() => {
+    if (id && count && price) {
+      const parsedPrice = parseFloat(price); 
+      const parsedCount = parseInt(count, 10); 
+      if (!isNaN(parsedPrice) && !isNaN(parsedCount) && parsedPrice >= 0 && parsedCount >= 0) {
+        const total = (parsedCount * parsedPrice).toFixed(2);
+        setTotalPrice(total);
+      } else {     
+        setTotalPrice(0);
+      }
+    }
+  }, [id, count, price, setTotalPrice]);
 
   const clearCart = () => {
     if (!id && !title && !count && !price) {
