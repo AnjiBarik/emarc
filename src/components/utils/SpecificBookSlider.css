@@ -46,6 +46,7 @@
     cursor: pointer;   
     font-size: larger;
     border: 2px solid;
+    z-index: 10;
 
     &:hover{
       font-weight: bolder;
