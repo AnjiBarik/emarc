@@ -84,6 +84,7 @@ By combining language selection with administrative functionality, this program 
         "logopablic": "lang.png", // author's company logo from a public folder (preferred over logo if available)
         "langstart": "auto", // if present, automatically selects language based on browser default
         "orderform": "FirstName,MiddleName,LastName,Email,Phone,Address,Message" // if present, list of displayed customer contact fields; all except Message are mandatory, all are displayed if absent
+        // "regform": "test" used for testing purposes without two-factor authentication or "twofactor" used for both registration and login with two-factor authentication  none by default typically used for registration with two-factor authentication and login without it 
     }
 ]
 
