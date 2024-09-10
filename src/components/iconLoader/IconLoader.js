@@ -42,12 +42,12 @@ const IconLoader = ({ children }) => {
   }, []);
   
   if (Object.keys(icons).length === 0) {
-    return <div>Loading icons...🌀</div>;
+    return <div>Loading ...🌀</div>;
   }
 
   return (
     <IconProvider icons={icons}>
-      <Suspense fallback={<div>Loading icons...🌀</div>}>
+      <Suspense fallback={<div>Loading ...🌀</div>}>
         {children}
       </Suspense>
     </IconProvider>

@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import { HashRouter } from 'react-router-dom';
 import { BooksProvider } from './BooksContext';
-//import { IconProvider } from './IconContext';
 import IconLoader from './components/iconLoader/IconLoader'; 
 
 const rootElement = document.getElementById('root');

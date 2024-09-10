@@ -5,6 +5,7 @@
     font-size: 14px;    
     border: 1px solid ;
     border-radius: 10px;  
+    flex-wrap: wrap
   }
 
   .search-input {
@@ -62,4 +63,11 @@
     font-weight: bold;
     text-decoration: none;
   }
+
+  .search-results-content .book-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;   
+  }
+
   
