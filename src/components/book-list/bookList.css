@@ -388,7 +388,7 @@ body {
   .active-page{
     border: 2px solid;
     border-radius: 50%;
-    padding: 4px 12px;
+    padding: 4px 9px;
   }
 
   .page-button{
