@@ -1,57 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { IconProvider } from '../../IconContext';
+import React, { useEffect, useState, Suspense } from 'react';
+import { IconProvider } from '../../IconContext';  
 import { initialIcons } from './iconImports';  
 import getPublicUrl from '../functional/getPublicUrl';
 
+const loadIcon = async (iconName, defaultUrl) => {
+  const folder = 'iconimg';
+  const url = getPublicUrl({ folder, filename: iconName });
+  
+  try {
+    const img = new Image();
+    img.src = url;
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+    return url;
+  } catch (error) {
+    //console.error(`Error loading icon ${iconName}:`, error);
+    return defaultUrl;
+  }
+};
+
 const IconLoader = ({ children }) => {
-  const [loadedIcons, setLoadedIcons] = useState(null);
+  const [icons, setIcons] = useState({});
 
   useEffect(() => {
-    const checkImageExists = (url) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = url;
-      });
+    const loadAllIcons = async () => {
+      const iconEntries = Object.entries(initialIcons);
+      const updatedIcons = {};
+      
+      await Promise.all(
+        iconEntries.map(async ([key, defaultUrl]) => {
+          updatedIcons[key] = await loadIcon(`${key}.png`, defaultUrl);
+        })
+      );
+      
+      setIcons(updatedIcons);
     };
-
-    const iconPath = async (iconName, defaultUrl) => {
-      const folder = 'iconimg';
-      const url = getPublicUrl({ folder, filename: iconName });
-      const exists = await checkImageExists(url);
-      return exists ? url : defaultUrl;
-    };
-
-    const loadIcons = async () => {
-      const iconsToLoad = Object.keys(initialIcons).map((key) => ({
-        name: `${key}.png`,
-        key,
-      }));
-
-      const loadedIcons = {};
-
-      for (const icon of iconsToLoad) {
-        try {
-          loadedIcons[icon.key] = await iconPath(icon.name, initialIcons[icon.key]);
-        } catch (error) {
-          console.error(`Error loading icon ${icon.name}:`, error);
-        }
-      }
-
-      setLoadedIcons(loadedIcons);
-    };
-
-    loadIcons();
+    
+    loadAllIcons();
   }, []);
-
-  if (!loadedIcons) {
-    return <div>Loading icons...</div>;
+  
+  if (Object.keys(icons).length === 0) {
+    return <div>Loading icons...🌀</div>;
   }
 
   return (
-    <IconProvider icons={loadedIcons}>
-      {children}
+    <IconProvider icons={icons}>
+      <Suspense fallback={<div>Loading icons...🌀</div>}>
+        {children}
+      </Suspense>
     </IconProvider>
   );
 };
