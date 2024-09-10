@@ -122,7 +122,7 @@ const BookSearch = () => {
         <button className="selected-button" onClick={() => setShowOptions(!showOptions)}>
           <img className="cancel-button select" src={upmenu} alt="upmenu" style={imageStyle} />
         </button>
-        {!getTotalMatches() > 0 && glsearch !== '' && <p>Oops, nothing found...</p>}
+        {!getTotalMatches() > 0 && glsearch !== '' && <p className='sort-button'> Oops, nothing found...</p>}
       </div>
 
       {showOptions && (

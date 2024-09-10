@@ -9,7 +9,7 @@
   }
 
   .search-input {
-    font-size: 16px;   
+    font-size: 15px;   
     outline: none;   
   }
 
@@ -64,10 +64,13 @@
     text-decoration: none;
   }
 
-  .search-results-content .book-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;   
+  .search-results-content .book-list {   
+    min-height: auto;
+    padding-bottom: 10px;   
+  }
+
+  .search-results-content .pagination {    
+    padding-bottom: 10px;   
   }
 
   
