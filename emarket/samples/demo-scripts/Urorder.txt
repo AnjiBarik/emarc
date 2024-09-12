@@ -1,0 +1,172 @@
+const sheets = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/.../edit#gid=0");
+const sheet = sheets.getSheetByName("Page1");
+
+const allowedUserIds = ["d123", "manager1", "manager2"]; // Add all valid userIds here
+
+function doPost(e) {
+  let data = e.parameter;
+
+  // Calling the function to check incoming data
+  const validationError = validateInput(data);
+  if (validationError) {
+    return ContentService.createTextOutput(validationError);
+  }
+
+  let userName = `${data.Name}`; 
+  let url = `${data.Url}`; // Link to script for validateRequest
+  let enteredCode = `${data.VerificationCode}`; 
+  let priceNumber = `${data.Idprice}`; 
+
+  if (!data.userid) {
+    let lastRow = sheet.getLastRow();
+    let lastOrderNumber = lastRow > 1 ? sheet.getRange(lastRow, 1).getValue() : 0;
+    let orderNumber = parseInt(lastOrderNumber) + 1;
+
+    let validationResponse = validateRequest({
+      isVerification: 6,
+      Name: userName,
+      VerificationCode: enteredCode,
+      PriceNumber: priceNumber,
+      Order: `${orderNumber}` 
+    }, url);
+
+    if (String.fromCharCode(...validationResponse.getContent()) !== "Order and price updated successfully!") {
+      // return ContentService.createTextOutput(`Order validation failed.${String.fromCharCode(...validationResponse.getContent())}`);
+      return ContentService.createTextOutput(`Order validation failed.`);
+    }
+
+    let currentDate = new Date();
+    let currentDateTime = currentDate.toISOString();
+
+    sheet.appendRow([
+      orderNumber, 
+      addApostropheIfNotEmpty(data.Name), 
+      addApostropheIfNotEmpty(data.FirstName), 
+      addApostropheIfNotEmpty(data.MiddleName), 
+      addApostropheIfNotEmpty(data.LastName), 
+      addApostropheIfNotEmpty(data.Email), 
+      addApostropheIfNotEmpty(data.Phone), 
+      addApostropheIfNotEmpty(data.Address), 
+      addApostropheIfNotEmpty(data.Message), 
+      addApostropheIfNotEmpty(data.FirstName1), 
+      addApostropheIfNotEmpty(data.MiddleName1), 
+      addApostropheIfNotEmpty(data.LastName1), 
+      addApostropheIfNotEmpty(data.Email1), 
+      addApostropheIfNotEmpty(data.Phone1), 
+      addApostropheIfNotEmpty(data.Address1), 
+      addApostropheIfNotEmpty(data.Message1), 
+      addApostropheIfNotEmpty(data.FirstName2), 
+      addApostropheIfNotEmpty(data.MiddleName2), 
+      addApostropheIfNotEmpty(data.LastName2), 
+      addApostropheIfNotEmpty(data.Email2), 
+      addApostropheIfNotEmpty(data.Phone2), 
+      addApostropheIfNotEmpty(data.Address2), 
+      addApostropheIfNotEmpty(data.Message2), 
+      addApostropheIfNotEmpty(data.Zakaz), 
+      addApostropheIfNotEmpty(data.Idprice), 
+      currentDateTime
+    ]);
+
+    let response = "Your message was successfully sent. Order Number: " + orderNumber;
+    return ContentService.createTextOutput(response);
+  }
+
+  if (data.userid) {
+    if (!allowedUserIds.includes(data.userid)) {
+      return ContentService.createTextOutput("Incorrect username or password.");
+    }
+
+    let validationResponse = validateRequest({
+      isVerification: 7,
+      Name: userName, 
+      VerificationCode: enteredCode,
+      PriceNumber: priceNumber
+    }, url);
+
+    if (String.fromCharCode(...validationResponse.getContent()) !== "Price verified and recorded successfully!") {
+      // return ContentService.createTextOutput(`Access denied. Validation failed.${String.fromCharCode(...validationResponse.getContent())}`);
+      return ContentService.createTextOutput(`Access denied. Validation failed.`);
+    }
+
+    const headers1 = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const data1 = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
+
+    const jsonData1 = data1.map((row) => {
+      const obj = {};
+      for (let i = 0; i < headers1.length; i++) {       
+        obj[headers1[i]] = (row[i]);
+      }
+      return obj;
+    });
+
+    let filteredData = jsonData1;
+
+    if (data.idpric && data.idpric !== "") {
+      filteredData = filteredData.filter((item) => String(item.Idprice) === String(data.idpric));
+    }
+
+    if (data.startdate && data.enddate) {
+      try {
+        const startDate = new Date(data.startdate);
+        const endDate = new Date(data.enddate);
+        filteredData = filteredData.filter((item) => {
+          const itemDate = new Date(item.currentDateTime);
+          return itemDate >= startDate && itemDate <= endDate;
+        });
+      } catch (error) {
+        return ContentService.createTextOutput(JSON.stringify("Incorrect username or password."));
+      }
+    }
+
+    return ContentService.createTextOutput(JSON.stringify(filteredData));
+  }
+}
+
+function addApostropheIfNotEmpty(value) {
+  return value ? "'" + value : "";
+}
+
+// Function to check input values
+function validateInput(data) {
+  try {
+    const nameRegex = /^[^=+"'<>.,;:]{4,42}$/; 
+    const userIdRegex = /^[a-zA-Z0-9]{1,10}$/;
+    const idPriceRegex = /^[a-zA-Z0-9]{1,10}$/;
+    const verificationCodeRegex = /^\d{6}$/;    
+    const urlRegex =/^https:\/\/script\.google\.com\/macros\/s\/[a-zA-Z0-9_-]+\/exec$/;// URL Check
+    const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/; // Checking ISO date format
+
+    if (data.Name && !nameRegex.test(data.Name)) {
+      return "Access denied. Invalid Name. Must be 4-42 characters, without forbidden symbols.";
+    }
+    if (data.userid && !userIdRegex.test(data.userid)) {
+      return "Access denied. Invalid UserID. Only letters and numbers, up to 10 characters.";
+    }
+    if (data.Idprice && !idPriceRegex.test(data.Idprice)) {
+      return "Access denied. Invalid Idprice. Only letters and numbers, up to 10 characters.";
+    }
+    if (data.idpric && !idPriceRegex.test(data.idpric)) {
+      return "Access denied. Invalid Idpric. Only letters and numbers, up to 10 characters.";
+    }
+    if (data.VerificationCode && !verificationCodeRegex.test(data.VerificationCode)) {
+      return "Access denied. Invalid VerificationCode. Must be exactly 6 digits.";
+    }
+    if (data.Url && !urlRegex.test(data.Url)) {
+    return `Access denied. Invalid URL.`;
+}
+    if ((data.startdate && !dateRegex.test(data.startdate)) || (data.enddate && !dateRegex.test(data.enddate))) {
+      return "Access denied. Invalid Date format. Must be in ISO format.";
+    }
+    return null;
+  } catch (error) {
+    return "Access denied. An error occurred during validation.";
+  }
+}
+
+function validateRequest(params, url) {
+  const options = {
+    'method': 'post',
+    'payload': params
+  };
+  return UrlFetchApp.fetch(url, options);
+}
