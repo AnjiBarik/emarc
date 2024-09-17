@@ -96,7 +96,7 @@ const BookSearch = () => {
   }, [getTotalMatchesArray, setPromoBookSlider]);
 
   return (
-    <div className='filters'>
+    <div className='search-filters'>
       <div className="search-bar">
         <img className="cancel-button select" onClick={() => {
           // Focus the input element when the image is clicked
@@ -153,11 +153,14 @@ const BookSearch = () => {
                     {fieldState[key] && fieldState[key] !== "" ? fieldState[key] : key} : {filteredResults[key].length} matches
                   </p>
                 ))}
-                <p
+                <p                  
                   className={`search-link ${selectedKey === 'all' ? 'active' : ''}`}
                   onClick={() => handleLinkClick('all')}
                 >
-                  Total matches across all keys: {getTotalMatches()} quantity: {getTotalMatchesArray().length}
+                  Total matches across all keys: {getTotalMatches()} 
+                  <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                    quantity: {getTotalMatchesArray().length}
+                  </span>
                 </p>
               </div>
 

@@ -5,6 +5,7 @@ import './form.css';
 import { hashPasswordAndUsername } from '../rsacomponent/HashUtils';
 import LoadingAnimation from '../utils/LoadingAnimation';
 import { useAlertModal } from '../hooks/useAlertModal';
+import AuthButtons from './AuthButtons'; 
 
 export default function RegistrationForm() {
   const { 
@@ -53,6 +54,28 @@ export default function RegistrationForm() {
   const [showRegistrationFormLokal, setShowRegistrationFormLokal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false); 
+
+  const [googleClientId, setGoogleClientId] = useState('');
+  const [facebookAppId, setFacebookAppId] = useState('');
+  const [emailFromAuth, setEmailFromAuth] = useState('');  
+  const [nameFromAuth, setNameFromAuth] = useState('');
+
+  useEffect(() => {
+    if (uiMain.regformGoogleClientID) {
+      setGoogleClientId(uiMain.regformGoogleClientID);
+    }
+    if (uiMain.regformFacebookAppID) {
+      setFacebookAppId(uiMain.regformFacebookAppID);
+    }
+  }, [uiMain.regformGoogleClientID, uiMain.regformFacebookAppID]);  
+
+  // Calling AuthButtons and processing the authorization result
+  const handleAuthSuccess = ({ email, name }) => {
+  //console.log('Logged in as:', name, email);
+   setEmailFromAuth(email);
+   setNameFromAuth(name);
+   setFormData(prevData => ({ ...prevData, Email: email, Name: name }));
+  };
  
 
   useEffect(() => {
@@ -80,7 +103,7 @@ export default function RegistrationForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
   const handlePasswordChange = (e) => {
@@ -304,7 +327,7 @@ export default function RegistrationForm() {
                             minLength={4}
                             maxLength={42}
                             placeholder='Nickname'
-                            value={formData.Name}
+                            value={formData.Name || nameFromAuth} 
                             onChange={handleInputChange}
                             autoComplete="username"
                             required
@@ -312,6 +335,7 @@ export default function RegistrationForm() {
                         </td>
                       </tr>
                       {showEmail && (
+                        <>
                         <tr>
                           <td>
                             <img className="form-icon select" src={email} alt="email" />
@@ -322,13 +346,27 @@ export default function RegistrationForm() {
                               type="email"
                               name="Email"
                               maxLength={42}
-                              placeholder='Email'
-                              value={formData.Email}
+                              placeholder='Email'                              
+                              value={ formData.Email || emailFromAuth } 
                               onChange={handleInputChange}
                               required
                             />
                           </td>
+                        </tr> 
+                        <tr>                      
+                          <td colSpan="2">
+                      {/* Inserting AuthButtons */}
+            {(googleClientId || facebookAppId) && (
+              <AuthButtons
+                googleClientId={googleClientId}
+                facebookAppId={facebookAppId}
+                onSuccess={handleAuthSuccess}
+                onError={(error) => showAlert('Error: ' + error.message)}
+              />
+            )}
+                          </td>                       
                         </tr>
+                       </>
                       )}
                       <tr>
                         <td>
