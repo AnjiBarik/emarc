@@ -76,3 +76,7 @@
 .search-results-content .pagination {    
   padding-bottom: 10px;   
 }
+
+input[type="checkbox"] {
+  accent-color: #77656b8a;
+}

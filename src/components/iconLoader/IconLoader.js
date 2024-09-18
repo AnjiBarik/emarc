@@ -23,7 +23,6 @@ const loadIcon = async (iconName, defaultUrl) => {
 
 const LoadingSpinner = () => (
   <div style={{
-    textAlign: "center",
     margin: 0,
     height: "100vh",
     width: "100vw",
@@ -33,16 +32,15 @@ const LoadingSpinner = () => (
     `,
     backgroundSize: "cover",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
+    display: "flex",
+    justifyContent: "center",  // Центрирование по горизонтали
+    alignItems: "center"       // Центрирование по вертикали
   }}>
     <div style={{
       display: "inline-block",
       animation: "spin 1s linear infinite",
       fontSize: "5rem",
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
       zIndex: 2
     }}>
       🌎

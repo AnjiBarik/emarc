@@ -135,6 +135,46 @@ export default function SpecificBook() {
     setCurrentImageIndex(index);
   };
 
+  // Function to handle display of additional tags
+  const renderTagRow = (tagKey, selectedBook, fieldState) => {
+  
+   const selectedTag = selectedBook?.[tagKey] ?? ''; 
+   const fieldTag = fieldState?.[tagKey] ?? ''; 
+  
+   let sectionField = null;
+   let sectionValue = selectedTag;
+
+  // We check whether fieldTag is a string and whether it contains delimiters ";"
+   if (typeof fieldTag === 'string' && fieldTag.includes(';')) {
+    try {
+      // We split the string into “section~value” pairs
+      const tagPairs = fieldTag.split(';').map(pair => pair.split('~').map(s => s.trim()));
+      
+      const matchingPair = tagPairs.find(([sectionName]) => sectionName === selectedBook?.section);
+
+      if (matchingPair) {
+        sectionField = matchingPair[1]; 
+      }
+    } catch (error) {
+      console.error(`Error parsing tag ${tagKey}: ${error}`);
+    }
+   }
+
+   return (
+    selectedTag && (
+      <tr key={tagKey}>
+        <td>
+          <b>
+            {/* If we found the field name for the section, use it, otherwise the standard field name */}
+            {sectionField || (fieldTag && fieldTag !== "" ? fieldTag : `Tags ${tagKey.replace('tags', '')}:`)}
+          </b>
+        </td>
+        <td>{sectionValue}</td>
+      </tr>
+    )
+   );
+  };
+
   return (
     <section className={theme}>
       <section className="filters">
@@ -284,43 +324,20 @@ export default function SpecificBook() {
                 <span>{selectedBook.shortDescription}</span>
               </p>
             )}
-            {(selectedBook.tags5 || selectedBook.tags6 || selectedBook.tags7 || selectedBook.tags8) && (
-              <section className="about">
-                <div className='size-buttons'>
-                <b>{fieldState.additionalTags && fieldState.additionalTags !== "" ? fieldState.additionalTags : "Additional Tags:"}</b>
-                {fieldState.additionalTagsinfo && fieldState.additionalTagsinfo !== "" && (<InfoModal infotext={fieldState.additionalTagsinfo} />)}
-                </div>
-                <table>
-                  <tbody>
-                    {selectedBook.tags5 && selectedBook.tags5 !== "" && (
-                      <tr>
-                        <td><b>{fieldState.tags5 && fieldState.tags5 !== "" ? fieldState.tags5 : "Tags 5:"}</b></td>
-                        <td>{selectedBook.tags5}</td>
-                      </tr>
-                    )}
-                    {selectedBook.tags6 && selectedBook.tags6 !== "" && (
-                      <tr>
-                        <td><b>{fieldState.tags6 && fieldState.tags6 !== "" ? fieldState.tags6 : "Tags 6:"}</b></td>
-                        <td>{selectedBook.tags6}</td>
-                      </tr>
-                    )}
-                    {selectedBook.tags7 && selectedBook.tags7 !== "" && (
-                      <tr>
-                        <td><b>{fieldState.tags7 && fieldState.tags7 !== "" ? fieldState.tags7 : "Tags 7:"}</b></td>
-                        <td>{selectedBook.tags7}</td>
-                      </tr>
-                    )}
-                    {selectedBook.tags8 && selectedBook.tags8 !== "" && (
-                      <tr>
-                        <td><b>{fieldState.tags8 && fieldState.tags8 !== "" ? fieldState.tags8 : "Tags 8:"}</b></td>
-                        <td>{selectedBook.tags8}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </section>
-            )}
-          </section >
+          {(selectedBook.tags5 || selectedBook.tags6 || selectedBook.tags7 || selectedBook.tags8) && (
+            <section className="about">
+             <div className='size-buttons'>
+              <b>{fieldState.additionalTags && fieldState.additionalTags !== "" ? fieldState.additionalTags : "Additional Tags:"}</b>
+              {fieldState.additionalTagsinfo && fieldState.additionalTagsinfo !== "" && (<InfoModal infotext={fieldState.additionalTagsinfo} />)}
+             </div>
+            <table>
+            <tbody>
+              {['tags5', 'tags6', 'tags7', 'tags8'].map(tagKey => renderTagRow(tagKey, selectedBook, fieldState))}
+            </tbody>
+            </table>
+            </section>
+          )}  
+        </section >        
           {selectedBook.description !== undefined && selectedBook.description !== "" && (
             <section className="about">
               <p className='cart-text'>

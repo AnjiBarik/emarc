@@ -349,6 +349,7 @@ export default function RegistrationForm() {
                               placeholder='Email'                              
                               value={ formData.Email || emailFromAuth } 
                               onChange={handleInputChange}
+                              autoComplete="username"
                               required
                             />
                           </td>
