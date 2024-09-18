@@ -70,11 +70,10 @@ const PriceFilter = ({ prompt }) => {
           className="slider"
         />
         <div className="range-values">
-          <span>Min: ${range[0]}</span>
-          <span>Max: ${range[1]}</span>
+        <span translate="no">Min:${range[0]}</span>
+        <span translate="no">Max:${range[1]}</span>
         </div>
-      </div>
-      {/* <button className='back-button active' onClick={handleApply}>Apply</button> */}
+      </div>      
       <button
          className={`form-input ${range === rangePrice ? 'disabled' : 'active-border'}`}
          onClick={handleApply}

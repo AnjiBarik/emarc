@@ -342,7 +342,7 @@ export default function BookList() {
   
             {input && renderSelectedButton(
               "Filter by",
-              <strong>{input}</strong>,
+              input,
               () => handleStateChange('input', '')
             )}
   
