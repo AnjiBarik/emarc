@@ -468,7 +468,7 @@ export default function BookList() {
               <input
                 onChange={(e) => handleStateChange('input', e.target.value)}
                 type="search"
-                id="searchName"
+                className='form-input'                
                 title="Filter by id name author"
                 placeholder="Filter by id name author..."
                 value={input}

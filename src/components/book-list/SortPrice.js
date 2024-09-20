@@ -3,7 +3,7 @@ import { BooksContext } from '../../BooksContext';
 import './PriceFilter.css'; 
 
 const PriceFilter = ({ prompt }) => {
-  const { rangePrice, setRangePrice } = useContext(BooksContext);
+  const { rangePrice, setRangePrice, fieldState } = useContext(BooksContext);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
   const [range, setRange] = useState([0, 0]);
@@ -70,8 +70,8 @@ const PriceFilter = ({ prompt }) => {
           className="slider"
         />
         <div className="range-values">
-        <span translate="no">Min:${range[0]}</span>
-        <span translate="no">Max:${range[1]}</span>
+        <span translate="no">Min:{fieldState.payment ? fieldState.payment : ""}{range[0]}</span>
+        <span translate="no">Max:{fieldState.payment ? fieldState.payment : ""}{range[1]}</span>
         </div>
       </div>      
       <button

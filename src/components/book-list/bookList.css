@@ -48,17 +48,6 @@ body {
     align-items: center;
 }
 
-#searchName{
-    border: 1px solid gray;
-    height: 40px;
-    font-size: 18px;
-    margin:3px 10px ;
-    min-width: 270px;   
-    border-radius: 10px;
-    color: inherit;
-    background-color: inherit;
-}
-
 #sortPrice{
     border-radius: 5px;
     border: 1px solid gray;
@@ -297,8 +286,7 @@ body {
 
   img.cancel-button.select {
     border-radius: 50%;
-}
-  
+  }  
 
   .selected-tags{
     display: flex;
